@@ -7,8 +7,8 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
     .NOTES
         Version:        0.1.0
         Author:         Alexis La Goutte
-        Twitter:
-        Github:
+        Twitter:        @alagoutte
+        Github:         alagoutte
         Credits:        Iain Brighton (@iainbrighton) - PScribo module
 
     .LINK
