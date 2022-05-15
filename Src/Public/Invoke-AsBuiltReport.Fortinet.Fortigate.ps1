@@ -34,8 +34,15 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
     #region foreach loop
     foreach ($System in $Target) {
 
+        #Connection to Fortigate (TODO: Add Paremeter for Certificate Check and Port)
+        Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck | Out-Null #-Port $Options.ServerPort
 
+        #Get Model
+        $Model = (Get-FGTMonitorSystemFirmware).current.'platform-id'
+        Write-PScriboMessage "Connect to $System : $Model ($($DefaultFGTConnection.serial)) "
 
+        #Disconnect
+        Disconnect-FGT -Confirm:$false
     }
     #endregion foreach loop
 }
