@@ -41,6 +41,12 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
         $Model = (Get-FGTMonitorSystemFirmware).current.'platform-id'
         Write-PScriboMessage "Connect to $System : $Model ($($DefaultFGTConnection.serial)) "
 
+        Section -Style Heading1 'Implementation Report' {
+            Paragraph "The following section provides a summary of the implemented components on the Fortinet Fortigate Infrastructure"
+            BlankLine
+            Get-AbrFgtForticare
+        }
+
         #Disconnect
         Disconnect-FGT -Confirm:$false
     }
