@@ -26,12 +26,14 @@ function Get-AbrFgtForticare {
 
     process {
 
+        $Forticare = (Get-FGTMonitorLicenseStatus).forticare
+
         Section -Style Heading2 'FortiCare ' {
             Paragraph "The following section details Forticare settings configured on Fortigate."
             BlankLine
 
             $OutObj = @()
-            $Forticare = (Get-FGTMonitorLicenseStatus).forticare
+
             $Serial = $DefaultFGTConnection.serial
 
             $OutObj = [pscustomobject]@{
@@ -48,7 +50,35 @@ function Get-AbrFgtForticare {
             }
 
             $OutObj | Table @TableParams
+
+            Paragraph "The following section details support settings configured on Fortigate."
+            BlankLine
+            $ExpiresHW = (($Forticare | Select-Object -ExpandProperty support).hardware).expires
+            $SupportHW = [pscustomobject]@{
+                "Type"            = "Hardware"
+                "Level"           = $Forticare.support.hardware.support_level
+                "Status"          = $Forticare.support.hardware.status
+                "Expiration Date" = (Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds($ExpiresHW)) | Get-Date -Format dd/MM/yyyy
+            }
+            $ExpiresEn = (($Forticare | Select-Object -ExpandProperty support).enhanced).expires
+            $SupportEn = [pscustomobject]@{
+                "Type"            = "Enhanced"
+                "Level"           = $Forticare.support.enhanced.support_level
+                "Status"          = $Forticare.support.enhanced.status
+                "Expiration Date" = (Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds($ExpiresEn)) | Get-Date -Format dd/MM/yyyy
+            }
+
+            $TableParams = @{
+                Name = "Support"
+                List = $true
+            }
+
+            $Support = @()
+            $Support += $SupportHW
+            $Support += $SupportEn
+            $Support | Table @TableParams
         }
+
     }
 
     end {
