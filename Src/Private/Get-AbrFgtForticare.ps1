@@ -70,7 +70,7 @@ function Get-AbrFgtForticare {
 
             $TableParams = @{
                 Name = "Support"
-                List = $true
+                List = $false
             }
 
             $Support = @()
