@@ -102,6 +102,40 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            Section -Style Heading3 'Admin' {
+                $OutObj = @()
+
+                $Admins = Get-FGTSystemAdmin
+
+                foreach ($admin in $Admins) {
+
+                    $trustedHosts = $admin.trusthost1
+                    $trustedHosts += $admin.trusthost2
+                    $trustedHosts += $admin.trusthost3
+                    $trustedHosts += $admin.trusthost4
+                    $trustedHosts += $admin.trusthost5
+                    $trustedHosts += $admin.trusthost6
+                    $trustedHosts += $admin.trusthost7
+                    $trustedHosts += $admin.trusthost8
+                    $trustedHosts += $admin.trusthost9
+                    $trustedHosts += $admin.trusthost10
+
+                    $OutObj += [pscustomobject]@{
+                        "Name"          = $admin.name
+                        "Profile"       = $admin.accprofile
+                        "Trusted Hosts" = $trustedHosts
+                        "MFA"           = $admin.'two-factor'
+                    }
+                }
+
+                $TableParams = @{
+                    Name = "Administrator"
+                    List = $false
+                }
+
+                $OutObj | Table @TableParams
+            }
+
             Section -Style Heading3 'Interfaces' {
                 $OutObj = @()
 
