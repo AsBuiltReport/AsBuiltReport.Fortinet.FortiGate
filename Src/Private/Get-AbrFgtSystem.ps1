@@ -26,7 +26,7 @@ function Get-AbrFgtSystem {
 
     process {
 
-        Section -Style Heading2 'System ' {
+        Section -Style Heading2 'System' {
             Paragraph "The following section details System settings configured on Fortigate."
             BlankLine
 
