@@ -101,6 +101,37 @@ function Get-AbrFgtSystem {
 
                 $OutObj | Table @TableParams
             }
+
+            Section -Style Heading3 'Interfaces' {
+                $OutObj = @()
+
+                $interfaces = Get-FGTSystemInterface
+
+                foreach ($interface in $interfaces) {
+                    $OutObj += [pscustomobject]@{
+                        "Name"         = $interface.name
+                        "Alias"        = $interface.alias
+                        "Role"         = $interface.role
+                        "Description"  = $interface.description
+                        "Type"         = $interface.type
+                        "Vlan ID"      = $interface.vlanid
+                        "Mode"         = $interface.mode
+                        "IP Address"   = $interface.ip.Replace(' ', '/')
+                        "Allow Access" = $interface.allowaccess
+                        'DHCP Relais'  = $interface.'dhcp-relay-ip'
+                        "Status"       = $interface.status
+                        "Speed"        = $interface.speed
+                    }
+                }
+
+                $TableParams = @{
+                    Name = "Interface"
+                    List = $false
+                }
+
+                $OutObj | Table @TableParams
+            }
+
         }
     }
 
