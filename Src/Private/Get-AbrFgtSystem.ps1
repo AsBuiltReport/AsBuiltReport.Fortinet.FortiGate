@@ -59,6 +59,48 @@ function Get-AbrFgtSystem {
 
                 $OutObj | Table @TableParams
             }
+
+            Section -Style Heading3 'DNS' {
+                $OutObj = @()
+
+                $dns = Get-FGTSystemDns
+
+                $OutObj = [pscustomobject]@{
+                    "Primary"   = $dns.primary
+                    "Secondary" = $dns.secondary
+                    "Domain"    = $dns.domain.domain
+                    "Protocol"  = $dns.protocol
+                }
+
+                $TableParams = @{
+                    Name = "DNS"
+                    List = $true
+                }
+
+                $OutObj | Table @TableParams
+            }
+
+            Section -Style Heading3 'DNS Server' {
+                $OutObj = @()
+
+                $DNSServers = Get-FGTSystemDnsServer
+
+                foreach ($DNSServer in $DNSServers) {
+                    $OutObj += [pscustomobject]@{
+                        "Name"               = $DNSServer.name
+                        "Mode"               = $DNSServer.mode
+                        "DNS Filter Profile" = $DNSServer.'dnsfilter-profile'
+                        "DOH"                = $DNSServer.doh
+                    }
+                }
+
+                $TableParams = @{
+                    Name = "DNS Server"
+                    List = $false
+                }
+
+                $OutObj | Table @TableParams
+            }
         }
     }
 
