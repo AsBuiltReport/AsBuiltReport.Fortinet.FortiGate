@@ -28,7 +28,7 @@ function Get-AbrFgtForticare {
 
         $Forticare = (Get-FGTMonitorLicenseStatus).forticare
 
-        Section -Style Heading2 'FortiCare ' {
+        Section -Style Heading2 'FortiCare' {
             Paragraph "The following section details Forticare settings configured on Fortigate."
             BlankLine
 
