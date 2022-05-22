@@ -35,10 +35,17 @@ function Get-AbrFgtSystem {
 
                 $info = Get-FGTSystemGlobal | Select-Object hostname, alias, daily-restart, restart-time, admin-port, admin-sport, admin-https-redirect, admin-ssh-port
 
+                if ($info.'daily-restart' -eq "enable") {
+                    $reboot = "Everyday at $($info.'restart-time')"
+                }
+                else {
+                    $reboot = "disable"
+                }
+
                 $OutObj = [pscustomobject]@{
                     "Nom"           = $info.'hostname'
                     "Alias"         = $info.'alias'
-                    "Reboot"        = $info.'restart-time'
+                    "Reboot"        = $reboot
                     "Port SSH"      = $info.'admin-ssh-port'
                     "Port HTTP"     = $info.'admin-port'
                     "Port HTTPS"    = $info.'admin-sport'
