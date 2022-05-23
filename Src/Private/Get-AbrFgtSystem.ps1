@@ -166,6 +166,28 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            Section -Style Heading3 'Zone' {
+                $OutObj = @()
+
+                $zones = Get-FGTSystemZone
+
+                foreach ($zone in $zones) {
+                    $OutObj += [pscustomobject]@{
+                        "Name"        = $zone.name
+                        "Intrazone"   = $zone.intrazone
+                        "Interface"   = $zone.interface.'interface-name'
+                        "Description" = $zone.description
+                    }
+                }
+
+                $TableParams = @{
+                    Name = "Zone"
+                    List = $false
+                }
+
+                $OutObj | Table @TableParams
+            }
+
         }
     }
 
