@@ -60,6 +60,28 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            Section -Style Heading3 'Settings' {
+                $OutObj = @()
+
+                $settings = Get-FGTSystemSettings
+
+                $OutObj = [pscustomobject]@{
+                    "OP Mode"           = $settings.opmode
+                    "Central NAT"       = $settings.'central-nat'
+                    "LLDP Reception"    = $settings.'lldp-reception'
+                    "LLDP Transmission" = $settings.'lldp-transmission'
+                    "Comments"          = $settings.comments
+                }
+
+                $TableParams = @{
+                    Name = "Settings"
+                    List = $true
+                }
+
+                $OutObj | Table @TableParams
+            }
+
+
             Section -Style Heading3 'DNS' {
                 $OutObj = @()
 
