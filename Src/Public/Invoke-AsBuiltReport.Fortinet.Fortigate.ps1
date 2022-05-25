@@ -35,7 +35,7 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
     foreach ($System in $Target) {
 
         try {
-            #Connection to Fortigate (TODO: Add Paremeter for Certificate Check and Port)
+            #Connection to Fortigate (TODO: Add Parameter for Certificate Check and Port)
             Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck | Out-Null #-Port $Options.ServerPort
 
             #Get Model
