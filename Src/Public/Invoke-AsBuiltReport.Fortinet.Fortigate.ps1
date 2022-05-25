@@ -34,18 +34,24 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
     #region foreach loop
     foreach ($System in $Target) {
 
-        #Connection to Fortigate (TODO: Add Paremeter for Certificate Check and Port)
-        Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck | Out-Null #-Port $Options.ServerPort
+        try {
+            #Connection to Fortigate (TODO: Add Paremeter for Certificate Check and Port)
+            Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck | Out-Null #-Port $Options.ServerPort
 
-        #Get Model
-        $Model = (Get-FGTMonitorSystemFirmware).current.'platform-id'
-        Write-PScriboMessage "Connect to $System : $Model ($($DefaultFGTConnection.serial)) "
+            #Get Model
+            $Model = (Get-FGTMonitorSystemFirmware).current.'platform-id'
+            Write-PScriboMessage "Connect to $System : $Model ($($DefaultFGTConnection.serial)) "
 
-        Section -Style Heading1 'Implementation Report' {
-            Paragraph "The following section provides a summary of the implemented components on the Fortinet Fortigate Infrastructure"
-            BlankLine
-            Get-AbrFgtForticare
+            Section -Style Heading1 'Implementation Report' {
+                Paragraph "The following section provides a summary of the implemented components on the Fortinet Fortigate Infrastructure"
+                BlankLine
+                Get-AbrFgtForticare
+            }
         }
+        catch {
+            Write-PscriboMessage -IsWarning $_.Exception.Message
+        }
+
 
         #Disconnect
         Disconnect-FGT -Confirm:$false
