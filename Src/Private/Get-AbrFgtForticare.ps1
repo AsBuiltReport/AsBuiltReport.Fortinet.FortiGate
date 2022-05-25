@@ -50,6 +50,10 @@ function Get-AbrFgtForticare {
                     List = $true
                 }
 
+                if ($Report.ShowTableCaptions) {
+                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                }
+
                 $OutObj | Table @TableParams
 
                 Paragraph "The following section details support settings configured on Fortigate."
@@ -72,6 +76,10 @@ function Get-AbrFgtForticare {
                 $TableParams = @{
                     Name = "Support"
                     List = $false
+                }
+
+                if ($Report.ShowTableCaptions) {
+                    $TableParams['Caption'] = "- $($TableParams.Name)"
                 }
 
                 $Support = @()
@@ -159,6 +167,10 @@ function Get-AbrFgtForticare {
                 $TableParams = @{
                     Name = "Firmware"
                     List = $true
+                }
+
+                if ($Report.ShowTableCaptions) {
+                    $TableParams['Caption'] = "- $($TableParams.Name)"
                 }
 
                 $tab_upgradePath | Table @TableParams
