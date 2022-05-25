@@ -81,6 +81,46 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            Section -Style Heading3 'GUI Settings' {
+                $OutObj = @()
+
+                $info = Get-FGTSystemGlobal
+                $settings = Get-FGTSystemSettings
+
+                $OutObj = [pscustomobject]@{
+                    "Language"                   = $info.language
+                    "Theme"                      = $info.'gui-theme'
+                    "IPv6"                       = $info.'gui-ipv6'
+                    "Wireless Open Security"     = $info.'gui-wireless-opensecurity'
+                    "Implicit Policy"            = $settings.'gui-implicit-policy'
+                    "Dns Database"               = $settings.'gui-dns-database'
+                    "Load Balance"               = $settings.'gui-load-balance'
+                    "Explicit Proxy"             = $settings.'gui-explicit-proxy'
+                    "Dynamic Routing"            = $settings.'gui-dynamic-routing'
+                    "Application Control"        = $settings.'gui-application-control'
+                    "IPS"                        = $settings.'gui-ips'
+                    "VPN"                        = $settings.'gui-vpn'
+                    "Wireless Controller"        = $settings.'gui-wireless-controller'
+                    "Switch Controller"          = $settings.'gui-switch-controller'
+                    "WAN Load Balancing (SDWAN)" = $settings.'gui-wan-load-balancing'
+                    "Antivirus"                  = $settings.'gui-antivirus'
+                    "Web Filter"                 = $settings.'gui-webfilter'
+                    "Video Filter"               = $settings.'gui-videofilter'
+                    "DNS Filter"                 = $settings.'gui-dnsfilter'
+                    "WAF Profile"                = $settings.'gui-waf-profile'
+                    "Allow Unnamed Policy"       = $settings.'gui-allow-unnamed-policy'
+                    "Multiple Interface Policy"  = $settings.'gui-multiple-interface-policy'
+                    "ZTNA"                       = $settings.'gui-ztna'
+                    "OT"                         = $settings.'gui-ot'
+                }
+
+                $TableParams = @{
+                    Name = "Settings"
+                    List = $true
+                }
+
+                $OutObj | Table @TableParams
+            }
 
             Section -Style Heading3 'DNS' {
                 $OutObj = @()
