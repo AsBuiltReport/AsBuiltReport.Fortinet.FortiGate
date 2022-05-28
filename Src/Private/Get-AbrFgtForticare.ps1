@@ -48,6 +48,7 @@ function Get-AbrFgtForticare {
                 $TableParams = @{
                     Name = "FortiCare"
                     List = $true
+                    ColumnWidths = 50, 50
                 }
 
                 if ($Report.ShowTableCaptions) {
@@ -76,6 +77,7 @@ function Get-AbrFgtForticare {
                 $TableParams = @{
                     Name = "Support"
                     List = $false
+                    ColumnWidths = 25, 25, 25, 25
                 }
 
                 if ($Report.ShowTableCaptions) {
@@ -167,6 +169,7 @@ function Get-AbrFgtForticare {
                 $TableParams = @{
                     Name = "Firmware"
                     List = $true
+                    ColumnWidths = 50, 50
                 }
 
                 if ($Report.ShowTableCaptions) {
