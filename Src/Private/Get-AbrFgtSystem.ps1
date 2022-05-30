@@ -59,6 +59,10 @@ function Get-AbrFgtSystem {
                         ColumnWidths = 50, 50
                     }
 
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
                     $OutObj | Table @TableParams
                 }
             }
@@ -81,6 +85,10 @@ function Get-AbrFgtSystem {
                         Name         = "Settings"
                         List         = $true
                         ColumnWidths = 50, 50
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
                     }
 
                     $OutObj | Table @TableParams
@@ -124,6 +132,10 @@ function Get-AbrFgtSystem {
                         ColumnWidths = 50, 50
                     }
 
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
                     $OutObj | Table @TableParams
                 }
             }
@@ -145,6 +157,10 @@ function Get-AbrFgtSystem {
                         Name         = "DNS"
                         List         = $true
                         ColumnWidths = 50, 50
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
                     }
 
                     $OutObj | Table @TableParams
@@ -170,6 +186,10 @@ function Get-AbrFgtSystem {
                         Name         = "DNS Server"
                         List         = $false
                         ColumnWidths = 25, 25, 25, 25
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
                     }
 
                     $OutObj | Table @TableParams
@@ -209,6 +229,10 @@ function Get-AbrFgtSystem {
                         ColumnWidths = 25, 25, 25, 25
                     }
 
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
                     $OutObj | Table @TableParams
                 }
             }
@@ -242,6 +266,10 @@ function Get-AbrFgtSystem {
                         ColumnWidths = 10, 10, 10, 10, 10, 5, 5, 10, 10, 10, 5, 5
                     }
 
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
                     $OutObj | Table @TableParams
                 }
             }
@@ -265,6 +293,10 @@ function Get-AbrFgtSystem {
                         Name         = "Zone"
                         List         = $false
                         ColumnWidths = 25, 25, 25, 25
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
                     }
 
                     $OutObj | Table @TableParams
