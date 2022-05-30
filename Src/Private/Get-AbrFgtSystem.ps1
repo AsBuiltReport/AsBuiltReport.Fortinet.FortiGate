@@ -30,7 +30,7 @@ function Get-AbrFgtSystem {
             Paragraph "The following section details System settings configured on Fortigate."
             BlankLine
 
-            $info = Get-FGTSystemGlobal |
+            $info = Get-FGTSystemGlobal
 
             if ($info) {
                 Section -Style Heading3 'Global' {
