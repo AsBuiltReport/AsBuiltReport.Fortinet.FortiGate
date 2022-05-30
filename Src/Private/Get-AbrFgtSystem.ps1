@@ -30,10 +30,10 @@ function Get-AbrFgtSystem {
             Paragraph "The following section details System settings configured on Fortigate."
             BlankLine
 
+            $info = Get-FGTSystemGlobal |
+
             Section -Style Heading3 'Global' {
                 $OutObj = @()
-
-                $info = Get-FGTSystemGlobal | Select-Object hostname, alias, daily-restart, restart-time, admin-port, admin-sport, admin-https-redirect, admin-ssh-port
 
                 if ($info.'daily-restart' -eq "enable") {
                     $reboot = "Everyday at $($info.'restart-time')"
@@ -60,10 +60,10 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            $settings = Get-FGTSystemSettings
+
             Section -Style Heading3 'Settings' {
                 $OutObj = @()
-
-                $settings = Get-FGTSystemSettings
 
                 $OutObj = [pscustomobject]@{
                     "OP Mode"           = $settings.opmode
@@ -83,9 +83,6 @@ function Get-AbrFgtSystem {
 
             Section -Style Heading3 'GUI Settings' {
                 $OutObj = @()
-
-                $info = Get-FGTSystemGlobal
-                $settings = Get-FGTSystemSettings
 
                 $OutObj = [pscustomobject]@{
                     "Language"                   = $info.language
@@ -122,10 +119,10 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            $dns = Get-FGTSystemDns
+
             Section -Style Heading3 'DNS' {
                 $OutObj = @()
-
-                $dns = Get-FGTSystemDns
 
                 $OutObj = [pscustomobject]@{
                     "Primary"   = $dns.primary
@@ -142,10 +139,10 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            $DNSServers = Get-FGTSystemDnsServer
+
             Section -Style Heading3 'DNS Server' {
                 $OutObj = @()
-
-                $DNSServers = Get-FGTSystemDnsServer
 
                 foreach ($DNSServer in $DNSServers) {
                     $OutObj += [pscustomobject]@{
@@ -164,10 +161,10 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            $Admins = Get-FGTSystemAdmin
+
             Section -Style Heading3 'Admin' {
                 $OutObj = @()
-
-                $Admins = Get-FGTSystemAdmin
 
                 foreach ($admin in $Admins) {
 
@@ -198,10 +195,10 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            $interfaces = Get-FGTSystemInterface
+
             Section -Style Heading3 'Interfaces' {
                 $OutObj = @()
-
-                $interfaces = Get-FGTSystemInterface
 
                 foreach ($interface in $interfaces) {
                     $OutObj += [pscustomobject]@{
@@ -228,10 +225,10 @@ function Get-AbrFgtSystem {
                 $OutObj | Table @TableParams
             }
 
+            $zones = Get-FGTSystemZone
+
             Section -Style Heading3 'Zone' {
                 $OutObj = @()
-
-                $zones = Get-FGTSystemZone
 
                 foreach ($zone in $zones) {
                     $OutObj += [pscustomobject]@{
