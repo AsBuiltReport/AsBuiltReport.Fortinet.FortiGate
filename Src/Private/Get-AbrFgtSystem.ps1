@@ -54,8 +54,9 @@ function Get-AbrFgtSystem {
                     }
 
                     $TableParams = @{
-                        Name = "Global"
-                        List = $true
+                        Name         = "Global"
+                        List         = $true
+                        ColumnWidths = 50, 50
                     }
 
                     $OutObj | Table @TableParams
@@ -77,8 +78,9 @@ function Get-AbrFgtSystem {
                     }
 
                     $TableParams = @{
-                        Name = "Settings"
-                        List = $true
+                        Name         = "Settings"
+                        List         = $true
+                        ColumnWidths = 50, 50
                     }
 
                     $OutObj | Table @TableParams
@@ -117,8 +119,9 @@ function Get-AbrFgtSystem {
                     }
 
                     $TableParams = @{
-                        Name = "Settings"
-                        List = $true
+                        Name         = "Settings"
+                        List         = $true
+                        ColumnWidths = 50, 50
                     }
 
                     $OutObj | Table @TableParams
@@ -139,8 +142,9 @@ function Get-AbrFgtSystem {
                     }
 
                     $TableParams = @{
-                        Name = "DNS"
-                        List = $true
+                        Name         = "DNS"
+                        List         = $true
+                        ColumnWidths = 50, 50
                     }
 
                     $OutObj | Table @TableParams
@@ -163,8 +167,9 @@ function Get-AbrFgtSystem {
                     }
 
                     $TableParams = @{
-                        Name = "DNS Server"
-                        List = $false
+                        Name         = "DNS Server"
+                        List         = $false
+                        ColumnWidths = 25, 25, 25, 25
                     }
 
                     $OutObj | Table @TableParams
@@ -199,8 +204,9 @@ function Get-AbrFgtSystem {
                     }
 
                     $TableParams = @{
-                        Name = "Administrator"
-                        List = $false
+                        Name         = "Administrator"
+                        List         = $false
+                        ColumnWidths = 25, 25, 25, 25
                     }
 
                     $OutObj | Table @TableParams
@@ -231,8 +237,9 @@ function Get-AbrFgtSystem {
                     }
 
                     $TableParams = @{
-                        Name = "Interface"
-                        List = $false
+                        Name         = "Interface"
+                        List         = $false
+                        ColumnWidths = 10, 10, 10, 10, 10, 5, 5, 10, 10, 10, 5, 5
                     }
 
                     $OutObj | Table @TableParams
@@ -255,8 +262,9 @@ function Get-AbrFgtSystem {
                     }
 
                     $TableParams = @{
-                        Name = "Zone"
-                        List = $false
+                        Name         = "Zone"
+                        List         = $false
+                        ColumnWidths = 25, 25, 25, 25
                     }
 
                     $OutObj | Table @TableParams
