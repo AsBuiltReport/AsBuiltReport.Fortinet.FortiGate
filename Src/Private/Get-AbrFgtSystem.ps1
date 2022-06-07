@@ -44,13 +44,13 @@ function Get-AbrFgtSystem {
                     }
 
                     $OutObj = [pscustomobject]@{
-                        "Nom"           = $info.'hostname'
-                        "Alias"         = $info.'alias'
-                        "Reboot"        = $reboot
-                        "Port SSH"      = $info.'admin-ssh-port'
-                        "Port HTTP"     = $info.'admin-port'
-                        "Port HTTPS"    = $info.'admin-sport'
-                        "HTTPS Rediect" = $info.'admin-https-redirect'
+                        "Nom"            = $info.'hostname'
+                        "Alias"          = $info.'alias'
+                        "Reboot"         = $reboot
+                        "Port SSH"       = $info.'admin-ssh-port'
+                        "Port HTTP"      = $info.'admin-port'
+                        "Port HTTPS"     = $info.'admin-sport'
+                        "HTTPS Redirect" = $info.'admin-https-redirect'
                     }
 
                     $TableParams = @{
