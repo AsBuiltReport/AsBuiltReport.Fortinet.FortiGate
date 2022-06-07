@@ -7,15 +7,15 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
     .NOTES
         Version:        0.1.0
         Author:         Alexis La Goutte
-        Twitter:        
-        Github:         
+        Twitter:        @alagoutte
+        Github:         alagoutte
         Credits:        Iain Brighton (@iainbrighton) - PScribo module
 
     .LINK
         https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate
     #>
-	
-	# Do not remove or add to these parameters
+
+    # Do not remove or add to these parameters
     param (
         [String[]] $Target,
         [PSCredential] $Credential
@@ -29,13 +29,32 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
     # Used to set values to TitleCase where required
     $TextInfo = (Get-Culture).TextInfo
 
-	# Update/rename the $System variable and build out your code within the ForEach loop. The ForEach loop enables AsBuiltReport to generate an as built configuration against multiple defined targets.
-	
+    # Update/rename the $System variable and build out your code within the ForEach loop. The ForEach loop enables AsBuiltReport to generate an as built configuration against multiple defined targets.
+
     #region foreach loop
     foreach ($System in $Target) {
-		
-		
-		
-	}
-	#endregion foreach loop
+
+        try {
+            #Connection to Fortigate (TODO: Add Parameter for Certificate Check and Port)
+            Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck | Out-Null #-Port $Options.ServerPort
+
+            #Get Model
+            $Model = (Get-FGTMonitorSystemFirmware).current.'platform-id'
+            Write-PScriboMessage "Connect to $System : $Model ($($DefaultFGTConnection.serial)) "
+
+            Section -Style Heading1 "Implementation Report $($DefaultFGTConnection.serial)" {
+                Paragraph "The following section provides a summary of the implemented components on the Fortinet Fortigate Infrastructure"
+                BlankLine
+                Get-AbrFgtForticare
+            }
+        }
+        catch {
+            Write-PscriboMessage -IsWarning $_.Exception.Message
+        }
+
+
+        #Disconnect
+        Disconnect-FGT -Confirm:$false
+    }
+    #endregion foreach loop
 }
