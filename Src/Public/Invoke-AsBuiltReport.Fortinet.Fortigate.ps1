@@ -46,6 +46,7 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
                 Paragraph "The following section provides a summary of the implemented components on the Fortinet Fortigate Infrastructure"
                 BlankLine
                 Get-AbrFgtForticare
+                Get-AbrFgtSystem
             }
         }
         catch {
