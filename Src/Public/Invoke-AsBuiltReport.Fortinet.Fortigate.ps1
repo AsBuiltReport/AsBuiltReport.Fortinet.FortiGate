@@ -47,6 +47,7 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
                 BlankLine
                 Get-AbrFgtForticare
                 Get-AbrFgtSystem
+                Get-AbrFgtRoute
             }
         }
         catch {
