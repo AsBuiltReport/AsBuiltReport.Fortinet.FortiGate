@@ -31,6 +31,7 @@ function Get-AbrFgtRoute {
             BlankLine
 
             $MonitorRouterIPv4 = Get-FGTMonitorRouterIPv4
+            $Statics = Get-FGTRouterStatic
 
             Section -Style Heading3 'Summary' {
 
@@ -52,6 +53,34 @@ function Get-AbrFgtRoute {
 
                     $TableParams = @{
                         Name         = "Route"
+                        List         = $false
+                        ColumnWidths = 15, 25, 20, 20, 20
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
+            if ($Statics -and $InfoLevel.Route.Static -ge 1) {
+                Section -Style Heading3 'Static Route' {
+                    $OutObj = @()
+
+                    foreach ($static in $statics) {
+                        $OutObj += [pscustomobject]@{
+                            "Status"                   = $static.status
+                            "Destination"              = $static.dst
+                            "Gateway"                  = $static.gateway
+                            "Interface"                = $static.device
+                            "Distance/Weight/Priority" = "$($static.distance) / $($static.weight) / $($static.priority)"
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "Static Route"
                         List         = $false
                         ColumnWidths = 15, 25, 20, 20, 20
                     }
