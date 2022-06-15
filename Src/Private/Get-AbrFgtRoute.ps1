@@ -32,6 +32,7 @@ function Get-AbrFgtRoute {
 
             $MonitorRouterIPv4 = Get-FGTMonitorRouterIPv4
             $Statics = Get-FGTRouterStatic
+            $PolicyBasedRouting = Get-FGTRouterPolicy
 
             Section -Style Heading3 'Summary' {
 
@@ -83,6 +84,51 @@ function Get-AbrFgtRoute {
                         Name         = "Static Route"
                         List         = $false
                         ColumnWidths = 15, 25, 20, 20, 20
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
+            if ($Statics -and $InfoLevel.Route.Policy -ge 1) {
+                Section -Style Heading3 'Policy Based Route' {
+                    $OutObj = @()
+
+                    foreach ($pbr in $PolicyBasedRouting) {
+
+                        if ($pbr.src) {
+                            $src = $pbr.src.subnet
+                        }
+                        else {
+                            $src = $pbr.srcaddr.name
+                        }
+                        if ($pbr.dst) {
+                            $dst = $pbr.dst.subnet
+                        }
+                        else {
+                            $dst = $pbr.dstaddr.name
+                        }
+
+                        $OutObj += [pscustomobject]@{
+                            "Status"      = $pbr.status
+                            "Protocol"    = $pbr.protocol
+                            "From"        = $pbr.'input-device'.name
+                            "To"          = $pbr.'ouput-device'
+                            "Source"      = $src
+                            "Destination" = $dst
+                            "Gateway"     = $pbr.gateway
+                            "Action"      = $pbr.action
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "Policy Based Route"
+                        List         = $false
+                        ColumnWidths = 10, 12, 13, 13, 13, 13, 12, 12
                     }
 
                     if ($Report.ShowTableCaptions) {
