@@ -38,7 +38,7 @@ function Get-AbrFgtRoute {
 
             }
 
-            if ($MonitorRouterIPv4) {
+            if ($MonitorRouterIPv4 -and $InfoLevel.Route.Monitor -ge 1) {
                 Section -Style Heading3 'Route' {
                     $OutObj = @()
 
