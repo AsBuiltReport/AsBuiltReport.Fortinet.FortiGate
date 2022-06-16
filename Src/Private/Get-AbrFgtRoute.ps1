@@ -34,8 +34,28 @@ function Get-AbrFgtRoute {
             $Statics = Get-FGTRouterStatic
             $PolicyBasedRouting = Get-FGTRouterPolicy
 
-            Section -Style Heading3 'Summary' {
+            if ($InfoLevel.Route.Summary -ge 1) {
+                Section -Style Heading3 'Summary' {
+                    Paragraph "The following section make a summary of Route settings."
+                    BlankLine
+                    $OutObj = [pscustomobject]@{
+                        "Monitor Route"      = $MonitorRouterIPv4.count
+                        "Static Route"       = $Statics.count
+                        "Policy Based Route" = $PolicyBasedRouting.count
+                    }
 
+                    $TableParams = @{
+                        Name         = "Global"
+                        List         = $true
+                        ColumnWidths = 50, 50
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
             }
 
             if ($MonitorRouterIPv4 -and $InfoLevel.Route.Monitor -ge 1) {
