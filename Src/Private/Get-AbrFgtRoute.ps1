@@ -45,7 +45,7 @@ function Get-AbrFgtRoute {
                     }
 
                     $TableParams = @{
-                        Name         = "Global"
+                        Name         = "Summary"
                         List         = $true
                         ColumnWidths = 50, 50
                     }
@@ -59,7 +59,7 @@ function Get-AbrFgtRoute {
             }
 
             if ($MonitorRouterIPv4 -and $InfoLevel.Route.Monitor -ge 1) {
-                Section -Style Heading3 'Route' {
+                Section -Style Heading3 'Route Monitor' {
                     $OutObj = @()
 
                     foreach ($route in $MonitorRouterIPv4) {
@@ -73,7 +73,7 @@ function Get-AbrFgtRoute {
                     }
 
                     $TableParams = @{
-                        Name         = "Route"
+                        Name         = "Route Monitor"
                         List         = $false
                         ColumnWidths = 15, 25, 20, 20, 20
                     }
