@@ -47,7 +47,9 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
                 BlankLine
                 Get-AbrFgtForticare
                 Get-AbrFgtSystem
-                Get-AbrFgtRoute
+                if ($InfoLevel.Route.PSObject.Properties.Value -ne 0) {
+                    Get-AbrFgtRoute
+                }
             }
         }
         catch {
