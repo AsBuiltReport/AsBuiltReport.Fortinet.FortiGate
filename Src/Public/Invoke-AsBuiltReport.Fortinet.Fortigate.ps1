@@ -50,6 +50,10 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
                 if ($InfoLevel.Route.PSObject.Properties.Value -ne 0) {
                     Get-AbrFgtRoute
                 }
+
+                if ($InfoLevel.Firewall.PSObject.Properties.Value -ne 0) {
+                    Get-AbrFgtFirewall
+                }
             }
         }
         catch {

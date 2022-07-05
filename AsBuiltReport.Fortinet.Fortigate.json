@@ -17,6 +17,9 @@
             "Monitor": 1,
             "Static": 1,
             "Policy": 1
+        },
+        "Firewall": {
+            "Summary": 1
         }
     },
     "HealthCheck": {}
