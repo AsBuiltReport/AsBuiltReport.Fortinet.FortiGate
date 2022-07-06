@@ -106,6 +106,35 @@ function Get-AbrFgtFirewall {
                 }
             }
 
+
+            if ($Address -and $InfoLevel.Firewall.Address -ge 1) {
+                Section -Style Heading3 'Address Group' {
+                    $OutObj = @()
+
+                    foreach ($grp in $Group) {
+
+
+                        $OutObj += [pscustomobject]@{
+                            "Name"    = $grp.name
+                            "Member"  = $grp.member.name -join ", "
+                            "Comment" = $grp.comment
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "Address Group"
+                        List         = $false
+                        ColumnWidths = 20, 60, 20
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
         }
     }
 

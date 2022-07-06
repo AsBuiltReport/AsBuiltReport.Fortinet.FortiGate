@@ -20,7 +20,8 @@
         },
         "Firewall": {
             "Summary": 1,
-            "Address": 1
+            "Address": 1,
+            "Group": 1
         }
     },
     "HealthCheck": {}
