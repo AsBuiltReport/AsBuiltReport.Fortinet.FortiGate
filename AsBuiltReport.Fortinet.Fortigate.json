@@ -19,7 +19,8 @@
             "Policy": 1
         },
         "Firewall": {
-            "Summary": 1
+            "Summary": 1,
+            "Address": 1
         }
     },
     "HealthCheck": {}

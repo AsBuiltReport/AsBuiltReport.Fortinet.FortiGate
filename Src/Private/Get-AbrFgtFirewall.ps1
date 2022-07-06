@@ -62,6 +62,50 @@ function Get-AbrFgtFirewall {
                 }
             }
 
+            if ($Address -and $InfoLevel.Firewall.Address -ge 1) {
+                Section -Style Heading3 'Address' {
+                    $OutObj = @()
+
+                    foreach ($add in $Address) {
+
+                        switch ( $add.type ) {
+                            "ipmask" {
+                                $value = $add.subnet.Replace(' ', '/')
+                            }
+                            "ipprange" {
+                                $value = $add.'start-ip' + "-" + $add.'end-ip'
+                            }
+                            "geography" {
+                                $value = $add.country
+                            }
+                            "fqdn" {
+                                $value = $add.fqdn
+                            }
+
+                        }
+
+                        $OutObj += [pscustomobject]@{
+                            "Name"      = $add.name
+                            "Type"      = $add.type
+                            "Value"     = $value
+                            "Interface" = $add.'associated-interface'
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "Address"
+                        List         = $false
+                        ColumnWidths = 25, 25, 25, 25
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
         }
     }
 
