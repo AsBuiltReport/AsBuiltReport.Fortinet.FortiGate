@@ -114,7 +114,7 @@ function Get-AbrFgtRoute {
                 }
             }
 
-            if ($Statics -and $InfoLevel.Route.Policy -ge 1) {
+            if ($PolicyBasedRouting -and $InfoLevel.Route.Policy -ge 1) {
                 Section -Style Heading3 'Policy Based Route' {
                     $OutObj = @()
 
