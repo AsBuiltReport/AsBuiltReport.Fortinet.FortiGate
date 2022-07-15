@@ -148,7 +148,7 @@ function Get-AbrFgtRoute {
                     $TableParams = @{
                         Name         = "Policy Based Route"
                         List         = $false
-                        ColumnWidths = 10, 12, 13, 13, 13, 13, 12, 12
+                        ColumnWidths = 10, 12, 13, 13, 13, 13, 13, 13
                     }
 
                     if ($Report.ShowTableCaptions) {
