@@ -21,7 +21,8 @@
         "Firewall": {
             "Summary": 1,
             "Address": 1,
-            "Group": 1
+            "Group": 1,
+            "VIP": 1
         }
     },
     "HealthCheck": {}

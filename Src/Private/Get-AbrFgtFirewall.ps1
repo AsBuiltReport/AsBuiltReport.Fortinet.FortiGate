@@ -135,6 +135,39 @@ function Get-AbrFgtFirewall {
                 }
             }
 
+            if ($VIP -and $InfoLevel.Firewall.VIP -ge 1) {
+                Section -Style Heading3 'Virtual IP' {
+                    $OutObj = @()
+
+                    foreach ($virtualip in $VIP) {
+
+
+                        $OutObj += [pscustomobject]@{
+                            "Name"          = $virtualip.name
+                            "Interface"     = $virtualip.extintf
+                            "External IP"   = $virtualip.extip
+                            "Mapped IP"     = $virtualip.mappedip.range -join ", "
+                            "Protocol"      = $virtualip.'protocol'
+                            "External Port" = $virtualip.'extport'
+                            "Mapped Port"   = $virtualip.'mappedport'
+                            "Comment"       = $virtualip.comment
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "Virtual IP"
+                        List         = $false
+                        ColumnWidths = 14, 14, 12, 12, 12, 12, 12, 12
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
         }
     }
 
