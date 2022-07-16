@@ -112,7 +112,6 @@ function Get-AbrFgtFirewall {
 
                     foreach ($grp in $Group) {
 
-
                         $OutObj += [pscustomobject]@{
                             "Name"    = $grp.name
                             "Member"  = $grp.member.name -join ", "
@@ -139,7 +138,6 @@ function Get-AbrFgtFirewall {
                     $OutObj = @()
 
                     foreach ($virtualip in $VIP) {
-
 
                         $OutObj += [pscustomobject]@{
                             "Name"          = $virtualip.name
