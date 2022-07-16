@@ -197,6 +197,40 @@ function Get-AbrFgtFirewall {
                 }
             }
 
+            if ($Policy -and $InfoLevel.Firewall.Policy -ge 1) {
+                Section -Style Heading3 'Policy' {
+                    $OutObj = @()
+
+                    foreach ($rule in $Policy) {
+
+                        $OutObj += [pscustomobject]@{
+                            "Name"          = $rule.name
+                            "From"          = $rule.srcintf.name -join ", "
+                            "To"            = $rule.dstintf.name -join ", "
+                            "Source"        = $rule.srcaddr.name -join ", "
+                            "Destination"   = $rule.dstaddr.name -join ", "
+                            "Service"       = $rule.service.name -join ", "
+                            "Action"        = $rule.action
+                            "NAT"           = $rule.nat
+                            "Log"           = $rule.logtraffic
+                            "Comments"      = $rule.comments
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "Policy"
+                        List         = $false
+                        ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
         }
     }
 
