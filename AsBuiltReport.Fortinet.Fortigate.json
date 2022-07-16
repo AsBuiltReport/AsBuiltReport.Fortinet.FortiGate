@@ -22,6 +22,7 @@
             "Summary": 1,
             "Address": 1,
             "Group": 1,
+            "IPPool": 1,
             "VIP": 1
         }
     },

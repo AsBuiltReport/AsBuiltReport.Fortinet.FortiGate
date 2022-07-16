@@ -133,6 +133,38 @@ function Get-AbrFgtFirewall {
                 }
             }
 
+            if ($IPPool -and $InfoLevel.Firewall.IPPool -ge 1) {
+                Section -Style Heading3 'IP Pool' {
+                    $OutObj = @()
+
+                    foreach ($ip in $IPPool) {
+
+                        $OutObj += [pscustomobject]@{
+                            "Name"              = $ip.name
+                            "Interface"         = $ip.'associated-interface'
+                            "Type"              = $ip.type
+                            "Start IP"          = $ip.startip
+                            "End IP"            = $ip.endip
+                            "Source Start IP"   = $ip.'source-startip'
+                            "Source End IP"     = $ip.'source-endip'
+                            "Comments"          = $ip.comments
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "Virtual IP"
+                        List         = $false
+                        ColumnWidths = 14, 14, 12, 12, 12, 12, 12, 12
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
             if ($VIP -and $InfoLevel.Firewall.VIP -ge 1) {
                 Section -Style Heading3 'Virtual IP' {
                     $OutObj = @()
