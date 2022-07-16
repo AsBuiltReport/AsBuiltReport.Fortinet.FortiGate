@@ -106,8 +106,7 @@ function Get-AbrFgtFirewall {
                 }
             }
 
-
-            if ($Address -and $InfoLevel.Firewall.Address -ge 1) {
+            if ($Group -and $InfoLevel.Firewall.Group -ge 1) {
                 Section -Style Heading3 'Address Group' {
                     $OutObj = @()
 
