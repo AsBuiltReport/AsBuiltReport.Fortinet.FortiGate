@@ -114,7 +114,7 @@ function Get-AbrFgtRoute {
                 }
             }
 
-            if ($Statics -and $InfoLevel.Route.Policy -ge 1) {
+            if ($PolicyBasedRouting -and $InfoLevel.Route.Policy -ge 1) {
                 Section -Style Heading3 'Policy Based Route' {
                     $OutObj = @()
 
@@ -148,7 +148,7 @@ function Get-AbrFgtRoute {
                     $TableParams = @{
                         Name         = "Policy Based Route"
                         List         = $false
-                        ColumnWidths = 10, 12, 13, 13, 13, 13, 12, 12
+                        ColumnWidths = 10, 12, 13, 13, 13, 13, 13, 13
                     }
 
                     if ($Report.ShowTableCaptions) {
