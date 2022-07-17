@@ -55,7 +55,12 @@ RequiredModules = @(
     @{
         ModuleName = 'AsBuiltReport.Core';
         ModuleVersion = '1.2.0'
+    },
+    @{
+        ModuleName = 'PowerFGT';
+        ModuleVersion = '0.6.0'
     }
+
 )
 
 # Assemblies that must be loaded prior to importing this module
