@@ -25,6 +25,13 @@
             "IPPool": 1,
             "VIP": 1,
             "Policy": 1
+        },
+        "User": {
+            "Summary": 1,
+            "Local": 1,
+            "Group": 1,
+            "LDAP": 1,
+            "RADIUS": 1
         }
     },
     "HealthCheck": {}

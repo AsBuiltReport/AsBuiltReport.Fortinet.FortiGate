@@ -54,6 +54,10 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
                 if ($InfoLevel.Firewall.PSObject.Properties.Value -ne 0) {
                     Get-AbrFgtFirewall
                 }
+
+                if ($InfoLevel.User.PSObject.Properties.Value -ne 0) {
+                    Get-AbrFgtUser
+                }
             }
         }
         catch {
