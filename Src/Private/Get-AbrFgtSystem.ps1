@@ -21,7 +21,7 @@ function Get-AbrFgtSystem {
     )
 
     begin {
-        Write-PscriboMessage "Discovering System settings information from $System."
+        Write-PScriboMessage "Discovering System settings information from $System."
     }
 
     process {

@@ -61,7 +61,7 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
             }
         }
         catch {
-            Write-PscriboMessage -IsWarning $_.Exception.Message
+            Write-PScriboMessage -IsWarning $_.Exception.Message
         }
 
 

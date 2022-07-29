@@ -21,7 +21,7 @@ function Get-AbrFgtForticare {
     )
 
     begin {
-        Write-PscriboMessage "Discovering Forticare settings information from $System."
+        Write-PScriboMessage "Discovering Forticare settings information from $System."
     }
 
     process {
@@ -46,8 +46,8 @@ function Get-AbrFgtForticare {
                 }
 
                 $TableParams = @{
-                    Name = "FortiCare"
-                    List = $true
+                    Name         = "FortiCare"
+                    List         = $true
                     ColumnWidths = 50, 50
                 }
 
@@ -75,8 +75,8 @@ function Get-AbrFgtForticare {
                 }
 
                 $TableParams = @{
-                    Name = "Support"
-                    List = $false
+                    Name         = "Support"
+                    List         = $false
                     ColumnWidths = 25, 25, 25, 25
                 }
 
@@ -167,8 +167,8 @@ function Get-AbrFgtForticare {
                 }
 
                 $TableParams = @{
-                    Name = "Firmware"
-                    List = $true
+                    Name         = "Firmware"
+                    List         = $true
                     ColumnWidths = 50, 50
                 }
 
