@@ -45,7 +45,10 @@ function Invoke-AsBuiltReport.Fortinet.Fortigate {
             Section -Style Heading1 "Implementation Report $($DefaultFGTConnection.serial)" {
                 Paragraph "The following section provides a summary of the implemented components on the Fortinet Fortigate Infrastructure"
                 BlankLine
-                Get-AbrFgtForticare
+                if ($InfoLevel.FortiGate.PSObject.Properties.Value -ne 0) {
+                    Get-AbrFgtForticare
+                }
+
                 Get-AbrFgtSystem
                 if ($InfoLevel.Route.PSObject.Properties.Value -ne 0) {
                     Get-AbrFgtRoute
