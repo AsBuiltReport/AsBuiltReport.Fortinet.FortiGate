@@ -1,0 +1,317 @@
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                       Fortinet Fortigate As Built Report
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[32;1mAuthor:  : [0mAs Build Report for Fortigate
+[32;1mDate:    : [0msamedi 30 juillet 2022
+[32;1mVersion: : [0m1.0
+________________________________________________________________________________________________________________________
+
+                                                                                                    Fortinet Fortigate As Built Report - v1.0
+
+Table of Contents
+------------------------------------------------------------------------------------------------------------------------
+1      Implementation Report FGT2KE3917900165
+1.1     System
+1.2     Route
+1.2.1    Summary
+1.2.2    Route Monitor
+1.2.3    Static Route
+1.3     Firewall
+1.3.1    Summary
+1.3.2    Address
+1.3.3    Address Group
+1.3.4    IP Pool
+1.3.5    Virtual IP
+1.3.6    Policy
+1.4     User
+
+                                                                                                                     Page 2
+________________________________________________________________________________________________________________________
+
+                                                                                                    Fortinet Fortigate As Built Report - v1.0
+
+
+1 Implementation Report FGT2KE3917900165
+------------------------------------------------------------------------------------------------------------------------
+The following section provides a summary of the implemented components on the Fortinet Fortigate Infrastructure
+
+
+1.1 System
+------------------------------------------------------------------------------------------------------------------------
+The following section details System settings configured on Fortigate.
+
+
+1.2 Route
+------------------------------------------------------------------------------------------------------------------------
+The following section details Route settings configured on Fortigate.
+
+
+1.2.1 Summary
+------------------------------------------------------------------------------------------------------------------------
+The following section make a summary of Route settings.
+
+[32;1mMonitor Route      : [0m26
+[32;1mStatic Route       : [0m10
+[32;1mPolicy Based Route : [0m0
+
+Table 1 - Summary
+
+
+1.2.2 Route Monitor
+------------------------------------------------------------------------------------------------------------------------
+[32;1mType    IP/Mask         Gateway       Interface     Distance/Metric/Priority[0m
+[32;1m----    -------         -------       ---------     ------------------------[0m
+static  0.0.0.0/0       172.30.72.254 port36        10 / 0 / 1
+connect 10.88.2.0/24    0.0.0.0       DCFW          0 / 0 / 0
+connect 10.88.11.0/24   0.0.0.0       P22           0 / 0 / 0
+connect 10.88.12.0/24   0.0.0.0       ISFW-HA       0 / 0 / 0
+connect 10.88.23.0/24   0.0.0.0       FSA-DMZ       0 / 0 / 0
+connect 10.88.41.0/24   0.0.0.0       FSA-DMZ2      0 / 0 / 0
+connect 10.88.51.0/24   0.0.0.0       FWLC          0 / 0 / 0
+connect 10.88.52.0/24   0.0.0.0       WLC-Teachers  0 / 0 / 0
+connect 10.88.53.0/24   0.0.0.0       WLC-Students  0 / 0 / 0
+connect 10.88.54.0/24   0.0.0.0       WLC-Staff     0 / 0 / 0
+static  10.88.101.0/24  10.88.12.99   ISFW-HA       10 / 0 / 1
+static  10.88.102.0/24  10.88.12.99   ISFW-HA       10 / 0 / 1
+static  10.88.103.0/24  10.88.12.99   ISFW-HA       10 / 0 / 1
+static  10.88.110.0/24  10.88.12.99   ISFW-HA       10 / 0 / 1
+static  10.88.120.0/24  10.88.12.99   ISFW-HA       10 / 0 / 1
+static  10.88.130.0/24  10.88.12.99   ISFW-HA       10 / 0 / 1
+static  10.88.210.0/24  10.88.2.21    DCFW          10 / 0 / 1
+static  10.89.0.0/16    10.88.12.99   ISFW-HA       10 / 0 / 1
+connect 10.100.1.0/24   0.0.0.0       FITNUC        0 / 0 / 0
+connect 10.254.252.0/23 0.0.0.0       snf.FortiLink 0 / 0 / 0
+connect 10.254.254.0/24 0.0.0.0       qtn.FortiLink 0 / 0 / 0
+connect 10.255.11.0/24  0.0.0.0       nac_segment   0 / 0 / 0
+connect 169.254.1.0/24  0.0.0.0       FortiLink     0 / 0 / 0
+connect 169.254.11.0/24 0.0.0.0       onboarding    0 / 0 / 0
+connect 172.30.72.0/24  0.0.0.0       port36        0 / 0 / 0
+connect 192.168.20.0/24 0.0.0.0       port4         0 / 0 / 0
+
+Table 2 - Route Monitor
+
+
+1.2.3 Static Route
+------------------------------------------------------------------------------------------------------------------------
+[32;1mStatus Destination               Gateway       Interface Distance/Weight/Priority[0m
+[32;1m------ -----------               -------       --------- ------------------------[0m
+enable 0.0.0.0 0.0.0.0           172.30.72.254 port36    10 / 0 / 1
+enable 10.88.101.0 255.255.255.0 10.88.12.99   ISFW-HA   10 / 0 / 1
+enable 10.88.103.0 255.255.255.0 10.88.12.99   ISFW-HA   10 / 0 / 1
+enable 10.88.110.0 255.255.255.0 10.88.12.99   ISFW-HA   10 / 0 / 1
+enable 10.88.120.0 255.255.255.0 10.88.12.99   ISFW-HA   10 / 0 / 1
+enable 10.88.210.0 255.255.255.0 10.88.2.21    DCFW      10 / 0 / 1
+enable 10.88.130.0 255.255.255.0 10.88.12.99   ISFW-HA   10 / 0 / 1
+enable 10.88.102.0 255.255.255.0 10.88.12.99   ISFW-HA   10 / 0 / 1
+enable 10.89.0.0 255.255.0.0     10.88.12.99   ISFW-HA   10 / 0 / 1
+enable 0.0.0.0 0.0.0.0           172.30.73.254 mgmt2     10 / 0 / 1
+
+Table 3 - Static Route
+
+
+1.3 Firewall
+------------------------------------------------------------------------------------------------------------------------
+The following section details Firewall settings configured on Fortigate.
+
+
+1.3.1 Summary
+------------------------------------------------------------------------------------------------------------------------
+The following section make a summary of Firewall settings.
+
+[32;1mAddress    : [0m61
+[32;1mGroup      : [0m3
+[32;1mIP Pool    : [0m1
+[32;1mVirtual IP : [0m13
+[32;1mPolicy     : [0m17
+
+Table 4 - Summary
+
+
+1.3.2 Address
+------------------------------------------------------------------------------------------------------------------------
+[32;1mName                                        Type    Value                         Interface[0m
+[32;1m----                                        ----    -----                         ---------[0m
+10.100.10.0                                 ipmask  255.255.255.0/255.255.255.255
+Cloud_FAP-Eng                               ipmask  10.88.110.201/255.255.255.255 FortiLink
+Cloud_FAP-Fin                               ipmask  10.88.120.200/255.255.255.255 FortiLink
+Cloud_FAP-Sales                             ipmask  10.88.130.154/255.255.255.255 FortiLink
+FABRIC_DEVICE                               ipmask  0.0.0.0/0.0.0.0
+FAP-Eng                                     ipmask  10.88.110.201/255.255.255.255 FortiLink
+FAP-Fin                                     ipmask  10.88.120.200/255.255.255.255 FortiLink
+FCTEMS0000099518_Critical                   dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_EDR-Classification         dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_Finance                    dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_High                       dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_Important                  dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_Infected                   dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_Low                        dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_Medium                     dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_TEST                       dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_Windows 10                 dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_all_registered_clients     dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_noav                       dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_nos                        dynamic 10.88.120.200/255.255.255.255
+FCTEMS0000099518_test                       dynamic 10.88.120.200/255.255.255.255
+FCTEMS_ALL_FORTICLOUD_SERVERS               dynamic 10.88.120.200/255.255.255.255
+FIREWALL_AUTH_PORTAL_ADDRESS                ipmask  0.0.0.0/0.0.0.0
+FSA-Admin-sw                                ipmask  10.88.23.8/255.255.255.255    FSA-DMZ
+FortiEDR_31.184.192.80                      iprange 10.88.23.8/255.255.255.255
+FortiEDR_46.161.40.145                      iprange 10.88.23.8/255.255.255.255
+FortiEDR_51.159.95.151                      iprange 10.88.23.8/255.255.255.255
+FortiEDR_67.199.248.10                      iprange 10.88.23.8/255.255.255.255
+FortiEDR_80.38.65.211                       iprange 10.88.23.8/255.255.255.255
+FortiEDR_86.104.134.144                     iprange 10.88.23.8/255.255.255.255
+FortiEDR_87.106.16.115                      iprange 10.88.23.8/255.255.255.255
+FortiEDR_91.231.50.239                      iprange 10.88.23.8/255.255.255.255
+FortiEDR_142.4.205.47                       iprange 10.88.23.8/255.255.255.255
+FortiEDR_142.250.66.174                     iprange 10.88.23.8/255.255.255.255
+FortiEDR_157.122.62.205                     iprange 10.88.23.8/255.255.255.255
+FortiEDR_172.217.14.164                     iprange 10.88.23.8/255.255.255.255
+FortiEDR_173.231.189.26                     iprange 10.88.23.8/255.255.255.255
+FortiEDR_178.33.158.0                       iprange 10.88.23.8/255.255.255.255
+FortiEDR_185.140.53.72                      iprange 10.88.23.8/255.255.255.255
+FortiEDR_185.189.58.222                     iprange 10.88.23.8/255.255.255.255
+FortiEDR_194.165.16.166                     iprange 10.88.23.8/255.255.255.255
+FortiEDR_195.22.26.248                      iprange 10.88.23.8/255.255.255.255
+FortiEDR_203.131.222.102                    iprange 10.88.23.8/255.255.255.255
+FortiEDR_208.105.226.235                    iprange 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_Critical               dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_EDR-Classification     dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_Finance                dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_High                   dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_Important              dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_Infected               dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_Low                    dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_Medium                 dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_TEST                   dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_Windows 10             dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_all_registered_clients dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_noav                   dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_nos                    dynamic 10.88.23.8/255.255.255.255
+MAC_FCTEMS0000099518_test                   dynamic 10.88.23.8/255.255.255.255
+SSLVPN_TUNNEL_ADDR1                         iprange 10.88.23.8/255.255.255.255
+VAN_NAT_1                                   ipmask  208.91.114.4/255.255.255.255
+all                                         ipmask  0.0.0.0/0.0.0.0
+
+Table 5 - Address
+
+
+1.3.3 Address Group
+------------------------------------------------------------------------------------------------------------------------
+[32;1mName                            Member[0m
+[32;1m----                            ------                                                                                                                                                                                                          [0m
+BAD_GUYS                        VAN_NAT_1
+FortiEDR_Malicious_Destinations FortiEDR_91.231.50.239, FortiEDR_67.199.248.10, FortiEDR_195.22.26.248, FortiEDR_173.231.189.26, FortiEDR_31.184.192.80, FortiEDR_87.106.16.115, FortiEDR_178.33.158.0, FortiEDR_157.122.62.205,
+                                FortiEDR_142.4.205.47, FortiEDR_185.189.58.222, FortiEDR_86.104.134.144, FortiEDR_142.250.66.174, FortiEDR_208.105.226.235, FortiEDR_203.131.222.102, FortiEDR_172.217.14.164, FortiEDR_46.161.40.145,
+                                FortiEDR_51.159.95.151, FortiEDR_194.165.16.166, FortiEDR_80.38.65.211, FortiEDR_185.140.53.72
+FortiXDR_Malicious_Destinations FortiEDR_142.4.205.47
+
+Table 6 - Address Group
+
+
+1.3.4 IP Pool
+------------------------------------------------------------------------------------------------------------------------
+[32;1mName     Interface Type     Start IP      End IP        Source Start IP Source End IP Comments[0m
+[32;1m----     --------- ----     --------      ------        --------------- ------------- --------[0m
+FSAport3           overload 172.30.72.105 172.30.72.105 0.0.0.0         0.0.0.0
+
+Table 7 - Virtual IP
+
+
+1.3.5 Virtual IP
+------------------------------------------------------------------------------------------------------------------------
+[32;1mName                  Interface External IP   Mapped IP     Protocol External Port Mapped Port Comment[0m
+[32;1m----                  --------- -----------   ---------     -------- ------------- ----------- -------[0m
+FortiSandbox-VIP      port36    172.30.72.80  10.88.23.8    tcp      0-65535       0-65535
+FortiMail IBE         port36    172.30.72.176 10.88.11.1    tcp      0-65535       0-65535
+FortiGate-DCFW        port36    172.30.72.154 10.88.2.21    tcp      0-65535       0-65535
+FortiSandbox-Slave-IP port36    172.30.72.79  10.88.23.9    tcp      0-65535       0-65535
+WLC VIP               port36    172.30.72.40  10.88.51.1    tcp      0-65535       0-65535
+FCTEMS_FWB            port36    172.30.72.106 10.88.210.101 tcp      0-65535       0-65535
+FSIEM_VIP             port36    172.30.72.244 10.88.210.32  tcp      0-65535       0-65535
+WLM_VIP               port36    172.30.72.41  10.88.51.2    tcp      0-65535       0-65535
+FortiNAC              port36    172.30.72.43  10.88.210.50  tcp      0-65535       0-65535
+FAC                   port36    172.30.72.247 172.30.72.231 tcp      0-65535       0-65535
+FortiManager          port36    172.30.72.239 10.88.210.253 tcp      0-65535       0-65535
+FortiAnalyzer         port36    172.30.72.62  10.88.210.62  tcp      0-65535       0-65535
+LANEdge-VIP           port36    172.30.72.156 10.88.12.99   tcp      0-65535       0-65535
+
+Table 8 - Virtual IP
+
+
+1.3.6 Policy
+------------------------------------------------------------------------------------------------------------------------
+[32;1mName                        From                                                       To                                                   Source       Destination                                                      Service[0m
+[32;1m----                        ----                                                       --                                                   ------       -----------                                                      -------               [0m
+Block Malicious by FortiEDR DCFW, FWLC, ISFW-HA, WLC-Staff, WLC-Students, WLC-Teachers port36                                               all          FortiEDR_Malicious_Destinations, FortiXDR_Malicious_Destinations ALL
+DNS                         any                                                        any                                                  all          all                                                              SYSLOG, DNS
+FIT - Intel NUC outbound    FITNUC, port4                                              port36                                               all          all                                                              ALL
+Allow FSA Access            FSA-DMZ                                                    port36                                               FSA-Admin-sw all                                                              ALL
+WAN-IBE                     port36                                                     P22                                                  all          FortiMail IBE                                                    ALL
+IBE-WAN                     P22                                                        port36                                               all          all                                                              ALL
+ISFW-WAN                    ISFW-HA, DCFW                                              port36                                               all          all                                                              ALL
+FSA-DMZ-WAN                 FSA-DMZ2                                                   port36                                               all          all                                                              ALL
+ISFW-FSA                    ISFW-HA, DCFW                                              FSA-DMZ                                              all          all                                                              ALL
+Wireless-WLC                WLC-Students, WLC-Staff, WLC-Teachers, FWLC                port36                                               all          all                                                              ALL
+IS-DC                       ISFW-HA, FWLC, WLC-Staff, WLC-Students, WLC-Teachers       DCFW, ISFW-HA                                        all          all                                                              ALL
+DC-IS                       DCFW, ISFW-HA                                              ISFW-HA, FWLC, WLC-Staff, WLC-Students, WLC-Teachers all          all                                                              ALL
+WAN-FWLC-VIP                port36                                                     FWLC, WLC-Staff, WLC-Students, WLC-Teachers          all          WLC VIP, WLM_VIP                                                 ALL
+FSA-MGMT-VIP                port36                                                     FSA-DMZ                                              all          FortiSandbox-VIP, FortiSandbox-Slave-IP                          ALL_ICMP, HTTP,
+                                                                                                                                                                                                                          HTTPS, OFTP, SSH,
+                                                                                                                                                                                                                          RADIUS
+WAN_DCFW_VIP                port36                                                     DCFW                                                 all          FGT_DCFW_VIPG                                                    ALL
+WAN_ISFW_VIP                port36                                                     ISFW-HA                                              all          LANEdge-VIP                                                      ALL
+Allow-DNS                   any                                                        any                                                  all          all                                                              SYSLOG
+
+Table 9 - Policy
+
+
+1.4 User
+------------------------------------------------------------------------------------------------------------------------
+The following section details User settings configured on Fortigate.
+
+
+                                                                                                                     Page 3
+
