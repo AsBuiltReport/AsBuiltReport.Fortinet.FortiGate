@@ -16,6 +16,16 @@
             "Status": 1,
             "Firmware": 1
         },
+        "System": {
+            "Global": 1,
+            "Settings": 1,
+            "GUI": 1,
+            "DNS": 1,
+            "DNSServer": 1,
+            "Admin": 1,
+            "Interface": 1,
+            "Zone": 1
+        },
         "Route": {
             "Summary": 1,
             "Monitor": 1,
