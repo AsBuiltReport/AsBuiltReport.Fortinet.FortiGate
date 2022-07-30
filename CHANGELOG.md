@@ -1,13 +1,5 @@
 # :arrows_clockwise: Fortinet Fortigate As Built Report Changelog
 
-## [0.1.0] - YYYY-MM-DD
+## [0.1.0] - 2022-MM-DD
 
-### Added
-
-### Changed
-
-### Fixed
-
-### Removed
-
-
+Initial Release with support of Forticare, System, Route and Firewall
