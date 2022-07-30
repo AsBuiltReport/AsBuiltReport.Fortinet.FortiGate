@@ -55,6 +55,7 @@ This report is compatible with the following PowerShell versions;
 PowerShell 5.1 or PowerShell 7, and the following PowerShell modules are required for generating a Fortinet Fortigate As Built Report.
 
 - [AsBuiltReport.Fortinet.Fortigate Module](https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.Fortigate/)
+- [PowerFGT Module](https://www.powershellgallery.com/packages/PowerFGT/)
 
 ### Linux & macOS
 * .NET Core is required for cover page image support on Linux and macOS operating systems.
@@ -63,15 +64,16 @@ PowerShell 5.1 or PowerShell 7, and the following PowerShell modules are require
 
 ❗ If you are unable to install .NET Core, you must set `ShowCoverPageImage` to `False` in the report JSON configuration file.
 ### :closed_lock_with_key: Required Privileges
-<!-- ********** Define required privileges ********** -->
-<!-- ********** Try to follow best practices to define least privileges ********** -->
+You need to have an account (user/password) with only Read Only on the Fortigate
+
+No yet support to using API Token
 
 ## :package: Module Installation
 
 ### PowerShell
-<!-- ********** Add installation for any additional PowerShell module(s) ********** -->
 ```powershell
-install-module AsBuiltReport.Fortinet.Fortigate
+Install-Module PowerFGT
+Install-Module AsBuiltReport.Fortinet.Fortigate
 ```
 
 ### GitHub
@@ -132,11 +134,79 @@ There are 6 levels (0-5) of detail granularity for each section as follows;
 |    1    | Enabled / Summary | Provides summarised information for a collection of objects                                                                                |
 |    2    | Adv Summary       | Provides condensed, detailed information for a collection of objects                                                                       |
 |    3    | Detailed          | Provides detailed information for individual objects                                                                                       |
-|    4    | Adv Detailed      | Provides detailed information for individual objects, as well as information for associated objects                                        |
-|    5    | Comprehensive     | Provides comprehensive information for individual objects, such as advanced configuration settings                                         |
+
+The table below outlines the default and maximum InfoLevel settings for each *Forticare* section.
+
+| Sub-Schema | Default Settings | Maximum Settings |
+|:----------:|------------------|------------------|
+| Status     | 1                | 1                |
+| Firmware   | 1                | 1                |
+
+The table below outlines the default and maximum InfoLevel settings for each *System* section.
+
+| Sub-Schema | Default Settings | Maximum Settings |
+|:----------:|------------------|------------------|
+| Global     | 1                | 1                |
+| Settings   | 1                | 1                |
+| GUI        | 1                | 1                |
+| DNS        | 1                | 1                |
+| DNSServer  | 1                | 1                |
+| Admin      | 1                | 1                |
+| GUI        | 1                | 1                |
+| Interface  | 1                | 1                |
+
+The table below outlines the default and maximum InfoLevel settings for each *Route* section.
+
+| Sub-Schema | Default Settings | Maximum Settings |
+|:----------:|------------------|------------------|
+| Summary    | 1                | 1                |
+| Monitor    | 1                | 1                |
+| Static     | 1                | 1                |
+| Policy     | 1                | 1                |
+
+
+The table below outlines the default and maximum InfoLevel settings for each *Firewall* section.
+
+| Sub-Schema | Default Settings | Maximum Settings |
+|:----------:|------------------|------------------|
+| Summary    | 1                | 1                |
+| Address    | 1                | 1                |
+| Group      | 1                | 1                |
+| IPPool     | 1                | 1                |
+| VIP        | 1                | 1                |
+| Policy     | 1                | 1                |
+
+The table below outlines the default and maximum InfoLevel settings for each *User* section.
+
+| Sub-Schema | Default Settings | Maximum Settings | 
+|:----------:|------------------|------------------|
+| Summary    | 1                | 1                |
+| Local      | 1                | 1                |
+| Group      | 1                | 1                |
+| LDAP       | 1                | 1                |
+| RADIUS     | 1                | 1                |
+| Policy     | 1                | 1                |
+
 
 ### Healthcheck
 The **Healthcheck** schema is used to toggle health checks on or off.
 
+There is no yet support of Health Check
+
 ## :computer: Examples
-<!-- ********** Add some examples. Use other AsBuiltReport modules as a guide. ********** -->
+There are a few examples listed below on running the AsBuiltReport script against a Fortigate. Refer to the README.md file in the main AsBuiltReport project repository for more examples.
+
+'''powershell
+# Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using specified credentials. Export report to HTML & DOCX formats. Use default report style. Append timestamp to report filename. Save reports to 'C:\Users\PowerFGT\Documents'
+PS C:\> New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com -Username demo -Password demo -Format Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -Timestamp
+
+# Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using specified credentials and report configuration file. Export report to Text, HTML & DOCX formats. Use default report style. Save reports to 'C:\Users\PowerFGT\Documents'. Display verbose messages to the console.
+PS C:\>  New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com -Username demo -Password 'demo' -Format Text,Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -ReportConfigFilePath 'C:\Users\Jon\AsBuiltReport\AsBuiltReport.Fortinet.Fortigate.json' -Verbose
+
+# Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using stored credentials. Export report to HTML & Text formats. Use default report style. Highlight environment issues within the report. Save reports to 'C:\Users\PowerFGT\Documents'.
+PS C:\> $Creds = Get-Credential
+PS C:\>  New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com -Credential $Creds -Format Html,Text -OutputFolderPath 'C:\Users\PowerFGT\Documents' -EnableHealthCheck
+
+# Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using stored credentials. Export report to HTML & DOCX formats. Use default report style. Reports are saved to the user profile folder by default. Attach and send reports via e-mail.
+PS C:\>  New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com-Username demo -Password 'demo' -Format Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -SendEmail
+'''
