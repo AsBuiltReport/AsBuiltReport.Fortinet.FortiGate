@@ -39,8 +39,6 @@ Please refer to the AsBuiltReport [website](https://www.asbuiltreport.com) for m
 
 Sample Fortigate Fortinet As Built report HTML file: [Sample Fortinet Fortigate As-Built Report.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/dev/Samples/Fortinet%20Fortigate%20As%20Built%20Report.html)
 
-Sample Fortigate Fortinet As Built report TXT file: [Sample Fortinet Fortigate As-Built Report.txt](https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/dev/Samples/Fortinet%20Fortigate%20As%20Built%20Report.txt)
-
 Sample Fortigate Fortinet As Built report Word file: [Sample Fortinet Fortigate As-Built Report.docx](https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/dev/Samples/Fortinet%20Fortigate%20As%20Built%20Report.txt)
 
 # :beginner: Getting Started
