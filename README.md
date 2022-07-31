@@ -73,7 +73,7 @@ PowerShell 5.1 or PowerShell 7, and the following PowerShell modules are require
 ### :closed_lock_with_key: Required Privileges
 You need to have an account (user/password) with only Read Only on the Fortigate
 
-No yet support to using API Token
+The use of an API Token in not currently supported.
 
 ## :package: Module Installation
 
@@ -133,7 +133,7 @@ The **Options** schema allows certain options within the report to be toggled on
 ### InfoLevel
 The **InfoLevel** schema allows configuration of each section of the report at a granular level. The following sections can be set.
 
-There are 6 levels (0-5) of detail granularity for each section as follows;
+There are 4 levels (0-3) of detail granularity for each section as follows;
 
 | Setting | InfoLevel         | Description                                                                                                                                |
 |:-------:|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
@@ -198,12 +198,12 @@ The table below outlines the default and maximum InfoLevel settings for each *Us
 ### Healthcheck
 The **Healthcheck** schema is used to toggle health checks on or off.
 
-There is no yet support of Health Check
+Health checks are yet to be developed.
 
 ## :computer: Examples
 There are a few examples listed below on running the AsBuiltReport script against a Fortigate. Refer to the README.md file in the main AsBuiltReport project repository for more examples.
 
-'''powershell
+```powershell
 # Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using specified credentials. Export report to HTML & DOCX formats. Use default report style. Append timestamp to report filename. Save reports to 'C:\Users\PowerFGT\Documents'
 PS C:\> New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com -Username demo -Password demo -Format Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -Timestamp
 
@@ -216,4 +216,4 @@ PS C:\>  New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidem
 
 # Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using stored credentials. Export report to HTML & DOCX formats. Use default report style. Reports are saved to the user profile folder by default. Attach and send reports via e-mail.
 PS C:\>  New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com-Username demo -Password 'demo' -Format Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -SendEmail
-'''
+```
