@@ -21,7 +21,7 @@ function Get-AbrFgtRoute {
     )
 
     begin {
-        Write-PscriboMessage "Discovering Route settings information from $System."
+        Write-PScriboMessage "Discovering Route settings information from $System."
     }
 
     process {

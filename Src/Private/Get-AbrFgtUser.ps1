@@ -21,7 +21,7 @@ function Get-AbrFgtUser {
     )
 
     begin {
-        Write-PscriboMessage "Discovering User settings information from $System."
+        Write-PScriboMessage "Discovering User settings information from $System."
     }
 
     process {
@@ -40,10 +40,10 @@ function Get-AbrFgtUser {
                     Paragraph "The following section make a summary of User settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "User"      = $Users.count
-                        "Group"     = $Groups.count
-                        "LDAP"      = $LDAPS.count
-                        "RADIUS"    = $RADIUS.count
+                        "User"   = $Users.count
+                        "Group"  = $Groups.count
+                        "LDAP"   = $LDAPS.count
+                        "RADIUS" = $RADIUS.count
                     }
 
                     $TableParams = @{
@@ -94,10 +94,10 @@ function Get-AbrFgtUser {
                     foreach ($grp in $Groups) {
 
                         $OutObj += [pscustomobject]@{
-                            "Name"      = $grp.name
-                            "Type"      = $grp.'group-type'
-                            "Member"    = $grp.member.name -join ", "
-                            "Match"     = $grp.match.'group-name' -join ", "
+                            "Name"   = $grp.name
+                            "Type"   = $grp.'group-type'
+                            "Member" = $grp.member.name -join ", "
+                            "Match"  = $grp.match.'group-name' -join ", "
                         }
                     }
 
@@ -122,13 +122,13 @@ function Get-AbrFgtUser {
                     foreach ($ldap in $LDAPS) {
 
                         $OutObj += [pscustomobject]@{
-                            "Name"      = $ldap.name
-                            "Server"    = $ldap.server + "/" + $ldap.'secondary-server'
-                            "Port"      = $ldap.port
-                            "CN"        = $ldap.cnid
-                            "DN"        = $ldap.dn
-                            "Type"      = $ldap.type
-                            "User"      = $ldap.username
+                            "Name"   = $ldap.name
+                            "Server" = $ldap.server + "/" + $ldap.'secondary-server'
+                            "Port"   = $ldap.port
+                            "CN"     = $ldap.cnid
+                            "DN"     = $ldap.dn
+                            "Type"   = $ldap.type
+                            "User"   = $ldap.username
                         }
                     }
 
@@ -153,10 +153,10 @@ function Get-AbrFgtUser {
                     foreach ($rad in $RADIUS) {
 
                         $OutObj += [pscustomobject]@{
-                            "Name"          = $rad.name
-                            "Server"        = $rad.server + "/" + $rad.'secondary-server'
-                            "Auth Type"     = $rad.'auth-type'
-                            "NAS-IP"        = $rad.'nas-ip'
+                            "Name"      = $rad.name
+                            "Server"    = $rad.server + "/" + $rad.'secondary-server'
+                            "Auth Type" = $rad.'auth-type'
+                            "NAS-IP"    = $rad.'nas-ip'
                         }
                     }
 

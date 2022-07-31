@@ -12,6 +12,20 @@
     "InfoLevel": {
         "_comment_": "Please refer to the AsBuiltReport project contributing guide for information about how to define InfoLevels.",
         "_comment_": "0 = Disabled, 1 = Enabled / Summary, 2 = Adv Summary, 3 = Detailed.",
+        "Forticare": {
+            "Status": 1,
+            "Firmware": 1
+        },
+        "System": {
+            "Global": 1,
+            "Settings": 1,
+            "GUI": 1,
+            "DNS": 1,
+            "DNSServer": 1,
+            "Admin": 1,
+            "Interface": 1,
+            "Zone": 1
+        },
         "Route": {
             "Summary": 1,
             "Monitor": 1,

@@ -21,7 +21,7 @@ function Get-AbrFgtFirewall {
     )
 
     begin {
-        Write-PscriboMessage "Discovering Firewall settings information from $System."
+        Write-PScriboMessage "Discovering Firewall settings information from $System."
     }
 
     process {
@@ -140,14 +140,14 @@ function Get-AbrFgtFirewall {
                     foreach ($ip in $IPPool) {
 
                         $OutObj += [pscustomobject]@{
-                            "Name"              = $ip.name
-                            "Interface"         = $ip.'associated-interface'
-                            "Type"              = $ip.type
-                            "Start IP"          = $ip.startip
-                            "End IP"            = $ip.endip
-                            "Source Start IP"   = $ip.'source-startip'
-                            "Source End IP"     = $ip.'source-endip'
-                            "Comments"          = $ip.comments
+                            "Name"            = $ip.name
+                            "Interface"       = $ip.'associated-interface'
+                            "Type"            = $ip.type
+                            "Start IP"        = $ip.startip
+                            "End IP"          = $ip.endip
+                            "Source Start IP" = $ip.'source-startip'
+                            "Source End IP"   = $ip.'source-endip'
+                            "Comments"        = $ip.comments
                         }
                     }
 
@@ -204,16 +204,16 @@ function Get-AbrFgtFirewall {
                     foreach ($rule in $Policy) {
 
                         $OutObj += [pscustomobject]@{
-                            "Name"          = $rule.name
-                            "From"          = $rule.srcintf.name -join ", "
-                            "To"            = $rule.dstintf.name -join ", "
-                            "Source"        = $rule.srcaddr.name -join ", "
-                            "Destination"   = $rule.dstaddr.name -join ", "
-                            "Service"       = $rule.service.name -join ", "
-                            "Action"        = $rule.action
-                            "NAT"           = $rule.nat
-                            "Log"           = $rule.logtraffic
-                            "Comments"      = $rule.comments
+                            "Name"        = $rule.name
+                            "From"        = $rule.srcintf.name -join ", "
+                            "To"          = $rule.dstintf.name -join ", "
+                            "Source"      = $rule.srcaddr.name -join ", "
+                            "Destination" = $rule.dstaddr.name -join ", "
+                            "Service"     = $rule.service.name -join ", "
+                            "Action"      = $rule.action
+                            "NAT"         = $rule.nat
+                            "Log"         = $rule.logtraffic
+                            "Comments"    = $rule.comments
                         }
                     }
 
