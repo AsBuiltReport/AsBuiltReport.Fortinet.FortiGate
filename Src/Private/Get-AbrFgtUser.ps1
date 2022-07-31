@@ -4,7 +4,7 @@ function Get-AbrFgtUser {
     .SYNOPSIS
         Used by As Built Report to returns User settings.
     .DESCRIPTION
-        Documents the configuration of Fortinet Fortigate in Word/HTML/Text formats using PScribo.
+        Documents the configuration of Fortinet FortiGate in Word/HTML/Text formats using PScribo.
     .NOTES
         Version:        0.1.0
         Author:         Alexis La Goutte
@@ -13,7 +13,7 @@ function Get-AbrFgtUser {
         Credits:        Iain Brighton (@iainbrighton) - PScribo module
 
     .LINK
-        https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate
+        https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate
     #>
     [CmdletBinding()]
     param (
@@ -21,13 +21,13 @@ function Get-AbrFgtUser {
     )
 
     begin {
-        Write-PScriboMessage "Discovering User settings information from $System."
+        Write-PScriboMessage "Discovering user settings information from $System."
     }
 
     process {
 
         Section -Style Heading2 'User' {
-            Paragraph "The following section details User settings configured on Fortigate."
+            Paragraph "The following section details user settings configured on FortiGate."
             BlankLine
 
             $Users = Get-FGTUserLocal
@@ -37,7 +37,7 @@ function Get-AbrFgtUser {
 
             if ($InfoLevel.User.Summary -ge 1) {
                 Section -Style Heading3 'Summary' {
-                    Paragraph "The following section make a summary of User settings."
+                    Paragraph "The following section provides a summary of user settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
                         "User"   = $Users.count

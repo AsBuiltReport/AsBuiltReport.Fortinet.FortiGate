@@ -4,7 +4,7 @@ function Get-AbrFgtRoute {
     .SYNOPSIS
         Used by As Built Report to returns Route settings.
     .DESCRIPTION
-        Documents the configuration of Fortinet Fortigate in Word/HTML/Text formats using PScribo.
+        Documents the configuration of Fortinet FortiGate in Word/HTML/Text formats using PScribo.
     .NOTES
         Version:        0.1.0
         Author:         Alexis La Goutte
@@ -13,7 +13,7 @@ function Get-AbrFgtRoute {
         Credits:        Iain Brighton (@iainbrighton) - PScribo module
 
     .LINK
-        https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate
+        https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate
     #>
     [CmdletBinding()]
     param (
@@ -21,13 +21,13 @@ function Get-AbrFgtRoute {
     )
 
     begin {
-        Write-PScriboMessage "Discovering Route settings information from $System."
+        Write-PScriboMessage "Discovering route settings information from $System."
     }
 
     process {
 
         Section -Style Heading2 'Route' {
-            Paragraph "The following section details Route settings configured on Fortigate."
+            Paragraph "The following section details route settings configured on FortiGate."
             BlankLine
 
             $MonitorRouterIPv4 = Get-FGTMonitorRouterIPv4
@@ -36,7 +36,7 @@ function Get-AbrFgtRoute {
 
             if ($InfoLevel.Route.Summary -ge 1) {
                 Section -Style Heading3 'Summary' {
-                    Paragraph "The following section make a summary of Route settings."
+                    Paragraph "The following section prrovides a summary of route settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
                         "Monitor Route"      = $MonitorRouterIPv4.count

@@ -4,7 +4,7 @@ function Get-AbrFgtSystem {
     .SYNOPSIS
         Used by As Built Report to returns System settings.
     .DESCRIPTION
-        Documents the configuration of Fortinet Fortigate in Word/HTML/Text formats using PScribo.
+        Documents the configuration of Fortinet FortiGate in Word/HTML/Text formats using PScribo.
     .NOTES
         Version:        0.1.0
         Author:         Alexis La Goutte
@@ -13,7 +13,7 @@ function Get-AbrFgtSystem {
         Credits:        Iain Brighton (@iainbrighton) - PScribo module
 
     .LINK
-        https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate
+        https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate
     #>
     [CmdletBinding()]
     param (
@@ -21,13 +21,13 @@ function Get-AbrFgtSystem {
     )
 
     begin {
-        Write-PScriboMessage "Discovering System settings information from $System."
+        Write-PScriboMessage "Discovering system settings information from $System."
     }
 
     process {
 
         Section -Style Heading2 'System' {
-            Paragraph "The following section details System settings configured on Fortigate."
+            Paragraph "The following section details system settings configured on FortiGate."
             BlankLine
 
             $info = Get-FGTSystemGlobal

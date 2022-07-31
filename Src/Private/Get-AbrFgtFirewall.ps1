@@ -4,7 +4,7 @@ function Get-AbrFgtFirewall {
     .SYNOPSIS
         Used by As Built Report to returns Firewall settings.
     .DESCRIPTION
-        Documents the configuration of Fortinet Fortigate in Word/HTML/Text formats using PScribo.
+        Documents the configuration of Fortinet FortiGate in Word/HTML/Text formats using PScribo.
     .NOTES
         Version:        0.1.0
         Author:         Alexis La Goutte
@@ -13,7 +13,7 @@ function Get-AbrFgtFirewall {
         Credits:        Iain Brighton (@iainbrighton) - PScribo module
 
     .LINK
-        https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate
+        https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate
     #>
     [CmdletBinding()]
     param (
@@ -21,13 +21,13 @@ function Get-AbrFgtFirewall {
     )
 
     begin {
-        Write-PScriboMessage "Discovering Firewall settings information from $System."
+        Write-PScriboMessage "Discovering firewall settings information from $System."
     }
 
     process {
 
         Section -Style Heading2 'Firewall' {
-            Paragraph "The following section details Firewall settings configured on Fortigate."
+            Paragraph "The following section details firewall settings configured on FortiGate."
             BlankLine
 
             $Address = Get-FGTFirewallAddress
@@ -38,7 +38,7 @@ function Get-AbrFgtFirewall {
 
             if ($InfoLevel.Firewall.Summary -ge 1) {
                 Section -Style Heading3 'Summary' {
-                    Paragraph "The following section make a summary of Firewall settings."
+                    Paragraph "The following section prvodies a summary of firewall settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
                         "Address"    = $Address.count

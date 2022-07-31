@@ -20,7 +20,7 @@ jobs:
       - name: Test Module Manifest
         shell: pwsh
         run: |
-          Test-ModuleManifest .\AsBuiltReport.Fortinet.Fortigate.psd1
+          Test-ModuleManifest .\AsBuiltReport.Fortinet.FortiGate.psd1
       - name: Publish module to PowerShell Gallery
         shell: pwsh
         run: |
@@ -35,7 +35,7 @@ jobs:
         with:
           # GitHub event payload
           # https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#release
-          tweet-message: "[New Release] ${{ github.event.repository.name }} ${{ github.event.release.tag_name }}! Check out what's new! ${{ github.event.release.html_url }} #Fortinet #Fortigate #AsBuiltReport #PowerShell"
+          tweet-message: "[New Release] ${{ github.event.repository.name }} ${{ github.event.release.tag_name }}! Check out what's new! ${{ github.event.release.html_url }} #Fortinet #FortiGate #AsBuiltReport #PowerShell #CyberSecurity"
         env:
           TWITTER_CONSUMER_API_KEY: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
           TWITTER_CONSUMER_API_SECRET: ${{ secrets.TWITTER_CONSUMER_API_SECRET }}

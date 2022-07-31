@@ -4,20 +4,20 @@
             <img src='https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport/master/AsBuiltReport.png' width="8%" height="8%" /></a>
 </p>
 <p align="center">
-    <a href="https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.Fortigate/" alt="PowerShell Gallery Version">
-        <img src="https://img.shields.io/powershellgallery/v/AsBuiltReport.Fortinet.Fortigate.svg" /></a>
-    <a href="https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.Fortigate/" alt="PS Gallery Downloads">
-        <img src="https://img.shields.io/powershellgallery/dt/AsBuiltReport.Fortinet.Fortigate.svg" /></a>
-    <a href="https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.Fortigate/" alt="PS Platform">
-        <img src="https://img.shields.io/powershellgallery/p/AsBuiltReport.Fortinet.Fortigate.svg" /></a>
+    <a href="https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/" alt="PowerShell Gallery Version">
+        <img src="https://img.shields.io/powershellgallery/v/AsBuiltReport.Fortinet.FortiGate.svg" /></a>
+    <a href="https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/" alt="PS Gallery Downloads">
+        <img src="https://img.shields.io/powershellgallery/dt/AsBuiltReport.Fortinet.FortiGate.svg" /></a>
+    <a href="https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/" alt="PS Platform">
+        <img src="https://img.shields.io/powershellgallery/p/AsBuiltReport.Fortinet.FortiGate.svg" /></a>
 </p>
 <p align="center">
-    <a href="https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/graphs/commit-activity" alt="GitHub Last Commit">
-        <img src="https://img.shields.io/github/last-commit/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/master.svg" /></a>
-    <a href="https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/master/LICENSE" alt="GitHub License">
-        <img src="https://img.shields.io/github/license/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate.svg" /></a>
-    <a href="https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/graphs/contributors" alt="GitHub Contributors">
-        <img src="https://img.shields.io/github/contributors/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate.svg"/></a>
+    <a href="https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/graphs/commit-activity" alt="GitHub Last Commit">
+        <img src="https://img.shields.io/github/last-commit/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/master.svg" /></a>
+    <a href="https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/master/LICENSE" alt="GitHub License">
+        <img src="https://img.shields.io/github/license/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate.svg" /></a>
+    <a href="https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/graphs/contributors" alt="GitHub Contributors">
+        <img src="https://img.shields.io/github/contributors/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate.svg"/></a>
 </p>
 <p align="center">
     <a href="https://twitter.com/AsBuiltReport" alt="Twitter">
@@ -25,9 +25,9 @@
 </p>
 <!-- ********** DO NOT EDIT THESE LINKS ********** -->
 
-# Fortinet Fortigate As Built Report
+# Fortinet FortiGate As Built Report
 
-Fortinet Fortigate As Built Report is a PowerShell module which works in conjunction with [AsBuiltReport.Core](https://github.com/AsBuiltReport/AsBuiltReport.Core).
+Fortinet FortiGate As Built Report is a PowerShell module which works in conjunction with [AsBuiltReport.Core](https://github.com/AsBuiltReport/AsBuiltReport.Core).
 
 [AsBuiltReport](https://github.com/AsBuiltReport/AsBuiltReport) is an open-sourced community project which utilises PowerShell to produce as-built documentation in multiple document formats for multiple vendors and technologies.
 
@@ -37,16 +37,16 @@ Please refer to the AsBuiltReport [website](https://www.asbuiltreport.com) for m
 
 ## Sample Report
 
-Sample Fortigate Fortinet As Built report HTML file: [Sample Fortinet Fortigate As-Built Report.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/dev/Samples/Fortinet%20Fortigate%20As%20Built%20Report.html)
+Sample FortiGate Fortinet As Built report HTML file: [Sample Fortinet FortiGate As-Built Report.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/dev/Samples/Fortinet%20FortiGate%20As%20Built%20Report.html)
 
-Sample Fortigate Fortinet As Built report Word file: [Sample Fortinet Fortigate As-Built Report.docx](https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/dev/Samples/Fortinet%20Fortigate%20As%20Built%20Report.txt)
+Sample FortiGate Fortinet As Built report Word file: [Sample Fortinet FortiGate As-Built Report.docx](https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/dev/Samples/Fortinet%20FortiGate%20As%20Built%20Report.txt)
 
 # :beginner: Getting Started
-Below are the instructions on how to install, configure and generate a Fortinet Fortigate As Built report.
+Below are the instructions on how to install, configure and generate a Fortinet FortiGate As Built report.
 
 ## :floppy_disk: Supported Versions
-<!-- ********** Update supported Fortigate versions ********** -->
-The Fortinet Fortigate As Built Report supports the following Fortigate versions;
+<!-- ********** Update supported FortiGate versions ********** -->
+The Fortinet FortiGate As Built Report supports the following FortiGate versions;
 
 ### PowerShell
 This report is compatible with the following PowerShell versions;
@@ -57,9 +57,9 @@ This report is compatible with the following PowerShell versions;
 |   :white_check_mark:   | :white_check_mark: |
 ## :wrench: System Requirements
 <!-- ********** Update system requirements ********** -->
-PowerShell 5.1 or PowerShell 7, and the following PowerShell modules are required for generating a Fortinet Fortigate As Built Report.
+PowerShell 5.1 or PowerShell 7, and the following PowerShell modules are required for generating a Fortinet FortiGate As Built Report.
 
-- [AsBuiltReport.Fortinet.Fortigate Module](https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.Fortigate/)
+- [AsBuiltReport.Fortinet.FortiGate Module](https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/)
 - [PowerFGT Module](https://www.powershellgallery.com/packages/PowerFGT/)
 
 ### Linux & macOS
@@ -69,7 +69,7 @@ PowerShell 5.1 or PowerShell 7, and the following PowerShell modules are require
 
 ❗ If you are unable to install .NET Core, you must set `ShowCoverPageImage` to `False` in the report JSON configuration file.
 ### :closed_lock_with_key: Required Privileges
-You need to have an account (user/password) with only Read Only on the Fortigate
+You need to have an account (user/password) with only Read Only on the FortiGate
 
 The use of an API Token in not currently supported.
 
@@ -78,18 +78,18 @@ The use of an API Token in not currently supported.
 ### PowerShell
 ```powershell
 Install-Module PowerFGT
-Install-Module AsBuiltReport.Fortinet.Fortigate
+Install-Module AsBuiltReport.Fortinet.FortiGate
 ```
 
 ### GitHub
-If you are unable to use the PowerShell Gallery, you can still install the module manually. Ensure you repeat the following steps for the [system requirements](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate#wrench-system-requirements) also.
+If you are unable to use the PowerShell Gallery, you can still install the module manually. Ensure you repeat the following steps for the [system requirements](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate#wrench-system-requirements) also.
 
-1. Download the code package / [latest release](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.Fortigate/releases/latest) zip from GitHub
+1. Download the code package / [latest release](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/releases/latest) zip from GitHub
 2. Extract the zip file
-3. Copy the folder `AsBuiltReport.Fortinet.Fortigate` to a path that is set in `$env:PSModulePath`.
+3. Copy the folder `AsBuiltReport.Fortinet.FortiGate` to a path that is set in `$env:PSModulePath`.
 4. Open a PowerShell terminal window and unblock the downloaded files with
     ```powershell
-    $path = (Get-Module -Name AsBuiltReport.Fortinet.Fortigate -ListAvailable).ModuleBase; Unblock-File -Path $path\*.psd1; Unblock-File -Path $path\Src\Public\*.ps1; Unblock-File -Path $path\Src\Private\*.ps1
+    $path = (Get-Module -Name AsBuiltReport.Fortinet.FortiGate -ListAvailable).ModuleBase; Unblock-File -Path $path\*.psd1; Unblock-File -Path $path\Src\Public\*.ps1; Unblock-File -Path $path\Src\Private\*.ps1
     ```
 5. Close and reopen the PowerShell terminal window.
 
@@ -97,14 +97,14 @@ _Note: You are not limited to installing the module to those example paths, you 
 
 ## :pencil2: Configuration
 
-The Fortinet Fortigate As Built Report utilises a JSON file to allow configuration of report information, options, detail and healthchecks.
+The Fortinet FortiGate As Built Report utilises a JSON file to allow configuration of report information, options, detail and healthchecks.
 
-A Fortinet Fortigate report configuration file can be generated by executing the following command;
+A Fortinet FortiGate report configuration file can be generated by executing the following command;
 ```powershell
-New-AsBuiltReportConfig -Report Fortinet.Fortigate -FolderPath <User specified folder> -Filename <Optional>
+New-AsBuiltReportConfig -Report Fortinet.FortiGate -FolderPath <User specified folder> -Filename <Optional>
 ```
 
-Executing this command will copy the default Fortinet Fortigate report JSON configuration to a user specified folder.
+Executing this command will copy the default Fortinet FortiGate report JSON configuration to a user specified folder.
 
 All report settings can then be configured via the JSON file.
 
@@ -112,11 +112,11 @@ The following provides information of how to configure each schema within the re
 
 <!-- ********** DO NOT CHANGE THE REPORT SCHEMA SETTINGS ********** -->
 ### Report
-The **Report** schema provides configuration of the Fortinet Fortigate report information.
+The **Report** schema provides configuration of the Fortinet FortiGate report information.
 
 | Sub-Schema          | Setting      | Default                        | Description                                                  |
 |---------------------|--------------|--------------------------------|--------------------------------------------------------------|
-| Name                | User defined | Fortinet Fortigate As Built Report | The name of the As Built Report                              |
+| Name                | User defined | Fortinet FortiGate As Built Report | The name of the As Built Report                              |
 | Version             | User defined | 1.0                            | The report version                                           |
 | Status              | User defined | Released                       | The report release status                                    |
 | ShowCoverPageImage  | true / false | true                           | Toggle to enable/disable the display of the cover page image |
@@ -183,7 +183,7 @@ The table below outlines the default and maximum InfoLevel settings for each *Fi
 
 The table below outlines the default and maximum InfoLevel settings for each *User* section.
 
-| Sub-Schema | Default Settings | Maximum Settings | 
+| Sub-Schema | Default Settings | Maximum Settings |
 |:----------:|------------------|------------------|
 | Summary    | 1                | 1                |
 | Local      | 1                | 1                |
@@ -199,19 +199,19 @@ The **Healthcheck** schema is used to toggle health checks on or off.
 Health checks are yet to be developed.
 
 ## :computer: Examples
-There are a few examples listed below on running the AsBuiltReport script against a Fortigate. Refer to the README.md file in the main AsBuiltReport project repository for more examples.
+There are a few examples listed below on running the AsBuiltReport script against a FortiGate. Refer to the README.md file in the main AsBuiltReport project repository for more examples.
 
 ```powershell
-# Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using specified credentials. Export report to HTML & DOCX formats. Use default report style. Append timestamp to report filename. Save reports to 'C:\Users\PowerFGT\Documents'
-PS C:\> New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com -Username demo -Password demo -Format Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -Timestamp
+# Generate a Fortinet FortiGate As Built Report for FortiGate fortigate.fortidemo.com using specified credentials. Export report to HTML & DOCX formats. Use default report style. Append timestamp to report filename. Save reports to 'C:\Users\PowerFGT\Documents'
+PS C:\> New-AsBuiltReport -Report Fortinet.FortiGate -Target fortigate.fortidemo.com -Username demo -Password demo -Format Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -Timestamp
 
-# Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using specified credentials and report configuration file. Export report to Text, HTML & DOCX formats. Use default report style. Save reports to 'C:\Users\PowerFGT\Documents'. Display verbose messages to the console.
-PS C:\>  New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com -Username demo -Password 'demo' -Format Text,Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -ReportConfigFilePath 'C:\Users\Jon\AsBuiltReport\AsBuiltReport.Fortinet.Fortigate.json' -Verbose
+# Generate a Fortinet FortiGate As Built Report for FortiGate fortigate.fortidemo.com using specified credentials and report configuration file. Export report to Text, HTML & DOCX formats. Use default report style. Save reports to 'C:\Users\PowerFGT\Documents'. Display verbose messages to the console.
+PS C:\>  New-AsBuiltReport -Report Fortinet.FortiGate -Target fortigate.fortidemo.com -Username demo -Password 'demo' -Format Text,Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -ReportConfigFilePath 'C:\Users\Jon\AsBuiltReport\AsBuiltReport.Fortinet.FortiGate.json' -Verbose
 
-# Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using stored credentials. Export report to HTML & Text formats. Use default report style. Highlight environment issues within the report. Save reports to 'C:\Users\PowerFGT\Documents'.
+# Generate a Fortinet FortiGate As Built Report for FortiGate fortigate.fortidemo.com using stored credentials. Export report to HTML & Text formats. Use default report style. Highlight environment issues within the report. Save reports to 'C:\Users\PowerFGT\Documents'.
 PS C:\> $Creds = Get-Credential
-PS C:\>  New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com -Credential $Creds -Format Html,Text -OutputFolderPath 'C:\Users\PowerFGT\Documents' -EnableHealthCheck
+PS C:\>  New-AsBuiltReport -Report Fortinet.FortiGate -Target fortigate.fortidemo.com -Credential $Creds -Format Html,Text -OutputFolderPath 'C:\Users\PowerFGT\Documents' -EnableHealthCheck
 
-# Generate a Fortinet Fortigate As Built Report for Fortigate fortigate.fortidemo.com using stored credentials. Export report to HTML & DOCX formats. Use default report style. Reports are saved to the user profile folder by default. Attach and send reports via e-mail.
-PS C:\>  New-AsBuiltReport -Report Fortinet.Fortigate -Target fortigate.fortidemo.com-Username demo -Password 'demo' -Format Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -SendEmail
+# Generate a Fortinet FortiGate As Built Report for FortiGate fortigate.fortidemo.com using stored credentials. Export report to HTML & DOCX formats. Use default report style. Reports are saved to the user profile folder by default. Attach and send reports via e-mail.
+PS C:\>  New-AsBuiltReport -Report Fortinet.FortiGate -Target fortigate.fortidemo.com-Username demo -Password 'demo' -Format Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -SendEmail
 ```
