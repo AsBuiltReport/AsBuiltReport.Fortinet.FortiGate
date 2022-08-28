@@ -244,6 +244,11 @@ function Get-AbrFgtSystem {
                     $OutObj = @()
 
                     foreach ($interface in $interfaces) {
+
+                        if ($interface.role -eq "undefined") {
+                            $interface.role = "n/a"
+                        }
+
                         $OutObj += [pscustomobject]@{
                             "Name"         = $interface.name
                             "Alias"        = $interface.alias
@@ -263,7 +268,7 @@ function Get-AbrFgtSystem {
                     $TableParams = @{
                         Name         = "Interface"
                         List         = $false
-                        ColumnWidths = 10, 16, 10, 10, 10, 5, 7, 10, 15, 7
+                        ColumnWidths = 10, 16, 7, 10, 10, 5, 7, 13, 15, 7
                     }
 
                     if ($Report.ShowTableCaptions) {
