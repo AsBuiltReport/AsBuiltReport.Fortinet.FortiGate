@@ -95,7 +95,7 @@ function Get-AbrFgtSystem {
                 }
             }
 
-            if ($info -and $settings  -and $InfoLevel.System.GUI -ge 1) {
+            if ($info -and $settings -and $InfoLevel.System.GUI -ge 1) {
                 Section -Style Heading3 'GUI Settings' {
                     $OutObj = @()
 
@@ -248,27 +248,29 @@ function Get-AbrFgtSystem {
                         if ($interface.role -eq "undefined") {
                             $interface.role = "n/a"
                         }
-
+                        $alias_description = $interface.alias
+                        if ($interface.description) {
+                            $alias_description += "($($interface.description))"
+                        }
                         $OutObj += [pscustomobject]@{
-                            "Name"         = $interface.name
-                            "Alias"        = $interface.alias
-                            "Role"         = $interface.role
-                            "Description"  = $interface.description
-                            "Type"         = $interface.type
-                            "Vlan ID"      = $interface.vlanid
-                            "Mode"         = $interface.mode
-                            "IP Address"   = $interface.ip.Replace(' ', '/')
-                            "Allow Access" = $interface.allowaccess
-#                            'DHCP Relais'  = $interface.'dhcp-relay-ip'
-                            "Status"       = $interface.status
-#                            "Speed"        = $interface.speed
+                            "Name"                = $interface.name
+                            "Alias (Description)" = $alias_description
+                            "Role"                = $interface.role
+                            "Type"                = $interface.type
+                            "Vlan ID"             = $interface.vlanid
+                            "Mode"                = $interface.mode
+                            "IP Address"          = $interface.ip.Replace(' ', '/')
+                            "Allow Access"        = $interface.allowaccess
+                            #'DHCP Relais'        = $interface.'dhcp-relay-ip'
+                            "Status"              = $interface.status
+                            #"Speed"              = $interface.speed
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Interface"
                         List         = $false
-                        ColumnWidths = 10, 16, 7, 10, 10, 5, 7, 13, 15, 7
+                        ColumnWidths = 10, 20, 7, 10, 7, 5, 19, 15, 7
                     }
 
                     if ($Report.ShowTableCaptions) {
