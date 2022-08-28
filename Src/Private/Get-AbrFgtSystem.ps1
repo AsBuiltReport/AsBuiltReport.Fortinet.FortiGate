@@ -254,16 +254,16 @@ function Get-AbrFgtSystem {
                             "Mode"         = $interface.mode
                             "IP Address"   = $interface.ip.Replace(' ', '/')
                             "Allow Access" = $interface.allowaccess
-                            'DHCP Relais'  = $interface.'dhcp-relay-ip'
+#                            'DHCP Relais'  = $interface.'dhcp-relay-ip'
                             "Status"       = $interface.status
-                            "Speed"        = $interface.speed
+#                            "Speed"        = $interface.speed
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Interface"
                         List         = $false
-                        ColumnWidths = 10, 10, 10, 10, 10, 5, 5, 10, 10, 10, 5, 5
+                        ColumnWidths = 10, 16, 10, 10, 10, 5, 7, 10, 15, 7
                     }
 
                     if ($Report.ShowTableCaptions) {
