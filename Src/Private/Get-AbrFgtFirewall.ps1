@@ -89,13 +89,14 @@ function Get-AbrFgtFirewall {
                             "Type"      = $add.type
                             "Value"     = $value
                             "Interface" = $add.'associated-interface'
+                            "Comment"   = $add.comment
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Address"
                         List         = $false
-                        ColumnWidths = 25, 25, 25, 25
+                        ColumnWidths = 25, 10, 30, 10, 25
                     }
 
                     if ($Report.ShowTableCaptions) {
