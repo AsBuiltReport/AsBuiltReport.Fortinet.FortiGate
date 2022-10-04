@@ -260,7 +260,7 @@ function Get-AbrFgtSystem {
                             "Vlan ID"             = $interface.vlanid
                             "Mode"                = $interface.mode
                             "IP Address"          = $interface.ip.Replace(' ', '/')
-                            "Allow Access"        = $interface.allowaccess
+                            #"Allow Access"        = $interface.allowaccess
                             #'DHCP Relais'        = $interface.'dhcp-relay-ip'
                             "Status"              = $interface.status
                             #"Speed"              = $interface.speed
@@ -270,7 +270,7 @@ function Get-AbrFgtSystem {
                     $TableParams = @{
                         Name         = "Interface"
                         List         = $false
-                        ColumnWidths = 10, 20, 7, 10, 7, 5, 19, 15, 7
+                        ColumnWidths = 12, 20, 7, 11, 6, 8, 28, 8
                     }
 
                     if ($Report.ShowTableCaptions) {

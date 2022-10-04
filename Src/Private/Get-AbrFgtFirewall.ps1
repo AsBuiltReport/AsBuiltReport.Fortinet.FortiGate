@@ -38,7 +38,7 @@ function Get-AbrFgtFirewall {
 
             if ($InfoLevel.Firewall.Summary -ge 1) {
                 Section -Style Heading3 'Summary' {
-                    Paragraph "The following section prvodies a summary of firewall settings."
+                    Paragraph "The following section provides a summary of firewall settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
                         "Address"    = $Address.count
@@ -89,13 +89,14 @@ function Get-AbrFgtFirewall {
                             "Type"      = $add.type
                             "Value"     = $value
                             "Interface" = $add.'associated-interface'
+                            "Comment"   = $add.comment
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Address"
                         List         = $false
-                        ColumnWidths = 25, 25, 25, 25
+                        ColumnWidths = 25, 10, 30, 10, 25
                     }
 
                     if ($Report.ShowTableCaptions) {
