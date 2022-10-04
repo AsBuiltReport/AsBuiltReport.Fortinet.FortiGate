@@ -38,7 +38,7 @@ function Get-AbrFgtFirewall {
 
             if ($InfoLevel.Firewall.Summary -ge 1) {
                 Section -Style Heading3 'Summary' {
-                    Paragraph "The following section prvodies a summary of firewall settings."
+                    Paragraph "The following section provides a summary of firewall settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
                         "Address"    = $Address.count

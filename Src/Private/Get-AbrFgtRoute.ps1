@@ -36,7 +36,7 @@ function Get-AbrFgtRoute {
 
             if ($InfoLevel.Route.Summary -ge 1) {
                 Section -Style Heading3 'Summary' {
-                    Paragraph "The following section prrovides a summary of route settings."
+                    Paragraph "The following section provides a summary of route settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
                         "Monitor Route"      = $MonitorRouterIPv4.count
