@@ -116,7 +116,7 @@ function Get-AbrFgtUser {
             }
 
             if ($LDAPS -and $InfoLevel.User.LDAP -ge 1) {
-                Section -Style Heading3 'IP Pool' {
+                Section -Style Heading3 'LDAP' {
                     $OutObj = @()
 
                     foreach ($ldap in $LDAPS) {
