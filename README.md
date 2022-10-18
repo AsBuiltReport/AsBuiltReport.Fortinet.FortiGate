@@ -127,6 +127,10 @@ The **Report** schema provides configuration of the Fortinet FortiGate report in
 ### Options
 The **Options** schema allows certain options within the report to be toggled on or off.
 
+| Sub-Schema      | Setting      | Default | Description |
+|-----------------|--------------|---------|-------------|
+| Port | TCP Port  | 443 | Used to specify the admin HTTPS port of FortiGate
+
 <!-- ********** Add/Remove the number of InfoLevels as required ********** -->
 ### InfoLevel
 The **InfoLevel** schema allows configuration of each section of the report at a granular level. The following sections can be set.
