@@ -93,7 +93,13 @@ function Get-AbrFgtForticare {
         }
 
         $firmware = Get-FGTMonitorSystemFirmware
-        $firmware_upgrade_paths = Get-FGTMonitorSystemFirmware -upgrade_paths
+        try {
+            $firmware_upgrade_paths = Get-FGTMonitorSystemFirmware -upgrade_paths -Verbose
+        }
+        catch {
+            $firmware_upgrade_paths = $null
+        }
+
 
         if ($firmware -and $firmware_upgrade_paths -and $InfoLevel.Forticare.Firmware -ge 1) {
             Paragraph "The following section details firmware information on FortiGate."
