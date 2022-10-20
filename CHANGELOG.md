@@ -4,8 +4,8 @@
 
 ### Fixed
 
-- Connection: Add Options for custom Port [#15](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/issues/15)[#16](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/16)
-- FortiCare: add Try/Catch for Firmware Upgrade Paths [#14](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/issues/14)[#17](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/17)
+- Connection: Add Options for custom Port [#16](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/16) - Fixes [#15](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/issues/15)
+- FortiCare: add Try/Catch for Firmware Upgrade Paths [#17](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/17) - Fixes [#14](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/issues/14)
 
 ## [0.1.0] - 2022-07-31
 
