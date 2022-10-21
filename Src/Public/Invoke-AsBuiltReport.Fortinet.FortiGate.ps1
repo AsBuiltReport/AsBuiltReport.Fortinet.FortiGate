@@ -36,7 +36,7 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
 
         try {
             #Connection to FortiGate (TODO: Add Parameter for Certificate Check and Port)
-            Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck | Out-Null #-Port $Options.ServerPort
+            Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck -Port $Options.Port | Out-Null
 
             #Get Model
             $Model = (Get-FGTMonitorSystemFirmware).current.'platform-id'
