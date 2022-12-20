@@ -202,6 +202,36 @@ function Get-AbrFgtUser {
                     }
 
                     $OutObj | Table @TableParams
+
+                    foreach ($sml in $SAML) {
+                        Section -Style Heading4 "SAML $($sml.name)" {
+                            BlankLine
+                            $OutObj = [pscustomobject]@{
+                                "Name"                   = $sml.name
+                                "Certificat"             = $sml.cert
+                                "entity-id"              = $sml.'entity-id'
+                                "single-sign-on-url"     = $sml.'single-sign-on-url'
+                                "single-logout-url"      = $sml.'single-logout-url'
+                                "idp-single-sign-on-url" = $sml.'idp-single-sign-on-url'
+                                "idp-single-logout-url"  = $sml.'idp-single-logout-url'
+                                "idp-cert"               = $sml.'idp-cert'
+                                "user-name"              = $sml.'user-name'
+                                "group-name"             = $sml.'group-name'
+                            }
+
+                            $TableParams = @{
+                                Name         = "SAML $($sml.name)"
+                                List         = $true
+                                ColumnWidths = 20, 80
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+                    }
                 }
             }
 
