@@ -34,6 +34,7 @@ function Get-AbrFgtUser {
             $Groups = Get-FGTUserGroup
             $LDAPS = Get-FGTUserLDAP
             $RADIUS = Get-FGTUserRADIUS
+            $SAML = Get-FGTUserSAML
 
             if ($InfoLevel.User.Summary -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -44,6 +45,7 @@ function Get-AbrFgtUser {
                         "Group"  = $Groups.count
                         "LDAP"   = $LDAPS.count
                         "RADIUS" = $RADIUS.count
+                        "SAML"   = $SAML.count
                     }
 
                     $TableParams = @{
@@ -164,6 +166,35 @@ function Get-AbrFgtUser {
                         Name         = "RADIUS"
                         List         = $false
                         ColumnWidths = 20, 40, 20, 20
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
+            if ($SAML -and $InfoLevel.User.SAML -ge 1) {
+                Section -Style Heading3 'SAML' {
+                    $OutObj = @()
+
+                    foreach ($sml in $SAML) {
+
+                        $OutObj += [pscustomobject]@{
+                            "Name"           = $sml.name
+                            "Certificat"     = $sml.'cert'
+                            "IDP Entity-ID"  = $sml.'idp-entity-id'
+                            "IDP Certificat" = $sml.'idp-cert'
+                        }
+
+                    }
+
+                    $TableParams = @{
+                        Name         = "SAML"
+                        List         = $false
+                        ColumnWidths = 20, 20, 40, 20
                     }
 
                     if ($Report.ShowTableCaptions) {
