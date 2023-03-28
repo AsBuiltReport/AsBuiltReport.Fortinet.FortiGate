@@ -61,6 +61,9 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
                 if ($InfoLevel.User.PSObject.Properties.Value -ne 0) {
                     Get-AbrFgtUser
                 }
+                if ($InfoLevel.VPNIPsec.PSObject.Properties.Value -ne 0) {
+                    Get-AbrFgtVPNIPsec
+                }
             }
         }
         catch {
