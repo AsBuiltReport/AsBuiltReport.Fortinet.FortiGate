@@ -58,7 +58,7 @@ RequiredModules = @(
     },
     @{
         ModuleName = 'PowerFGT';
-        ModuleVersion = '0.6.0'
+        ModuleVersion = '0.7.0'
     }
 
 )
