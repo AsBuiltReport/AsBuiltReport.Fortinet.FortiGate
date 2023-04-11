@@ -184,9 +184,9 @@ function Get-AbrFgtUser {
 
                         $OutObj += [pscustomobject]@{
                             "Name"           = $sml.name
-                            "Certificat"     = $sml.'cert'
-                            "IDP Entity-ID"  = $sml.'idp-entity-id'
-                            "IDP Certificat" = $sml.'idp-cert'
+                            "Certificate"    = $sml.cert
+                            "IdP Entity-ID"  = $sml.'idp-entity-id'
+                            "IdP Certificat" = $sml.'idp-cert'
                         }
 
                     }
@@ -208,21 +208,21 @@ function Get-AbrFgtUser {
                             BlankLine
                             $OutObj = [pscustomobject]@{
                                 "Name"                   = $sml.name
-                                "Certificat"             = $sml.cert
-                                "entity-id"              = $sml.'entity-id'
-                                "single-sign-on-url"     = $sml.'single-sign-on-url'
-                                "single-logout-url"      = $sml.'single-logout-url'
-                                "idp-single-sign-on-url" = $sml.'idp-single-sign-on-url'
-                                "idp-single-logout-url"  = $sml.'idp-single-logout-url'
-                                "idp-cert"               = $sml.'idp-cert'
-                                "user-name"              = $sml.'user-name'
-                                "group-name"             = $sml.'group-name'
+                                "Certificate"            = $sml.cert
+                                "Entity Id"              = $sml.'entity-id'
+                                "Single Sign On URL"     = $sml.'single-sign-on-url'
+                                "Single Logout URL"      = $sml.'single-logout-url'
+                                "IdP Single Sign On URM" = $sml.'idp-single-sign-on-url'
+                                "IdP Single Logout URL"  = $sml.'idp-single-logout-url'
+                                "IdP Certificate"        = $sml.'idp-cert'
+                                "User Name"              = $sml.'user-name'
+                                "Group Name"             = $sml.'group-name'
                             }
 
                             $TableParams = @{
                                 Name         = "SAML $($sml.name)"
                                 List         = $true
-                                ColumnWidths = 20, 80
+                                ColumnWidths = 25, 75
                             }
 
                             if ($Report.ShowTableCaptions) {
