@@ -130,6 +130,7 @@ The **Options** schema allows certain options within the report to be toggled on
 | Sub-Schema      | Setting      | Default | Description |
 |-----------------|--------------|---------|-------------|
 | Port | TCP Port  | 443 | Used to specify the admin HTTPS port of FortiGate
+| VDOM | VDOM Name | | Used to specify the VDOM (Virtual Domain)
 
 <!-- ********** Add/Remove the number of InfoLevels as required ********** -->
 ### InfoLevel
