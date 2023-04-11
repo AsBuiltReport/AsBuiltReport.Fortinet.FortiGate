@@ -94,7 +94,7 @@ function Get-AbrFgtForticare {
 
         $firmware = Get-FGTMonitorSystemFirmware
         try {
-            $firmware_upgrade_paths = Get-FGTMonitorSystemFirmware -upgrade_paths -Verbose
+            $firmware_upgrade_paths = Get-FGTMonitorSystemFirmware -upgrade_paths
         }
         catch {
             $firmware_upgrade_paths = $null
