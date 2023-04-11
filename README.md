@@ -39,7 +39,7 @@ Please refer to the AsBuiltReport [website](https://www.asbuiltreport.com) for m
 
 Sample FortiGate Fortinet As Built report HTML file: [Sample Fortinet FortiGate As-Built Report.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/dev/Samples/Fortinet%20FortiGate%20As%20Built%20Report.html)
 
-Sample FortiGate Fortinet As Built report Word file: [Sample Fortinet FortiGate As-Built Report.docx](https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/dev/Samples/Fortinet%20FortiGate%20As%20Built%20Report.txt)
+Sample FortiGate Fortinet As Built report Word file: [Sample Fortinet FortiGate As-Built Report.docx](https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/dev/Samples/Fortinet%20FortiGate%20As%20Built%20Report.docx)
 
 # :beginner: Getting Started
 Below are the instructions on how to install, configure and generate a Fortinet FortiGate As Built report.
