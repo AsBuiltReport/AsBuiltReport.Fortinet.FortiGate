@@ -34,6 +34,7 @@ function Get-AbrFgtUser {
             $Groups = Get-FGTUserGroup
             $LDAPS = Get-FGTUserLDAP
             $RADIUS = Get-FGTUserRADIUS
+            $SAML = Get-FGTUserSAML
 
             if ($InfoLevel.User.Summary -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -44,6 +45,7 @@ function Get-AbrFgtUser {
                         "Group"  = $Groups.count
                         "LDAP"   = $LDAPS.count
                         "RADIUS" = $RADIUS.count
+                        "SAML"   = $SAML.count
                     }
 
                     $TableParams = @{
@@ -171,6 +173,68 @@ function Get-AbrFgtUser {
                     }
 
                     $OutObj | Table @TableParams
+                }
+            }
+
+            if ($SAML -and $InfoLevel.User.SAML -ge 1) {
+                Section -Style Heading3 'SAML' {
+                    $OutObj = @()
+
+                    foreach ($sml in $SAML) {
+
+                        $OutObj += [pscustomobject]@{
+                            "Name"           = $sml.name
+                            "Certificate"    = $sml.cert
+                            "IdP Entity-ID"  = $sml.'idp-entity-id'
+                            "IdP Certificat" = $sml.'idp-cert'
+                        }
+
+                    }
+
+                    $TableParams = @{
+                        Name         = "SAML"
+                        List         = $false
+                        ColumnWidths = 20, 20, 40, 20
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+
+                    if ($SAML -and $InfoLevel.User.SAML -ge 2) {
+                        foreach ($sml in $SAML) {
+                            Section -Style Heading4 "SAML: $($sml.name)" {
+                                BlankLine
+                                $OutObj = [pscustomobject]@{
+                                    "Name"                   = $sml.name
+                                    "Certificate"            = $sml.cert
+                                    "Entity Id"              = $sml.'entity-id'
+                                    "Single Sign On URL"     = $sml.'single-sign-on-url'
+                                    "Single Logout URL"      = $sml.'single-logout-url'
+                                    "IdP Single Sign On URM" = $sml.'idp-single-sign-on-url'
+                                    "IdP Single Logout URL"  = $sml.'idp-single-logout-url'
+                                    "IdP Certificate"        = $sml.'idp-cert'
+                                    "User Name"              = $sml.'user-name'
+                                    "Group Name"             = $sml.'group-name'
+                                }
+
+                                $TableParams = @{
+                                    Name         = "SAML $($sml.name)"
+                                    List         = $true
+                                    ColumnWidths = 25, 75
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Table @TableParams
+                            }
+                        }
+                    }
+
                 }
             }
 
