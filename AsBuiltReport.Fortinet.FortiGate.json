@@ -47,7 +47,7 @@
             "Group": 1,
             "LDAP": 1,
             "RADIUS": 1,
-            "SAML": 1
+            "SAML": 2
         }
     },
     "HealthCheck": {}

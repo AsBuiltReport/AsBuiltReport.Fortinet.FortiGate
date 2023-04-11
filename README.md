@@ -194,7 +194,7 @@ The table below outlines the default and maximum InfoLevel settings for each *Us
 | Group      | 1                | 1                |
 | LDAP       | 1                | 1                |
 | RADIUS     | 1                | 1                |
-| SAML       | 1                | 1                |
+| SAML       | 2                | 2                |
 
 
 ### Healthcheck
