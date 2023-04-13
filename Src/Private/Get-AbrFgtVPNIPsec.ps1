@@ -87,11 +87,10 @@ function Get-AbrFgtVPNIPsec {
                     }
 
                     if ($vpn_ph1 -and $InfoLevel.VPNIPsec.Phase1 -ge 2) {
-                        Section -Style Heading3 'Detail' {
 
-                            foreach ($v1 in $vpn_ph1) {
 
-                                Paragraph $($v1.name)
+                        foreach ($v1 in $vpn_ph1) {
+                            Section -Style Heading3 "Phase 1: $($v1.name)" {
                                 BlankLine
                                 $OutObj = @()
 
@@ -184,11 +183,9 @@ function Get-AbrFgtVPNIPsec {
                     }
 
                     if ($vpn_ph1 -and $InfoLevel.VPNIPsec.Phase2 -ge 2) {
-                        Section -Style Heading3 'Detail' {
 
-                            foreach ($v2 in $vpn_ph2) {
-
-                                Paragraph $($v2.name)
+                        foreach ($v2 in $vpn_ph2) {
+                            Section -Style Heading3 "Phase 2: $($v2.name) ($($v2.phase1name))" {
                                 BlankLine
                                 $OutObj = @()
 
