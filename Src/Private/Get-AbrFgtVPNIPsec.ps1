@@ -33,7 +33,7 @@ function Get-AbrFgtVPNIPsec {
             $vpn_ph1 = Get-FGTVpnIpsecPhase1Interface
             $vpn_ph2 = Get-FGTVpnIpsecPhase2Interface
 
-            if ($InfoLevel.VPNIPsec.Summary -ge 1) {
+            if ($InfoLevel.VPNIPsec -ge 1) {
                 Section -Style Heading3 'Summary' {
                     Paragraph "The following section provides a summary of VPN IPsec settings."
                     BlankLine
@@ -56,7 +56,7 @@ function Get-AbrFgtVPNIPsec {
                 }
             }
 
-            if ($vpn_ph1 -and $InfoLevel.VPNIPsec.Phase1 -ge 1) {
+            if ($vpn_ph1 -and $InfoLevel.VPNIPsec -ge 1) {
                 Section -Style Heading3 'VPN IPsec Phase 1' {
                     Section -Style Heading4 'Summary' {
                         $OutObj = @()
@@ -86,7 +86,7 @@ function Get-AbrFgtVPNIPsec {
                         $OutObj | Table @TableParams
                     }
 
-                    if ($vpn_ph1 -and $InfoLevel.VPNIPsec.Phase1 -ge 2) {
+                    if ($vpn_ph1 -and $InfoLevel.VPNIPsec -ge 2) {
 
 
                         foreach ($v1 in $vpn_ph1) {
@@ -135,7 +135,7 @@ function Get-AbrFgtVPNIPsec {
 
             }
 
-            if ($vpn_ph2 -and $InfoLevel.VPNIPsec.Phase2 -ge 1) {
+            if ($vpn_ph2 -and $InfoLevel.VPNIPsec -ge 1) {
                 Section -Style Heading3 'VPN IPsec Phase 2' {
                     Section -Style Heading4 'Summary' {
                         $OutObj = @()
@@ -182,7 +182,7 @@ function Get-AbrFgtVPNIPsec {
                         $OutObj | Table @TableParams
                     }
 
-                    if ($vpn_ph1 -and $InfoLevel.VPNIPsec.Phase2 -ge 2) {
+                    if ($vpn_ph1 -and $InfoLevel.VPNIPsec -ge 2) {
 
                         foreach ($v2 in $vpn_ph2) {
                             Section -Style Heading3 "Phase 2: $($v2.name) ($($v2.phase1name))" {

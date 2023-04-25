@@ -50,11 +50,7 @@
             "RADIUS": 1,
             "SAML": 2
         },
-        "VPNIPsec": {
-            "Summary": 1,
-            "Phase1": 2,
-            "Phase2": 2
-        }
+        "VPNIPsec": 1
     },
     "HealthCheck": {}
 }
