@@ -62,12 +62,6 @@ PowerShell 5.1 or PowerShell 7, and the following PowerShell modules are require
 - [AsBuiltReport.Fortinet.FortiGate Module](https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/)
 - [PowerFGT Module](https://www.powershellgallery.com/packages/PowerFGT/)
 
-### Linux & macOS
-* .NET Core is required for cover page image support on Linux and macOS operating systems.
-    * [Installing .NET Core for macOS](https://docs.microsoft.com/en-us/dotnet/core/install/macos)
-    * [Installing .NET Core for Linux](https://docs.microsoft.com/en-us/dotnet/core/install/linux)
-
-❗ If you are unable to install .NET Core, you must set `ShowCoverPageImage` to `False` in the report JSON configuration file.
 ### :closed_lock_with_key: Required Privileges
 You need to have an account (user/password) with only Read Only on the FortiGate
 
