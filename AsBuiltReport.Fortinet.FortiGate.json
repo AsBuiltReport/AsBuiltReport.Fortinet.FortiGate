@@ -49,7 +49,8 @@
             "LDAP": 1,
             "RADIUS": 1,
             "SAML": 2
-        }
+        },
+        "VPNIPsec": 1
     },
     "HealthCheck": {}
 }
