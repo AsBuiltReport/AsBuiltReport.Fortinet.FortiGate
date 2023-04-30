@@ -195,9 +195,7 @@ The table below outlines the default and maximum InfoLevel settings for each *VP
 
 | Sub-Schema | Default Settings | Maximum Settings |
 |:----------:|------------------|------------------|
-| Summary    | 1                | 1                |
-| Phase1     | 2                | 2                |
-| Phase2     | 2                | 2                |
+| VPN IPsec  | 2                | 2                |
 
 ### Healthcheck
 The **Healthcheck** schema is used to toggle health checks on or off.
