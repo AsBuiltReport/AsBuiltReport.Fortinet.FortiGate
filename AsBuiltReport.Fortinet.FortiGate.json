@@ -17,14 +17,7 @@
         "FortiCare": 1,
         "System": 1,
         "Route": 1,
-        "Firewall": {
-            "Summary": 1,
-            "Address": 1,
-            "Group": 1,
-            "IPPool": 1,
-            "VIP": 1,
-            "Policy": 1
-        },
+        "Firewall": 1,
         "User": {
             "Summary": 1,
             "Local": 1,
