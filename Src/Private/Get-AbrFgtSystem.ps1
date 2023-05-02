@@ -32,7 +32,7 @@ function Get-AbrFgtSystem {
 
             $info = Get-FGTSystemGlobal
 
-            if ($info -and $InfoLevel.System.Global -ge 1) {
+            if ($info -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'Global' {
                     $OutObj = @()
 
@@ -69,7 +69,7 @@ function Get-AbrFgtSystem {
 
             $settings = Get-FGTSystemSettings
 
-            if ($settings -and $InfoLevel.System.Settings -ge 1) {
+            if ($settings -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'Settings' {
                     $OutObj = @()
 
@@ -95,7 +95,7 @@ function Get-AbrFgtSystem {
                 }
             }
 
-            if ($info -and $settings -and $InfoLevel.System.GUI -ge 1) {
+            if ($info -and $settings -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'GUI Settings' {
                     $OutObj = @()
 
@@ -142,7 +142,7 @@ function Get-AbrFgtSystem {
 
             $dns = Get-FGTSystemDns
 
-            if ($dns -and $InfoLevel.System.DNS -ge 1) {
+            if ($dns -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'DNS' {
                     $OutObj = @()
 
@@ -169,7 +169,7 @@ function Get-AbrFgtSystem {
 
             $DNSServers = Get-FGTSystemDnsServer
 
-            if ($DNSServers -and $InfoLevel.System.DNS -ge 1) {
+            if ($DNSServers -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'DNS Server' {
                     $OutObj = @()
 
@@ -198,7 +198,7 @@ function Get-AbrFgtSystem {
 
             $Admins = Get-FGTSystemAdmin
 
-            if ($Admins -and $InfoLevel.System.Admin -ge 1) {
+            if ($Admins -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'Admin' {
                     $OutObj = @()
 
@@ -239,7 +239,7 @@ function Get-AbrFgtSystem {
 
             $interfaces = Get-FGTSystemInterface
 
-            if ($interfaces -and $InfoLevel.System.Interface -ge 1) {
+            if ($interfaces -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'Interfaces' {
                     $OutObj = @()
 
@@ -283,7 +283,7 @@ function Get-AbrFgtSystem {
 
             $zones = Get-FGTSystemZone
 
-            if ($zones -and $InfoLevel.System.Zone -ge 1) {
+            if ($zones -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'Zone' {
                     $OutObj = @()
 
