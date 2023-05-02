@@ -36,7 +36,7 @@ function Get-AbrFgtUser {
             $RADIUS = Get-FGTUserRADIUS
             $SAML = Get-FGTUserSAML
 
-            if ($InfoLevel.User.Summary -ge 1) {
+            if ($InfoLevel.User -ge 1) {
                 Section -Style Heading3 'Summary' {
                     Paragraph "The following section provides a summary of user settings."
                     BlankLine
@@ -62,7 +62,7 @@ function Get-AbrFgtUser {
                 }
             }
 
-            if ($Users -and $InfoLevel.User.Local -ge 1) {
+            if ($Users -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'User Local' {
                     $OutObj = @()
 
@@ -89,7 +89,7 @@ function Get-AbrFgtUser {
                 }
             }
 
-            if ($Groups -and $InfoLevel.User.Group -ge 1) {
+            if ($Groups -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'User Group' {
                     $OutObj = @()
 
@@ -117,7 +117,7 @@ function Get-AbrFgtUser {
                 }
             }
 
-            if ($LDAPS -and $InfoLevel.User.LDAP -ge 1) {
+            if ($LDAPS -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'LDAP' {
                     $OutObj = @()
 
@@ -148,7 +148,7 @@ function Get-AbrFgtUser {
                 }
             }
 
-            if ($RADIUS -and $InfoLevel.User.RADIUS -ge 1) {
+            if ($RADIUS -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'RADIUS' {
                     $OutObj = @()
 
@@ -176,7 +176,7 @@ function Get-AbrFgtUser {
                 }
             }
 
-            if ($SAML -and $InfoLevel.User.SAML -ge 1) {
+            if ($SAML -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'SAML' {
                     $OutObj = @()
 
@@ -203,7 +203,7 @@ function Get-AbrFgtUser {
 
                     $OutObj | Table @TableParams
 
-                    if ($SAML -and $InfoLevel.User.SAML -ge 2) {
+                    if ($SAML -and $InfoLevel.User -ge 2) {
                         foreach ($sml in $SAML) {
                             Section -Style Heading4 "SAML: $($sml.name)" {
                                 BlankLine

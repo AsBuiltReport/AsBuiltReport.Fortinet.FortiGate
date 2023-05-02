@@ -18,14 +18,7 @@
         "System": 1,
         "Route": 1,
         "Firewall": 1,
-        "User": {
-            "Summary": 1,
-            "Local": 1,
-            "Group": 1,
-            "LDAP": 1,
-            "RADIUS": 1,
-            "SAML": 2
-        },
+        "User": 2,
         "VPNIPsec": 1
     },
     "HealthCheck": {}
