@@ -139,62 +139,15 @@ There are 4 levels (0-3) of detail granularity for each section as follows;
 |    2    | Adv Summary       | Provides condensed, detailed information for a collection of objects                                                                       |
 |    3    | Detailed          | Provides detailed information for individual objects                                                                                       |
 
-The table below outlines the default and maximum InfoLevel settings for each *Forticare* section.
+The table below outlines the default and maximum InfoLevel settings for each *FortiGate* section.
 
 | Sub-Schema | Default Settings | Maximum Settings |
 |:----------:|------------------|------------------|
-| Status     | 1                | 1                |
-| Firmware   | 1                | 1                |
-
-The table below outlines the default and maximum InfoLevel settings for each *System* section.
-
-| Sub-Schema | Default Settings | Maximum Settings |
-|:----------:|------------------|------------------|
-| Global     | 1                | 1                |
-| Settings   | 1                | 1                |
-| GUI        | 1                | 1                |
-| DNS        | 1                | 1                |
-| DNSServer  | 1                | 1                |
-| Admin      | 1                | 1                |
-| GUI        | 1                | 1                |
-| Interface  | 1                | 1                |
-
-The table below outlines the default and maximum InfoLevel settings for each *Route* section.
-
-| Sub-Schema | Default Settings | Maximum Settings |
-|:----------:|------------------|------------------|
-| Summary    | 1                | 1                |
-| Monitor    | 1                | 1                |
-| Static     | 1                | 1                |
-| Policy     | 1                | 1                |
-
-
-The table below outlines the default and maximum InfoLevel settings for each *Firewall* section.
-
-| Sub-Schema | Default Settings | Maximum Settings |
-|:----------:|------------------|------------------|
-| Summary    | 1                | 1                |
-| Address    | 1                | 1                |
-| Group      | 1                | 1                |
-| IPPool     | 1                | 1                |
-| VIP        | 1                | 1                |
-| Policy     | 1                | 1                |
-
-The table below outlines the default and maximum InfoLevel settings for each *User* section.
-
-| Sub-Schema | Default Settings | Maximum Settings |
-|:----------:|------------------|------------------|
-| Summary    | 1                | 1                |
-| Local      | 1                | 1                |
-| Group      | 1                | 1                |
-| LDAP       | 1                | 1                |
-| RADIUS     | 1                | 1                |
-| SAML       | 2                | 2                |
-
-The table below outlines the default and maximum InfoLevel settings for each *VPN IPsec* section.
-
-| Sub-Schema | Default Settings | Maximum Settings |
-|:----------:|------------------|------------------|
+| Forticare  | 1                | 1                |
+| System     | 1                | 1                |
+| Route      | 1                | 1                |
+| Firewall   | 1                | 1                |
+| User       | 2                | 2                |
 | VPN IPsec  | 2                | 2                |
 
 ### Healthcheck
