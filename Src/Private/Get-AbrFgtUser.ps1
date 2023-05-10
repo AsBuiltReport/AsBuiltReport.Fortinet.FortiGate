@@ -145,6 +145,43 @@ function Get-AbrFgtUser {
                     }
 
                     $OutObj | Table @TableParams
+
+                    if ($InfoLevel.User -ge 2) {
+                        foreach ($ldap in $LDAPS) {
+                            Section -Style Heading4 "LDAP: $($ldap.name)" {
+                                BlankLine
+                                $OutObj = [pscustomobject]@{
+                                    "Name"                = $ldap.name
+                                    "Server"              = $ldap.server
+                                    "Secondary Server"    = $ldap.'secondary-server'
+                                    "Tertiary Server"     = $ldap.'tertiary-server'
+                                    "Port"                = $ldap.port
+                                    "Secure"              = $ldap.secure
+                                    "Source IP"           = $ldap.'source-ip'
+                                    "Interface"           = $ldap.interface
+                                    "Cnid"                = $ldap.cnid
+                                    "DN"                  = $ldap.dn
+                                    "Type"                = $ldap.type
+                                    "Username"            = $ldap.username
+                                    "Group Member Check"  = $ldap.'group-member-check'
+                                    "Group Search Base"   = $ldap.'group-search-base'
+                                    "Group Object Filter" = $ldap.'group-object-filter'
+                                }
+
+                                $TableParams = @{
+                                    Name         = "LDAP $($ldap.name)"
+                                    List         = $true
+                                    ColumnWidths = 25, 75
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Table @TableParams
+                            }
+                        }
+                    }
                 }
             }
 
