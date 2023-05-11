@@ -122,15 +122,22 @@ function Get-AbrFgtUser {
                     $OutObj = @()
 
                     foreach ($ldap in $LDAPS) {
+                        $server = $ldap.server
+                        if ($ldap.'secondary-server') {
+                            $server += "/" + $ldap.'secondary-server'
+                        }
+                        if ($ldap.'tertiary-server') {
+                            $server += "/" + $ldap.'tertiary-server'
+                        }
 
                         $OutObj += [pscustomobject]@{
-                            "Name"   = $ldap.name
-                            "Server" = $ldap.server + "/" + $ldap.'secondary-server'
-                            "Port"   = $ldap.port
-                            "CN"     = $ldap.cnid
-                            "DN"     = $ldap.dn
-                            "Type"   = $ldap.type
-                            "User"   = $ldap.username
+                            "Name"      = $ldap.name
+                            "Server(s)" = $server
+                            "Port"      = $ldap.port
+                            "CN"        = $ldap.cnid
+                            "DN"        = $ldap.dn
+                            "Type"      = $ldap.type
+                            "User"      = $ldap.username
                         }
                     }
 
