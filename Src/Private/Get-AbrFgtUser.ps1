@@ -70,6 +70,7 @@ function Get-AbrFgtUser {
 
                         $OutObj += [pscustomobject]@{
                             "Name"          = $user.name
+                            "Type"          = $user.type
                             "Status"        = $user.status
                             "Password Time" = $user.'passwd-time'
                         }
@@ -78,7 +79,7 @@ function Get-AbrFgtUser {
                     $TableParams = @{
                         Name         = "User"
                         List         = $false
-                        ColumnWidths = 34, 33, 33
+                        ColumnWidths = 25, 25, 25, 25
                     }
 
                     if ($Report.ShowTableCaptions) {
