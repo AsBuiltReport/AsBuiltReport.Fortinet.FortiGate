@@ -223,6 +223,55 @@ function Get-AbrFgtUser {
                     }
 
                     $OutObj | Table @TableParams
+
+                    if ($InfoLevel.User -ge 2) {
+                        foreach ($rad in $RADIUS) {
+                            Section -Style Heading4 "RADIUS: $($rad.name)" {
+                                BlankLine
+                                $OutObj = [pscustomobject]@{
+
+                                    "Name"                    = $rad.name
+                                    "Server"                  = $rad.server
+                                    "Secondary Server"        = $rad.'secondary-server'
+                                    "Tertiary Server"         = $rad.'tertiary-server'
+                                    "Port"                    = $rad.'radius-port'
+                                    "Timeout"                 = $rad.timeout
+                                    "Source IP"               = $rad.'source-ip'
+                                    "Interface"               = $rad.interface
+                                    "Interface Select Method" = $rad.'interface-select-method'
+                                    "Use Management VDOM"     = $rad.'use-management-vdom'
+                                    "All Usergroup"           = $rad.'all-usergroup'
+                                    "NAS IP"                  = $rad.'nas-ip'
+                                    "NAS ID Type"             = $rad.'nas-id-type'
+                                    "NAS ID"                  = $rad.'nas-id'
+                                    "Acct Interim Interval"   = $rad.'acct-interim-interval'
+                                    "RADIUS CoA"              = $rad.'radius-coa'
+                                    "Auth Type"               = $rad.'auth-type'
+                                    "Username Case Sensitive" = $rad.'username-case-sensitive'
+                                    "Accounting Server"       = $rad.'accounting-server'
+                                    "RSSO"                    = $rad.rsso
+                                    "Class"                   = $rad.class
+                                    "Password Renewal"        = $rad.'password-renewal'
+                                    "MAC Username Delimiter"  = $rad.'mac-username-delimiter'
+                                    "MAC Password Delimiter"  = $rad.'mac-password-delimiter"'
+                                    "MAC Case"                = $rad.'mac-case'
+                                    "Delimiter"               = $rad.delimiter
+                                }
+
+                                $TableParams = @{
+                                    Name         = "RADIUS $($rad.name)"
+                                    List         = $true
+                                    ColumnWidths = 25, 75
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Table @TableParams
+                            }
+                        }
+                    }
                 }
             }
 
