@@ -197,10 +197,16 @@ function Get-AbrFgtUser {
                     $OutObj = @()
 
                     foreach ($rad in $RADIUS) {
-
+                        $server = $rad.server
+                        if ($rad.'secondary-server') {
+                            $server += "/" + $rad.'secondary-server'
+                        }
+                        if ($rad.'tertiary-server') {
+                            $server += "/" + $rad.'tertiary-server'
+                        }
                         $OutObj += [pscustomobject]@{
                             "Name"      = $rad.name
-                            "Server"    = $rad.server + "/" + $rad.'secondary-server'
+                            "Server(s)" = $server
                             "Auth Type" = $rad.'auth-type'
                             "NAS-IP"    = $rad.'nas-ip'
                         }
