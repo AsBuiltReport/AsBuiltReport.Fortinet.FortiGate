@@ -36,7 +36,7 @@ function Get-AbrFgtUser {
             $RADIUS = Get-FGTUserRADIUS
             $SAML = Get-FGTUserSAML
 
-            if ($InfoLevel.User.Summary -ge 1) {
+            if ($InfoLevel.User -ge 1) {
                 Section -Style Heading3 'Summary' {
                     Paragraph "The following section provides a summary of user settings."
                     BlankLine
@@ -62,7 +62,7 @@ function Get-AbrFgtUser {
                 }
             }
 
-            if ($Users -and $InfoLevel.User.Local -ge 1) {
+            if ($Users -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'User Local' {
                     $OutObj = @()
 
@@ -70,6 +70,7 @@ function Get-AbrFgtUser {
 
                         $OutObj += [pscustomobject]@{
                             "Name"          = $user.name
+                            "Type"          = $user.type
                             "Status"        = $user.status
                             "Password Time" = $user.'passwd-time'
                         }
@@ -78,7 +79,7 @@ function Get-AbrFgtUser {
                     $TableParams = @{
                         Name         = "User"
                         List         = $false
-                        ColumnWidths = 34, 33, 33
+                        ColumnWidths = 25, 25, 25, 25
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -89,7 +90,7 @@ function Get-AbrFgtUser {
                 }
             }
 
-            if ($Groups -and $InfoLevel.User.Group -ge 1) {
+            if ($Groups -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'User Group' {
                     $OutObj = @()
 
@@ -117,20 +118,27 @@ function Get-AbrFgtUser {
                 }
             }
 
-            if ($LDAPS -and $InfoLevel.User.LDAP -ge 1) {
+            if ($LDAPS -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'LDAP' {
                     $OutObj = @()
 
                     foreach ($ldap in $LDAPS) {
+                        $server = $ldap.server
+                        if ($ldap.'secondary-server') {
+                            $server += "/" + $ldap.'secondary-server'
+                        }
+                        if ($ldap.'tertiary-server') {
+                            $server += "/" + $ldap.'tertiary-server'
+                        }
 
                         $OutObj += [pscustomobject]@{
-                            "Name"   = $ldap.name
-                            "Server" = $ldap.server + "/" + $ldap.'secondary-server'
-                            "Port"   = $ldap.port
-                            "CN"     = $ldap.cnid
-                            "DN"     = $ldap.dn
-                            "Type"   = $ldap.type
-                            "User"   = $ldap.username
+                            "Name"      = $ldap.name
+                            "Server(s)" = $server
+                            "Port"      = $ldap.port
+                            "CN"        = $ldap.cnid
+                            "DN"        = $ldap.dn
+                            "Type"      = $ldap.type
+                            "User"      = $ldap.username
                         }
                     }
 
@@ -145,18 +153,61 @@ function Get-AbrFgtUser {
                     }
 
                     $OutObj | Table @TableParams
+
+                    if ($InfoLevel.User -ge 2) {
+                        foreach ($ldap in $LDAPS) {
+                            Section -Style Heading4 "LDAP: $($ldap.name)" {
+                                BlankLine
+                                $OutObj = [pscustomobject]@{
+                                    "Name"                = $ldap.name
+                                    "Server"              = $ldap.server
+                                    "Secondary Server"    = $ldap.'secondary-server'
+                                    "Tertiary Server"     = $ldap.'tertiary-server'
+                                    "Port"                = $ldap.port
+                                    "Secure"              = $ldap.secure
+                                    "Source IP"           = $ldap.'source-ip'
+                                    "Interface"           = $ldap.interface
+                                    "Cnid"                = $ldap.cnid
+                                    "DN"                  = $ldap.dn
+                                    "Type"                = $ldap.type
+                                    "Username"            = $ldap.username
+                                    "Group Member Check"  = $ldap.'group-member-check'
+                                    "Group Search Base"   = $ldap.'group-search-base'
+                                    "Group Object Filter" = $ldap.'group-object-filter'
+                                }
+
+                                $TableParams = @{
+                                    Name         = "LDAP $($ldap.name)"
+                                    List         = $true
+                                    ColumnWidths = 25, 75
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Table @TableParams
+                            }
+                        }
+                    }
                 }
             }
 
-            if ($RADIUS -and $InfoLevel.User.RADIUS -ge 1) {
+            if ($RADIUS -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'RADIUS' {
                     $OutObj = @()
 
                     foreach ($rad in $RADIUS) {
-
+                        $server = $rad.server
+                        if ($rad.'secondary-server') {
+                            $server += "/" + $rad.'secondary-server'
+                        }
+                        if ($rad.'tertiary-server') {
+                            $server += "/" + $rad.'tertiary-server'
+                        }
                         $OutObj += [pscustomobject]@{
                             "Name"      = $rad.name
-                            "Server"    = $rad.server + "/" + $rad.'secondary-server'
+                            "Server(s)" = $server
                             "Auth Type" = $rad.'auth-type'
                             "NAS-IP"    = $rad.'nas-ip'
                         }
@@ -173,10 +224,59 @@ function Get-AbrFgtUser {
                     }
 
                     $OutObj | Table @TableParams
+
+                    if ($InfoLevel.User -ge 2) {
+                        foreach ($rad in $RADIUS) {
+                            Section -Style Heading4 "RADIUS: $($rad.name)" {
+                                BlankLine
+                                $OutObj = [pscustomobject]@{
+
+                                    "Name"                    = $rad.name
+                                    "Server"                  = $rad.server
+                                    "Secondary Server"        = $rad.'secondary-server'
+                                    "Tertiary Server"         = $rad.'tertiary-server'
+                                    "Port"                    = $rad.'radius-port'
+                                    "Timeout"                 = $rad.timeout
+                                    "Source IP"               = $rad.'source-ip'
+                                    "Interface"               = $rad.interface
+                                    "Interface Select Method" = $rad.'interface-select-method'
+                                    "Use Management VDOM"     = $rad.'use-management-vdom'
+                                    "All Usergroup"           = $rad.'all-usergroup'
+                                    "NAS IP"                  = $rad.'nas-ip'
+                                    "NAS ID Type"             = $rad.'nas-id-type'
+                                    "NAS ID"                  = $rad.'nas-id'
+                                    "Acct Interim Interval"   = $rad.'acct-interim-interval'
+                                    "RADIUS CoA"              = $rad.'radius-coa'
+                                    "Auth Type"               = $rad.'auth-type'
+                                    "Username Case Sensitive" = $rad.'username-case-sensitive'
+                                    "Accounting Server"       = $rad.'accounting-server'
+                                    "RSSO"                    = $rad.rsso
+                                    "Class"                   = $rad.class
+                                    "Password Renewal"        = $rad.'password-renewal'
+                                    "MAC Username Delimiter"  = $rad.'mac-username-delimiter'
+                                    "MAC Password Delimiter"  = $rad.'mac-password-delimiter"'
+                                    "MAC Case"                = $rad.'mac-case'
+                                    "Delimiter"               = $rad.delimiter
+                                }
+
+                                $TableParams = @{
+                                    Name         = "RADIUS $($rad.name)"
+                                    List         = $true
+                                    ColumnWidths = 25, 75
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Table @TableParams
+                            }
+                        }
+                    }
                 }
             }
 
-            if ($SAML -and $InfoLevel.User.SAML -ge 1) {
+            if ($SAML -and $InfoLevel.User -ge 1) {
                 Section -Style Heading3 'SAML' {
                     $OutObj = @()
 
@@ -203,7 +303,7 @@ function Get-AbrFgtUser {
 
                     $OutObj | Table @TableParams
 
-                    if ($SAML -and $InfoLevel.User.SAML -ge 2) {
+                    if ($SAML -and $InfoLevel.User -ge 2) {
                         foreach ($sml in $SAML) {
                             Section -Style Heading4 "SAML: $($sml.name)" {
                                 BlankLine
