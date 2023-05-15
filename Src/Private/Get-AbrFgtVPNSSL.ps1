@@ -207,6 +207,37 @@ function Get-AbrFgtVPNSSL {
                 }
 
             }
+            if ($users -and $InfoLevel.VPNSSL -ge 1) {
+                Section -Style Heading3 'VPN SSL Users Connected' {
+
+                    $OutObj = @()
+
+                    foreach ($user in $users) {
+
+                        $OutObj += [pscustomobject]@{
+                            "User Name"       = $user.user_name
+                            "Remote Host"     = $user.remote_host
+                            "Client IP "      = $user.subsessions.aip
+                            "Last Login Time" = $user.last_login_time
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "VPN SSL Users Connected"
+                        List         = $false
+                        ColumnWidths = 30, 20, 20, 40
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+
+                }
+
+            }
+
         }
 
     }
