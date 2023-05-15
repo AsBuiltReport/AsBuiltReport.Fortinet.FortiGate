@@ -90,9 +90,40 @@ function Get-AbrFgtVPNSSL {
                     }
 
                     $OutObj | Table @TableParams
-                }
 
+                    if ($settings.'authentication-rule' -and $InfoLevel.VPNSSL -ge 2) {
+
+                        Section -Style Heading3 "VPN SSL Settings: Authentication Rule" {
+                            BlankLine
+                            $OutObj = @()
+                            foreach ($ar in $settings.'authentication-rule') {
+
+                                $OutObj += [pscustomobject]@{
+                                    "id"     = $ar.id
+                                    "users"  = $ar.users
+                                    "groups" = $ar.groups.name
+                                    "portal" = $ar.portal
+                                    "realm"  = $ar.realm
+                                    "auth"   = $ar.auth
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "VPN SSL Settings: Authentication Rule"
+                                List         = $false
+                                ColumnWidths = 10, 20, 20, 20, 15, 15
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+                    }
+                }
             }
+
 
             if ($portals -and $InfoLevel.VPNSSL -ge 1) {
                 Section -Style Heading3 'VPN Portal' {
@@ -176,12 +207,11 @@ function Get-AbrFgtVPNSSL {
                 }
 
             }
-
         }
+
     }
 
     end {
 
     }
-
 }
