@@ -64,6 +64,9 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
                 if ($InfoLevel.VPNIPsec.PSObject.Properties.Value -ne 0) {
                     Get-AbrFgtVPNIPsec
                 }
+                if ($InfoLevel.VPNSSL.PSObject.Properties.Value -ne 0) {
+                    Get-AbrFgtVPNSSL
+                }
             }
         }
         catch {

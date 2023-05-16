@@ -19,7 +19,8 @@
         "Route": 1,
         "Firewall": 1,
         "User": 2,
-        "VPNIPsec": 2
+        "VPNIPsec": 2,
+        "VPNSSL": 2
     },
     "HealthCheck": {}
 }
