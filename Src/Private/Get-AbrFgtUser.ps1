@@ -156,7 +156,7 @@ function Get-AbrFgtUser {
 
                     if ($InfoLevel.User -ge 2) {
                         foreach ($ldap in $LDAPS) {
-                            Section -Style Heading4 "LDAP: $($ldap.name)" {
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC "LDAP: $($ldap.name)" {
                                 BlankLine
                                 $OutObj = [pscustomobject]@{
                                     "Name"                = $ldap.name
@@ -227,7 +227,7 @@ function Get-AbrFgtUser {
 
                     if ($InfoLevel.User -ge 2) {
                         foreach ($rad in $RADIUS) {
-                            Section -Style Heading4 "RADIUS: $($rad.name)" {
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC "RADIUS: $($rad.name)" {
                                 BlankLine
                                 $OutObj = [pscustomobject]@{
 
@@ -305,7 +305,7 @@ function Get-AbrFgtUser {
 
                     if ($SAML -and $InfoLevel.User -ge 2) {
                         foreach ($sml in $SAML) {
-                            Section -Style Heading4 "SAML: $($sml.name)" {
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC "SAML: $($sml.name)" {
                                 BlankLine
                                 $OutObj = [pscustomobject]@{
                                     "Name"                   = $sml.name

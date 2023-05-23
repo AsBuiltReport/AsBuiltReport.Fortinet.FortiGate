@@ -127,7 +127,7 @@ function Get-AbrFgtVPNSSL {
 
             if ($portals -and $InfoLevel.VPNSSL -ge 1) {
                 Section -Style Heading3 'VPN Portal' {
-                    Section -Style Heading4 'Summary' {
+                    Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
                         $OutObj = @()
 
                         foreach ($portal in $portals) {

@@ -58,7 +58,7 @@ function Get-AbrFgtVPNIPsec {
 
             if ($vpn_ph1 -and $InfoLevel.VPNIPsec -ge 1) {
                 Section -Style Heading3 'VPN IPsec Phase 1' {
-                    Section -Style Heading4 'Summary' {
+                    Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
                         $OutObj = @()
 
                         foreach ($v1 in $vpn_ph1) {
@@ -137,7 +137,7 @@ function Get-AbrFgtVPNIPsec {
 
             if ($vpn_ph2 -and $InfoLevel.VPNIPsec -ge 1) {
                 Section -Style Heading3 'VPN IPsec Phase 2' {
-                    Section -Style Heading4 'Summary' {
+                    Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
                         $OutObj = @()
 
                         foreach ($v2 in $vpn_ph2) {
