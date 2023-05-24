@@ -28,7 +28,7 @@ function Get-AbrFgtForticare {
 
         $Forticare = (Get-FGTMonitorLicenseStatus).forticare
 
-        if ($Forticare -and $InfoLevel.Forticare.Status -ge 1) {
+        if ($Forticare -and $InfoLevel.Forticare -ge 1) {
             Section -Style Heading2 'FortiCare' {
                 Paragraph "The following section details FortiCare settings configured on FortiGate."
                 BlankLine
@@ -94,14 +94,14 @@ function Get-AbrFgtForticare {
 
         $firmware = Get-FGTMonitorSystemFirmware
         try {
-            $firmware_upgrade_paths = Get-FGTMonitorSystemFirmware -upgrade_paths -Verbose
+            $firmware_upgrade_paths = Get-FGTMonitorSystemFirmware -upgrade_paths
         }
         catch {
             $firmware_upgrade_paths = $null
         }
 
 
-        if ($firmware -and $firmware_upgrade_paths -and $InfoLevel.Forticare.Firmware -ge 1) {
+        if ($firmware -and $firmware_upgrade_paths -and $InfoLevel.Forticare -ge 1) {
             Paragraph "The following section details firmware information on FortiGate."
             BlankLine
 

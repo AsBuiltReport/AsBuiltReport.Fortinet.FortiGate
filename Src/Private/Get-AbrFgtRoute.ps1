@@ -34,7 +34,7 @@ function Get-AbrFgtRoute {
             $Statics = Get-FGTRouterStatic
             $PolicyBasedRouting = Get-FGTRouterPolicy
 
-            if ($InfoLevel.Route.Summary -ge 1) {
+            if ($InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'Summary' {
                     Paragraph "The following section provides a summary of route settings."
                     BlankLine
@@ -58,7 +58,7 @@ function Get-AbrFgtRoute {
                 }
             }
 
-            if ($MonitorRouterIPv4 -and $InfoLevel.Route.Monitor -ge 1) {
+            if ($MonitorRouterIPv4 -and $InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'Route Monitor' {
                     $OutObj = @()
 
@@ -86,7 +86,7 @@ function Get-AbrFgtRoute {
                 }
             }
 
-            if ($Statics -and $InfoLevel.Route.Static -ge 1) {
+            if ($Statics -and $InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'Static Route' {
                     $OutObj = @()
 
@@ -114,7 +114,7 @@ function Get-AbrFgtRoute {
                 }
             }
 
-            if ($PolicyBasedRouting -and $InfoLevel.Route.Policy -ge 1) {
+            if ($PolicyBasedRouting -and $InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'Policy Based Route' {
                     $OutObj = @()
 

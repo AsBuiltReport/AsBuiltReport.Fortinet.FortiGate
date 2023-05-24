@@ -39,7 +39,7 @@ Please refer to the AsBuiltReport [website](https://www.asbuiltreport.com) for m
 
 Sample FortiGate Fortinet As Built report HTML file: [Sample Fortinet FortiGate As-Built Report.html](https://htmlpreview.github.io/?https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/dev/Samples/Fortinet%20FortiGate%20As%20Built%20Report.html)
 
-Sample FortiGate Fortinet As Built report Word file: [Sample Fortinet FortiGate As-Built Report.docx](https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/dev/Samples/Fortinet%20FortiGate%20As%20Built%20Report.txt)
+Sample FortiGate Fortinet As Built report Word file: [Sample Fortinet FortiGate As-Built Report.docx](https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/dev/Samples/Fortinet%20FortiGate%20As%20Built%20Report.docx)
 
 # :beginner: Getting Started
 Below are the instructions on how to install, configure and generate a Fortinet FortiGate As Built report.
@@ -62,12 +62,6 @@ PowerShell 5.1 or PowerShell 7, and the following PowerShell modules are require
 - [AsBuiltReport.Fortinet.FortiGate Module](https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/)
 - [PowerFGT Module](https://www.powershellgallery.com/packages/PowerFGT/)
 
-### Linux & macOS
-* .NET Core is required for cover page image support on Linux and macOS operating systems.
-    * [Installing .NET Core for macOS](https://docs.microsoft.com/en-us/dotnet/core/install/macos)
-    * [Installing .NET Core for Linux](https://docs.microsoft.com/en-us/dotnet/core/install/linux)
-
-❗ If you are unable to install .NET Core, you must set `ShowCoverPageImage` to `False` in the report JSON configuration file.
 ### :closed_lock_with_key: Required Privileges
 You need to have an account (user/password) with only Read Only on the FortiGate
 
@@ -130,72 +124,30 @@ The **Options** schema allows certain options within the report to be toggled on
 | Sub-Schema      | Setting      | Default | Description |
 |-----------------|--------------|---------|-------------|
 | Port | TCP Port  | 443 | Used to specify the admin HTTPS port of FortiGate
+| VDOM | VDOM Name | | Used to specify the VDOM (Virtual Domain)
 
 <!-- ********** Add/Remove the number of InfoLevels as required ********** -->
 ### InfoLevel
 The **InfoLevel** schema allows configuration of each section of the report at a granular level. The following sections can be set.
 
-There are 4 levels (0-3) of detail granularity for each section as follows;
+There are 3 levels (0-2) of detail granularity for each section as follows;
 
 | Setting | InfoLevel         | Description                                                                                                                                |
 |:-------:|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
 |    0    | Disabled          | Does not collect or display any information                                                                                                |
 |    1    | Enabled / Summary | Provides summarised information for a collection of objects                                                                                |
 |    2    | Adv Summary       | Provides condensed, detailed information for a collection of objects                                                                       |
-|    3    | Detailed          | Provides detailed information for individual objects                                                                                       |
 
-The table below outlines the default and maximum InfoLevel settings for each *Forticare* section.
-
-| Sub-Schema | Default Settings | Maximum Settings |
-|:----------:|------------------|------------------|
-| Status     | 1                | 1                |
-| Firmware   | 1                | 1                |
-
-The table below outlines the default and maximum InfoLevel settings for each *System* section.
+The table below outlines the default and maximum InfoLevel settings for each *FortiGate* section.
 
 | Sub-Schema | Default Settings | Maximum Settings |
 |:----------:|------------------|------------------|
-| Global     | 1                | 1                |
-| Settings   | 1                | 1                |
-| GUI        | 1                | 1                |
-| DNS        | 1                | 1                |
-| DNSServer  | 1                | 1                |
-| Admin      | 1                | 1                |
-| GUI        | 1                | 1                |
-| Interface  | 1                | 1                |
-
-The table below outlines the default and maximum InfoLevel settings for each *Route* section.
-
-| Sub-Schema | Default Settings | Maximum Settings |
-|:----------:|------------------|------------------|
-| Summary    | 1                | 1                |
-| Monitor    | 1                | 1                |
-| Static     | 1                | 1                |
-| Policy     | 1                | 1                |
-
-
-The table below outlines the default and maximum InfoLevel settings for each *Firewall* section.
-
-| Sub-Schema | Default Settings | Maximum Settings |
-|:----------:|------------------|------------------|
-| Summary    | 1                | 1                |
-| Address    | 1                | 1                |
-| Group      | 1                | 1                |
-| IPPool     | 1                | 1                |
-| VIP        | 1                | 1                |
-| Policy     | 1                | 1                |
-
-The table below outlines the default and maximum InfoLevel settings for each *User* section.
-
-| Sub-Schema | Default Settings | Maximum Settings |
-|:----------:|------------------|------------------|
-| Summary    | 1                | 1                |
-| Local      | 1                | 1                |
-| Group      | 1                | 1                |
-| LDAP       | 1                | 1                |
-| RADIUS     | 1                | 1                |
-| Policy     | 1                | 1                |
-
+| Forticare  | 1                | 1                |
+| System     | 1                | 1                |
+| Route      | 1                | 1                |
+| Firewall   | 1                | 1                |
+| User       | 2                | 2                |
+| VPN IPsec  | 2                | 2                |
 
 ### Healthcheck
 The **Healthcheck** schema is used to toggle health checks on or off.
@@ -209,7 +161,7 @@ There are a few examples listed below on running the AsBuiltReport script agains
 # Generate a Fortinet FortiGate As Built Report for FortiGate fortigate.fortidemo.com using specified credentials. Export report to HTML & DOCX formats. Use default report style. Append timestamp to report filename. Save reports to 'C:\Users\PowerFGT\Documents'
 PS C:\> New-AsBuiltReport -Report Fortinet.FortiGate -Target fortigate.fortidemo.com -Username demo -Password demo -Format Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -Timestamp
 
-# Generate a Fortinet FortiGate As Built Report for FortiGate fortigate.fortidemo.com using specified credentials and report configuration file. Export report to Text, HTML & DOCX formats. Use default report style. Save reports to 'C:\Users\PowerFGT\Documents'. Display verbose messages to the console.
+# Generate a Fortinet FortiGate  As Built Report for FortiGate fortigate.fortidemo.com using specified credentials and report configuration file. Export report to Text, HTML & DOCX formats. Use default report style. Save reports to 'C:\Users\PowerFGT\Documents'. Display verbose messages to the console.
 PS C:\>  New-AsBuiltReport -Report Fortinet.FortiGate -Target fortigate.fortidemo.com -Username demo -Password 'demo' -Format Text,Html,Word -OutputFolderPath 'C:\Users\PowerFGT\Documents' -ReportConfigFilePath 'C:\Users\Jon\AsBuiltReport\AsBuiltReport.Fortinet.FortiGate.json' -Verbose
 
 # Generate a Fortinet FortiGate As Built Report for FortiGate fortigate.fortidemo.com using stored credentials. Export report to HTML & Text formats. Use default report style. Highlight environment issues within the report. Save reports to 'C:\Users\PowerFGT\Documents'.

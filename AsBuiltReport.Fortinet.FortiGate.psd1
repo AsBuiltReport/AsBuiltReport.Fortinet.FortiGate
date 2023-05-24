@@ -12,7 +12,7 @@
 RootModule = 'AsBuiltReport.Fortinet.FortiGate.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.1'
+ModuleVersion = '0.2.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -54,11 +54,11 @@ Description = 'A PowerShell module to generate an as built report on the configu
 RequiredModules = @(
     @{
         ModuleName = 'AsBuiltReport.Core';
-        ModuleVersion = '1.2.0'
+        ModuleVersion = '1.3.0'
     },
     @{
         ModuleName = 'PowerFGT';
-        ModuleVersion = '0.6.0'
+        ModuleVersion = '0.7.0'
     }
 
 )

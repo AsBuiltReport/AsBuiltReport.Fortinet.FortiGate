@@ -36,7 +36,7 @@ function Get-AbrFgtFirewall {
             $VIP = Get-FGTFirewallVip
             $Policy = Get-FGTFirewallPolicy
 
-            if ($InfoLevel.Firewall.Summary -ge 1) {
+            if ($InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Summary' {
                     Paragraph "The following section provides a summary of firewall settings."
                     BlankLine
@@ -62,7 +62,7 @@ function Get-AbrFgtFirewall {
                 }
             }
 
-            if ($Address -and $InfoLevel.Firewall.Address -ge 1) {
+            if ($Address -and $InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Address' {
                     $OutObj = @()
 
@@ -107,7 +107,7 @@ function Get-AbrFgtFirewall {
                 }
             }
 
-            if ($Group -and $InfoLevel.Firewall.Group -ge 1) {
+            if ($Group -and $InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Address Group' {
                     $OutObj = @()
 
@@ -134,7 +134,7 @@ function Get-AbrFgtFirewall {
                 }
             }
 
-            if ($IPPool -and $InfoLevel.Firewall.IPPool -ge 1) {
+            if ($IPPool -and $InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'IP Pool' {
                     $OutObj = @()
 
@@ -166,7 +166,7 @@ function Get-AbrFgtFirewall {
                 }
             }
 
-            if ($VIP -and $InfoLevel.Firewall.VIP -ge 1) {
+            if ($VIP -and $InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Virtual IP' {
                     $OutObj = @()
 
@@ -198,7 +198,7 @@ function Get-AbrFgtFirewall {
                 }
             }
 
-            if ($Policy -and $InfoLevel.Firewall.Policy -ge 1) {
+            if ($Policy -and $InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Policy' {
                     $OutObj = @()
 

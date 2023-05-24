@@ -36,7 +36,7 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
 
         try {
             #Connection to FortiGate (TODO: Add Parameter for Certificate Check and Port)
-            Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck -Port $Options.Port | Out-Null
+            Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck -Port $Options.Port -vdom $Options.vdom | Out-Null
 
             #Get Model
             $Model = (Get-FGTMonitorSystemFirmware).current.'platform-id'
@@ -60,6 +60,12 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
 
                 if ($InfoLevel.User.PSObject.Properties.Value -ne 0) {
                     Get-AbrFgtUser
+                }
+                if ($InfoLevel.VPNIPsec.PSObject.Properties.Value -ne 0) {
+                    Get-AbrFgtVPNIPsec
+                }
+                if ($InfoLevel.VPNSSL.PSObject.Properties.Value -ne 0) {
+                    Get-AbrFgtVPNSSL
                 }
             }
         }
