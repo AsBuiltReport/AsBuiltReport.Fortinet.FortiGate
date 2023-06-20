@@ -143,7 +143,7 @@ function Get-AbrFgtVPNSSL {
                         $TableParams = @{
                             Name         = "VPN SSL Portal Summary"
                             List         = $false
-                            ColumnWidths = 30, 20, 20, 40
+                            ColumnWidths = 30, 20, 20, 30
                         }
 
                         if ($Report.ShowTableCaptions) {
