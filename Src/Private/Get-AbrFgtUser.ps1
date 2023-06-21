@@ -34,7 +34,9 @@ function Get-AbrFgtUser {
             $Groups = Get-FGTUserGroup
             $LDAPS = Get-FGTUserLDAP
             $RADIUS = Get-FGTUserRADIUS
-            $SAML = Get-FGTUserSAML
+            if ($DefaultFGTConnection.version -ge "6.2.0") {
+                $SAML = Get-FGTUserSAML
+            }
 
             if ($InfoLevel.User -ge 1) {
                 Section -Style Heading3 'Summary' {
