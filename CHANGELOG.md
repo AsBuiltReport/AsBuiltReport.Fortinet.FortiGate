@@ -1,5 +1,12 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+## [0.2.1] - 2023-06-21
+
+### Fixed
+
+- VPN SSL: VPN(SSL): fix ColumnWidths for Portal Summary [#35](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/35)
+- SAML(User): Don't get when use old Fortigate release (< 6.2.0) [#36](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/36)
+
 ## [0.2.0] - 2023-05-17
 
 - User: Add SAML Table [#23](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/23)
