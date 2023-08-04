@@ -230,7 +230,7 @@ function Get-AbrFgtSystem {
                     $TableParams = @{
                         Name         = "Administrator"
                         List         = $false
-                        ColumnWidths = 25, 25, 25, 25
+                        ColumnWidths = 25, 25, 35, 15
                     }
 
                     if ($Report.ShowTableCaptions) {
