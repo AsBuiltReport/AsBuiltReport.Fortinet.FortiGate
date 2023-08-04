@@ -204,18 +204,18 @@ function Get-AbrFgtSystem {
 
                     foreach ($admin in $Admins) {
 
-                        $trustedHosts = $admin.trusthost1
-                        $trustedHosts += $admin.trusthost2
-                        $trustedHosts += $admin.trusthost3
-                        $trustedHosts += $admin.trusthost4
-                        $trustedHosts += $admin.trusthost5
-                        $trustedHosts += $admin.trusthost6
-                        $trustedHosts += $admin.trusthost7
-                        $trustedHosts += $admin.trusthost8
-                        $trustedHosts += $admin.trusthost9
-                        $trustedHosts += $admin.trusthost10
+                        $trustedHosts = $admin.trusthost1 + "`n"
+                        $trustedHosts += $admin.trusthost2 + "`n"
+                        $trustedHosts += $admin.trusthost3 +  "`n"
+                        $trustedHosts += $admin.trusthost4 +  "`n"
+                        $trustedHosts += $admin.trusthost5 +  "`n"
+                        $trustedHosts += $admin.trusthost6 + "`n"
+                        $trustedHosts += $admin.trusthost7 +  "`n"
+                        $trustedHosts += $admin.trusthost8 +  "`n"
+                        $trustedHosts += $admin.trusthost9 + "`n"
+                        $trustedHosts += $admin.trusthost10 +  "`n"
 
-                        $trustedHosts = $trustedHosts -replace "0.0.0.0 0.0.0.0", "" #Remove 'All Network'
+                        $trustedHosts = $trustedHosts -replace "0.0.0.0 0.0.0.0`n", "" #Remove 'All Network'
                         if($trustedHosts -eq ""){
                             $trustedHosts = "All" #TODO: Add Health Warning !
                         }
