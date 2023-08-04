@@ -38,8 +38,8 @@ function Get-AbrFgtVPNIPsec {
                     Paragraph "The following section provides a summary of VPN IPsec settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "VPN IPsec Phase 1" = $vpn_ph1.count
-                        "VPN IPsec Phase 2" = $vpn_ph2.count
+                        "VPN IPsec Phase 1" = @($vpn_ph1).count
+                        "VPN IPsec Phase 2" = @($vpn_ph2).count
                     }
 
                     $TableParams = @{

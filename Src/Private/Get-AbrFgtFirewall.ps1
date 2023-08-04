@@ -41,11 +41,11 @@ function Get-AbrFgtFirewall {
                     Paragraph "The following section provides a summary of firewall settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "Address"    = $Address.count
-                        "Group"      = $Group.count
-                        "IP Pool"    = $IPPool.count
-                        "Virtual IP" = $VIP.count
-                        "Policy"     = $Policy.count
+                        "Address"    = @($Address).count
+                        "Group"      = @($Group).count
+                        "IP Pool"    = @($IPPool).count
+                        "Virtual IP" = @($VIP).count
+                        "Policy"     = @($Policy).count
                     }
 
                     $TableParams = @{

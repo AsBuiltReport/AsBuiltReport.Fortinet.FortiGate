@@ -39,9 +39,9 @@ function Get-AbrFgtRoute {
                     Paragraph "The following section provides a summary of route settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "Monitor Route"      = $MonitorRouterIPv4.count
-                        "Static Route"       = $Statics.count
-                        "Policy Based Route" = $PolicyBasedRouting.count
+                        "Monitor Route"      = @($MonitorRouterIPv4).count
+                        "Static Route"       = @($Statics).count
+                        "Policy Based Route" = @($PolicyBasedRouting).count
                     }
 
                     $TableParams = @{
