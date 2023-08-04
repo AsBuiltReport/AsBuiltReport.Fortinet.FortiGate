@@ -215,6 +215,10 @@ function Get-AbrFgtSystem {
                         $trustedHosts += $admin.trusthost9
                         $trustedHosts += $admin.trusthost10
 
+                        $trustedHosts = $trustedHosts -replace "0.0.0.0 0.0.0.0", "" #Remove 'All Network'
+                        if($trustedHosts -eq ""){
+                            $trustedHosts = "All" #TODO: Add Health Warning !
+                        }
                         $OutObj += [pscustomobject]@{
                             "Name"          = $admin.name
                             "Profile"       = $admin.accprofile
