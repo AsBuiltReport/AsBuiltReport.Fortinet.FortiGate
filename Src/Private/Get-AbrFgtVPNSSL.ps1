@@ -39,8 +39,8 @@ function Get-AbrFgtVPNSSL {
                     Paragraph "The following section provides a summary of VPN SSL settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "Portal"           = $settings.count
-                        "User (connected)" = $users.Count
+                        "Portal"           = @($settings).count
+                        "User (connected)" = @($users).Count
                     }
 
                     $TableParams = @{
