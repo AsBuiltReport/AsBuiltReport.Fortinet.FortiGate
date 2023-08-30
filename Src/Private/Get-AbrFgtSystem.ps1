@@ -204,17 +204,21 @@ function Get-AbrFgtSystem {
 
                     foreach ($admin in $Admins) {
 
-                        $trustedHosts = $admin.trusthost1
-                        $trustedHosts += $admin.trusthost2
-                        $trustedHosts += $admin.trusthost3
-                        $trustedHosts += $admin.trusthost4
-                        $trustedHosts += $admin.trusthost5
-                        $trustedHosts += $admin.trusthost6
-                        $trustedHosts += $admin.trusthost7
-                        $trustedHosts += $admin.trusthost8
-                        $trustedHosts += $admin.trusthost9
-                        $trustedHosts += $admin.trusthost10
+                        $trustedHosts = $admin.trusthost1 + "`n"
+                        $trustedHosts += $admin.trusthost2 + "`n"
+                        $trustedHosts += $admin.trusthost3 +  "`n"
+                        $trustedHosts += $admin.trusthost4 +  "`n"
+                        $trustedHosts += $admin.trusthost5 +  "`n"
+                        $trustedHosts += $admin.trusthost6 + "`n"
+                        $trustedHosts += $admin.trusthost7 +  "`n"
+                        $trustedHosts += $admin.trusthost8 +  "`n"
+                        $trustedHosts += $admin.trusthost9 + "`n"
+                        $trustedHosts += $admin.trusthost10 +  "`n"
 
+                        $trustedHosts = $trustedHosts -replace "0.0.0.0 0.0.0.0`n", "" #Remove 'All Network'
+                        if($trustedHosts -eq ""){
+                            $trustedHosts = "All" #TODO: Add Health Warning !
+                        }
                         $OutObj += [pscustomobject]@{
                             "Name"          = $admin.name
                             "Profile"       = $admin.accprofile
@@ -226,7 +230,7 @@ function Get-AbrFgtSystem {
                     $TableParams = @{
                         Name         = "Administrator"
                         List         = $false
-                        ColumnWidths = 25, 25, 25, 25
+                        ColumnWidths = 25, 25, 35, 15
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -238,6 +242,11 @@ function Get-AbrFgtSystem {
             }
 
             $interfaces = Get-FGTSystemInterface
+
+            #By 'API' design, it is always return all interfaces (not filtering by vdom)
+            if ($null -ne $Options.vdom) {
+                $interfaces = $interfaces | Where-Object {$_.vdom -eq $Options.vdom }
+            }
 
             if ($interfaces -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'Interfaces' {

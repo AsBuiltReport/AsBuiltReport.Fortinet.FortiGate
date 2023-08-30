@@ -43,11 +43,11 @@ function Get-AbrFgtUser {
                     Paragraph "The following section provides a summary of user settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "User"   = $Users.count
-                        "Group"  = $Groups.count
-                        "LDAP"   = $LDAPS.count
-                        "RADIUS" = $RADIUS.count
-                        "SAML"   = $SAML.count
+                        "User"   = @($Users).count
+                        "Group"  = @($Groups).count
+                        "LDAP"   = @($LDAPS).count
+                        "RADIUS" = @($RADIUS).count
+                        "SAML"   = @($SAML).count
                     }
 
                     $TableParams = @{
