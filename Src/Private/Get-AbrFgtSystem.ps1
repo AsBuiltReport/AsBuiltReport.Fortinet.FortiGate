@@ -244,7 +244,7 @@ function Get-AbrFgtSystem {
             $interfaces = Get-FGTSystemInterface
 
             #By 'API' design, it is always return all interfaces (not filtering by vdom)
-            if ($null -ne $Options.vdom) {
+            if ("" -ne $Options.vdom) {
                 $interfaces = $interfaces | Where-Object {$_.vdom -eq $Options.vdom }
             }
 
