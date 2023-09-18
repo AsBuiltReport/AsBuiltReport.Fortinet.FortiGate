@@ -55,9 +55,7 @@ function Get-AbrFgtSDWAN {
 
                     $OutObj | Table @TableParams
                 }
-            }
 
-            if ($sdwan -and $InfoLevel.sdwan -ge 1) {
                 Section -Style Heading3 'SD-WAN Zone' {
                     $OutObj = @()
 
@@ -80,26 +78,25 @@ function Get-AbrFgtSDWAN {
 
                     $OutObj | Table @TableParams
                 }
-            }
-<#
-            if ($Statics -and $InfoLevel.sdwan -ge 1) {
-                Section -Style Heading3 'Static sdwan' {
+
+                Section -Style Heading3 'SD-WAN Members' {
                     $OutObj = @()
 
-                    foreach ($static in $statics) {
+                    foreach ($member in $sdwan.members) {
                         $OutObj += [pscustomobject]@{
-                            "Status"                   = $static.status
-                            "Destination"              = $static.dst
-                            "Gateway"                  = $static.gateway
-                            "Interface"                = $static.device
-                            "Distance/Weight/Priority" = "$($static.distance) / $($static.weight) / $($static.priority)"
+                            "Num"       = $member.'seq-num'
+                            "Interface" = $member.interface
+                            "Zone"      = $member.zone
+                            "Gateway"   = $member.gateway
+                            "Status"    = $member.status
+                            "Comment"   = $member.comment
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "Static sdwan"
+                        Name         = "SD-WAN Members"
                         List         = $false
-                        ColumnWidths = 15, 25, 20, 20, 20
+                        ColumnWidths = 10, 15, 20, 20, 10, 25
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -110,41 +107,26 @@ function Get-AbrFgtSDWAN {
                 }
             }
 
-            if ($PolicyBasedRouting -and $InfoLevel.sdwan -ge 1) {
-                Section -Style Heading3 'Policy Based sdwan' {
+                Section -Style Heading3 'SD-WAN Health Check' {
                     $OutObj = @()
 
-                    foreach ($pbr in $PolicyBasedRouting) {
+                    foreach ($hc in $sdwan.'health-check') {
 
-                        if ($pbr.src) {
-                            $src = $pbr.src.subnet
-                        }
-                        else {
-                            $src = $pbr.srcaddr.name
-                        }
-                        if ($pbr.dst) {
-                            $dst = $pbr.dst.subnet
-                        }
-                        else {
-                            $dst = $pbr.dstaddr.name
-                        }
 
                         $OutObj += [pscustomobject]@{
-                            "Status"      = $pbr.status
-                            "Protocol"    = $pbr.protocol
-                            "From"        = $pbr.'input-device'.name
-                            "To"          = $pbr.'ouput-device'
-                            "Source"      = $src
-                            "Destination" = $dst
-                            "Gateway"     = $pbr.gateway
-                            "Action"      = $pbr.action
+                            "Name"                  = $hc.name
+                            "Detect Mode"           = $hc.'detect-mode'
+                            "Protocol"              = $hc.protocol
+                            "Server"                = $hc.server -replace('"','')
+                            "Update Static Route"   = $hc.'update-static-route'
+                            "Members"               = $hc.members.'seq-num'
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "Policy Based sdwan"
+                        Name         = "SD-WAN Health Check"
                         List         = $false
-                        ColumnWidths = 10, 12, 13, 13, 13, 13, 13, 13
+                        ColumnWidths =  14, 20, 20, 20, 15, 11
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -153,8 +135,7 @@ function Get-AbrFgtSDWAN {
 
                     $OutObj | Table @TableParams
                 }
-            }
-  #>
+
         }
 
     }
