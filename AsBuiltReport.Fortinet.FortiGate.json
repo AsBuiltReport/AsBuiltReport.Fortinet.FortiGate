@@ -17,6 +17,7 @@
         "FortiCare": 1,
         "System": 1,
         "Route": 1,
+        "SDWAN": 1,
         "Firewall": 1,
         "User": 2,
         "VPNIPsec": 2,
