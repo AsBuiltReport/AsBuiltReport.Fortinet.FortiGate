@@ -37,14 +37,37 @@ function Get-AbrFgtSDWAN {
                     Paragraph "The following section provides a summary of SD-WAN settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "Status"                = $sdwan.'status'
-                        "Load Balance Mode"     = $sdwan.'load-balance-mode'
-                        "Neighbor Hold Down"    = $sdwan.'neighbor-hold-down'
-                        "Fail Detect "          = $sdwan.'fail-detect'
+                        "Zone"          = @($sdwan.zone).count
+                        "Member"        = @($sdwan.members).count
+                        "Health Check"  = @($sdwan.'health-check').count
+                        "Rules"         = @($sdwan.'service').count
                     }
 
                     $TableParams = @{
                         Name         = "Summary"
+                        List         = $true
+                        ColumnWidths = 50, 50
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+
+                Section -Style Heading3 'Configuration' {
+                    Paragraph "The following section provides configuration of SD-WAN settings."
+                    BlankLine
+                    $OutObj = [pscustomobject]@{
+                        "Status"                = $sdwan.'status'
+                        "Load Balance Mode"     = $sdwan.'load-balance-mode'
+                        "Neighbor Hold Down"    = $sdwan.'neighbor-hold-down'
+                        "Fail Detect"           = $sdwan.'fail-detect'
+                    }
+
+                    $TableParams = @{
+                        Name         = "Configuration"
                         List         = $true
                         ColumnWidths = 50, 50
                     }
