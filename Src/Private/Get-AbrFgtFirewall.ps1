@@ -134,13 +134,14 @@ function Get-AbrFgtFirewall {
                             "Value"     = $value
                             "Interface" = $add.'associated-interface'
                             "Comment"   = $add.comment
+                            "ref"       = $add.q_ref
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Address"
                         List         = $false
-                        ColumnWidths = 25, 10, 30, 10, 25
+                        ColumnWidths = 25, 10, 30, 10, 20, 5
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -161,13 +162,14 @@ function Get-AbrFgtFirewall {
                             "Name"    = $grp.name
                             "Member"  = $grp.member.name -join ", "
                             "Comment" = $grp.comment
+                            "Ref"     = $grp.q_ref
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Address Group"
                         List         = $false
-                        ColumnWidths = 20, 60, 20
+                        ColumnWidths = 20, 55, 20, 5
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -193,13 +195,14 @@ function Get-AbrFgtFirewall {
                             "Source Start IP" = $ip.'source-startip'
                             "Source End IP"   = $ip.'source-endip'
                             "Comments"        = $ip.comments
+                            "Ref"             = $ip.q_ref
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Virtual IP"
                         List         = $false
-                        ColumnWidths = 14, 14, 12, 12, 12, 12, 12, 12
+                        ColumnWidths = 14, 14, 12, 11, 11, 11, 11, 11, 5
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -225,13 +228,14 @@ function Get-AbrFgtFirewall {
                             "External Port" = $virtualip.'extport'
                             "Mapped Port"   = $virtualip.'mappedport'
                             "Comment"       = $virtualip.comment
+                            "Ref"           = $virtualip.q_ref
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Virtual IP"
                         List         = $false
-                        ColumnWidths = 14, 14, 12, 12, 12, 12, 12, 12
+                        ColumnWidths = 14, 14, 12, 11, 11, 11, 11, 11, 5
                     }
 
                     if ($Report.ShowTableCaptions) {
