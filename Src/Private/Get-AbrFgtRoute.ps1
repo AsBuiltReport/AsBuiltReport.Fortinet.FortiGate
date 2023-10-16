@@ -100,11 +100,31 @@ function Get-AbrFgtRoute {
                     $OutObj = @()
 
                     foreach ($static in $statics) {
+
+                        #if using Address object on static route Destination, display the named object
+                        if ($static.dstaddr) {
+                            $dst = $static.dstaddr
+                        }
+                        #if using Internet Service (ISDB)...
+                        elseif ($static.'internet-service') {
+                            #TODO: add Lookup, only display the id...
+                            $dst = $static.'internet-service'
+                        } else {
+                            $dst = $static.dst
+                        }
+
+                        #when Blackhole is enable, display blackhole for interface
+                        if ($static.blackhole -eq "enable") {
+                            $interface = "Blackhole"
+                        } else {
+                            $interface = $static.device
+                        }
+
                         $OutObj += [pscustomobject]@{
                             "Status"                   = $static.status
-                            "Destination"              = $static.dst
+                            "Destination"              = $dst
                             "Gateway"                  = $static.gateway
-                            "Interface"                = $static.device
+                            "Interface"                = $interface
                             "Distance/Weight/Priority" = "$($static.distance) / $($static.weight) / $($static.priority)"
                         }
                     }
