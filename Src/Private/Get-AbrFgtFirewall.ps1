@@ -41,48 +41,36 @@ function Get-AbrFgtFirewall {
                     Paragraph "The following section provides a summary of firewall settings."
                     BlankLine
                     $address_count = @($Address).count
+                    $address_text = "$address_count"
                     if ($address_count) {
                         $address_no_ref = ($address | Where-Object { $_.q_ref -eq 0 }).count
                         $address_no_ref_pourcentage = [math]::Round(($address_no_ref / $address_count * 100), 2)
+                        $address_text += " (Not use: $address_no_ref / $address_no_ref_pourcentage%)"
                     }
-                    else {
-                        $address_no_ref = 0
-                        $address_no_ref_pourcentage = 100
-                    }
-                    $address_text = "$address_count (Not use: $address_no_ref / $address_no_ref_pourcentage%)"
 
                     $group_count = @($group).count
+                    $group_text = "$group_count"
                     if ($group_count) {
                         $group_no_ref = ($group | Where-Object { $_.q_ref -eq 0 }).count
                         $group_no_ref_pourcentage = [math]::Round(($group_no_ref / $group_count * 100), 2)
+                        $group_text += " (Not use: $group_no_ref / $group_no_ref_pourcentage%)"
                     }
-                    else {
-                        $group_no_ref = 0
-                        $group_no_ref_pourcentage = 100
-                    }
-                    $group_text = "$group_count (Not use: $group_no_ref / $group_no_ref_pourcentage%)"
 
                     $ippool_count = @($ippool).count
+                    $ippool_text = "$ippool_count"
                     if ($ippool_count) {
                         $ippool_no_ref = ($ippool | Where-Object { $_.q_ref -eq 0 }).count
                         $ippool_no_ref_pourcentage = [math]::Round(($ippool_no_ref / $ippool_count * 100), 2)
+                        $ippool_text += " (Not use: $ippool_no_ref / $ippool_no_ref_pourcentage%)"
                     }
-                    else {
-                        $ippool_no_ref = 0
-                        $ippool_no_ref_pourcentage = 100
-                    }
-                    $ippool_text = "$ippool_count (Not use: $ippool_no_ref / $ippool_no_ref_pourcentage%)"
 
                     $vip_count = @($vip).count
+                    $vip_text = "$vip_count"
                     if ($vip_count) {
                         $vip_no_ref = ($vip | Where-Object { $_.q_ref -eq 0 }).count
                         $vip_no_ref_pourcentage = [math]::Round(($vip_no_ref / $vip_count * 100), 2)
+                        $vip_text += " (Not use: $vip_no_ref / $vip_no_ref_pourcentage%)"
                     }
-                    else {
-                        $vip_no_ref = 0
-                        $vip_no_ref_pourcentage = 100
-                    }
-                    $vip_text = "$vip_count (Not use: $vip_no_ref / $vip_no_ref_pourcentage%)"
 
                     $OutObj = [pscustomobject]@{
                         "Address"    = $address_text
