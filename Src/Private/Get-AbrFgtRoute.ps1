@@ -91,9 +91,18 @@ function Get-AbrFgtRoute {
                     $OutObj = @()
 
                     foreach ($static in $statics) {
+
+                        #if using Address object on static route Destination, display the named object
+                        if ($static.dstaddr) {
+                            $dst = $static.dstaddr
+                        }
+                        else {
+                            $dst = $static.dst
+                        }
+
                         $OutObj += [pscustomobject]@{
                             "Status"                   = $static.status
-                            "Destination"              = $static.dst
+                            "Destination"              = $dst
                             "Gateway"                  = $static.gateway
                             "Interface"                = $static.device
                             "Distance/Weight/Priority" = "$($static.distance) / $($static.weight) / $($static.priority)"
