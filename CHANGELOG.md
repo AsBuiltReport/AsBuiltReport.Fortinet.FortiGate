@@ -1,5 +1,9 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+## [0.2.2] - 2023-10-03
+
+- Interface(System): Fix if when no interface is specified [#53](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/53)
+
 ## [0.2.1] - 2023-08-21
 
 ### Fixed
