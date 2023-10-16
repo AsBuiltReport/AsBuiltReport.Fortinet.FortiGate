@@ -104,11 +104,18 @@ function Get-AbrFgtRoute {
                             $dst = $static.dst
                         }
 
+                        #when Blackhole is enable, display blackhole for interface
+                        if ($static.blackhole -eq "enable") {
+                            $interface = "Blackhole"
+                        } else {
+                            $interface = $static.device
+                        }
+
                         $OutObj += [pscustomobject]@{
                             "Status"                   = $static.status
                             "Destination"              = $dst
                             "Gateway"                  = $static.gateway
-                            "Interface"                = $static.device
+                            "Interface"                = $interface
                             "Distance/Weight/Priority" = "$($static.distance) / $($static.weight) / $($static.priority)"
                         }
                     }
