@@ -63,11 +63,20 @@ function Get-AbrFgtRoute {
                     $OutObj = @()
 
                     foreach ($route in $MonitorRouterIPv4) {
+
+                        #when there is blackhole, interface is set to Null
+                        if ("Null" -eq $route.interface) {
+                            $interface = "Blackhole"
+                        }
+                        else {
+                            $interface = $route.interface
+                        }
+
                         $OutObj += [pscustomobject]@{
                             "Type"                     = $route.type
                             "IP/Mask"                  = $route.ip_mask
                             "Gateway"                  = $route.gateway
-                            "Interface"                = $route.interface
+                            "Interface"                = $interface
                             "Distance/Metric/Priority" = "$($route.distance) / $($route.metric) / $($route.priority)"
                         }
                     }
