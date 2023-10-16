@@ -30,22 +30,60 @@ function Get-AbrFgtFirewall {
             Paragraph "The following section details firewall settings configured on FortiGate."
             BlankLine
 
-            $Address = Get-FGTFirewallAddress
-            $Group = Get-FGTFirewallAddressGroup
-            $IPPool = Get-FGTFirewallIPPool
-            $VIP = Get-FGTFirewallVip
-            $Policy = Get-FGTFirewallPolicy
+            $Address = Get-FGTFirewallAddress -meta
+            $Group = Get-FGTFirewallAddressGroup -meta
+            $IPPool = Get-FGTFirewallIPPool -meta
+            $VIP = Get-FGTFirewallVip -meta
+            $Policy = Get-FGTFirewallPolicy -meta
 
             if ($InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Summary' {
                     Paragraph "The following section provides a summary of firewall settings."
                     BlankLine
+                    $address_count = @($Address).count
+                    $address_text = "$address_count"
+                    if ($address_count) {
+                        $address_no_ref = ($address | Where-Object { $_.q_ref -eq 0 }).count
+                        $address_no_ref_pourcentage = [math]::Round(($address_no_ref / $address_count * 100), 2)
+                        $address_text += " (Not use: $address_no_ref / $address_no_ref_pourcentage%)"
+                    }
+
+                    $group_count = @($group).count
+                    $group_text = "$group_count"
+                    if ($group_count) {
+                        $group_no_ref = ($group | Where-Object { $_.q_ref -eq 0 }).count
+                        $group_no_ref_pourcentage = [math]::Round(($group_no_ref / $group_count * 100), 2)
+                        $group_text += " (Not use: $group_no_ref / $group_no_ref_pourcentage%)"
+                    }
+
+                    $ippool_count = @($ippool).count
+                    $ippool_text = "$ippool_count"
+                    if ($ippool_count) {
+                        $ippool_no_ref = ($ippool | Where-Object { $_.q_ref -eq 0 }).count
+                        $ippool_no_ref_pourcentage = [math]::Round(($ippool_no_ref / $ippool_count * 100), 2)
+                        $ippool_text += " (Not use: $ippool_no_ref / $ippool_no_ref_pourcentage%)"
+                    }
+
+                    $vip_count = @($vip).count
+                    $vip_text = "$vip_count"
+                    if ($vip_count) {
+                        $vip_no_ref = ($vip | Where-Object { $_.q_ref -eq 0 }).count
+                        $vip_no_ref_pourcentage = [math]::Round(($vip_no_ref / $vip_count * 100), 2)
+                        $vip_text += " (Not use: $vip_no_ref / $vip_no_ref_pourcentage%)"
+                    }
+                    $policy_count = @($policy).count
+                    $policy_text = "$policy_count"
+                    if ($policy_count) {
+                        $policy_disable = ($policy | Where-Object {$_.status -eq "disable"}).count
+                        $policy_text += " (Disabled: $policy_disable)"
+                    }
+
                     $OutObj = [pscustomobject]@{
-                        "Address"    = @($Address).count
-                        "Group"      = @($Group).count
-                        "IP Pool"    = @($IPPool).count
-                        "Virtual IP" = @($VIP).count
-                        "Policy"     = @($Policy).count
+                        "Address"    = $address_text
+                        "Group"      = $group_text
+                        "IP Pool"    = $ippool_text
+                        "Virtual IP" = $vip_text
+                        "Policy"     = $policy_text
                     }
 
                     $TableParams = @{
@@ -90,13 +128,14 @@ function Get-AbrFgtFirewall {
                             "Value"     = $value
                             "Interface" = $add.'associated-interface'
                             "Comment"   = $add.comment
+                            "ref"       = $add.q_ref
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Address"
                         List         = $false
-                        ColumnWidths = 25, 10, 30, 10, 25
+                        ColumnWidths = 25, 10, 30, 10, 20, 5
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -117,13 +156,14 @@ function Get-AbrFgtFirewall {
                             "Name"    = $grp.name
                             "Member"  = $grp.member.name -join ", "
                             "Comment" = $grp.comment
+                            "Ref"     = $grp.q_ref
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Address Group"
                         List         = $false
-                        ColumnWidths = 20, 60, 20
+                        ColumnWidths = 20, 55, 20, 5
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -149,13 +189,14 @@ function Get-AbrFgtFirewall {
                             "Source Start IP" = $ip.'source-startip'
                             "Source End IP"   = $ip.'source-endip'
                             "Comments"        = $ip.comments
+                            "Ref"             = $ip.q_ref
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Virtual IP"
                         List         = $false
-                        ColumnWidths = 14, 14, 12, 12, 12, 12, 12, 12
+                        ColumnWidths = 14, 14, 12, 11, 11, 11, 11, 11, 5
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -181,13 +222,14 @@ function Get-AbrFgtFirewall {
                             "External Port" = $virtualip.'extport'
                             "Mapped Port"   = $virtualip.'mappedport'
                             "Comment"       = $virtualip.comment
+                            "Ref"           = $virtualip.q_ref
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Virtual IP"
                         List         = $false
-                        ColumnWidths = 14, 14, 12, 12, 12, 12, 12, 12
+                        ColumnWidths = 14, 14, 12, 11, 11, 11, 11, 11, 5
                     }
 
                     if ($Report.ShowTableCaptions) {
