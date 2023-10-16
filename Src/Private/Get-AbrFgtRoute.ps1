@@ -96,7 +96,11 @@ function Get-AbrFgtRoute {
                         if ($static.dstaddr) {
                             $dst = $static.dstaddr
                         }
-                        else {
+                        #if using Internet Service (ISDB)...
+                        elseif ($static.'internet-service') {
+                            #TODO: add Lookup, only display the id...
+                            $dst = $static.'internet-service'
+                        } else {
                             $dst = $static.dst
                         }
 
