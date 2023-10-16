@@ -71,13 +71,19 @@ function Get-AbrFgtFirewall {
                         $vip_no_ref_pourcentage = [math]::Round(($vip_no_ref / $vip_count * 100), 2)
                         $vip_text += " (Not use: $vip_no_ref / $vip_no_ref_pourcentage%)"
                     }
+                    $policy_count = @($policy).count
+                    $policy_text = "$policy_count"
+                    if ($policy_count) {
+                        $policy_disable = ($policy | Where-Object {$_.status -eq "disable"}).count
+                        $policy_text += " (Disabled: $policy_disable)"
+                    }
 
                     $OutObj = [pscustomobject]@{
                         "Address"    = $address_text
                         "Group"      = $group_text
                         "IP Pool"    = $ippool_text
                         "Virtual IP" = $vip_text
-                        "Policy"     = @($Policy).count
+                        "Policy"     = $policy_text
                     }
 
                     $TableParams = @{
