@@ -2,7 +2,7 @@
 function Get-AbrFgtSDWAN {
     <#
     .SYNOPSIS
-        Used by As Built Report to returns SD WAN  settings.
+        Used by As Built Report to returns SD-WAN settings.
     .DESCRIPTION
         Documents the configuration of Fortinet FortiGate in Word/HTML/Text formats using PScribo.
     .NOTES
