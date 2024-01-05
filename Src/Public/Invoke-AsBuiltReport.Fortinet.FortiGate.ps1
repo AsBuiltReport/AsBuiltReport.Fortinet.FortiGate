@@ -54,6 +54,10 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
                     Get-AbrFgtRoute
                 }
 
+                if ($InfoLevel.SDWAN.PSObject.Properties.Value -ne 0) {
+                    Get-AbrFgtSDWAN
+                }
+
                 if ($InfoLevel.Firewall.PSObject.Properties.Value -ne 0) {
                     Get-AbrFgtFirewall
                 }
