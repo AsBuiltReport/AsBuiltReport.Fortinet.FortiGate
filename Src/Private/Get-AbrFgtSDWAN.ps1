@@ -161,33 +161,35 @@ function Get-AbrFgtSDWAN {
                         $OutObj | Table @TableParams
                     }
 
-                    Section -Style Heading3 'SD-WAN Rule' {
-                        $OutObj = @()
+                    if ($sdwan.service) {
+                        Section -Style Heading3 'SD-WAN Rule' {
+                            $OutObj = @()
 
-                        foreach ($service in $sdwan.service) {
+                            foreach ($service in $sdwan.service) {
 
-                            $OutObj += [pscustomobject]@{
-                                "Name"             = $service.name
-                                "Source"           = $service.src.name
-                                "Destination"      = $service.dst.name
-                                "Mode"             = $service.mode
-                                "Health Check"     = $service.'health-check'.name
-                                "Priority Members" = $service.'priority-members'.'seq-num'
-                                "Status"           = $service.status
+                                $OutObj += [pscustomobject]@{
+                                    "Name"             = $service.name
+                                    "Source"           = $service.src.name
+                                    "Destination"      = $service.dst.name
+                                    "Mode"             = $service.mode
+                                    "Health Check"     = $service.'health-check'.name
+                                    "Priority Members" = $service.'priority-members'.'seq-num'
+                                    "Status"           = $service.status
+                                }
                             }
-                        }
 
-                        $TableParams = @{
-                            Name         = "SD-WAN Rule"
-                            List         = $false
-                            ColumnWidths = 14, 20, 15, 15, 15, 11, 10
-                        }
+                            $TableParams = @{
+                                Name         = "SD-WAN Rule"
+                                List         = $false
+                                ColumnWidths = 14, 20, 15, 15, 15, 11, 10
+                            }
 
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
 
-                        $OutObj | Table @TableParams
+                            $OutObj | Table @TableParams
+                        }
 
                     }
 
