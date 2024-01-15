@@ -143,25 +143,25 @@ function Get-AbrFgtForticare {
                     }
                 }
                 #>
-                    $BranchUpdateVersion = [version]"$(($firmware.available | Where-Object { $_.major -eq $CurrentVersion.Major -and $_.minor -eq $CurrentVersion.Minor } | Select-Object -First 1).major).$(($firmware.available | Where-Object { $_.major -eq $CurrentVersion.Major -and $_.minor -eq $CurrentVersion.Minor } | Select-Object -First 1).minor).$(($firmware.available | Where-Object { $_.major -eq $CurrentVersion.Major -and $_.minor -eq $CurrentVersion.Minor } | Select-Object -First 1).patch)"
-                    if (($CurrentVersion -lt $FullUpdateVersion) -and ($BranchUpdateVersion -ne $FullUpdateVersion)) {
-                        $upgradePath = "v$($CurrentVersion.Major).$($CurrentVersion.Minor).$($CurrentVersion.Build)"
-                        $major = $CurrentVersion.Major
-                        $minor = $CurrentVersion.Minor
-                        $patch = $CurrentVersion.Build
-                        Do {
-                            $nextFirmware = $firmware_upgrade_paths | Where-Object { $_.from.major -eq $major -and $_.from.minor -eq $minor -and $_.from.patch -eq $patch } | Select-Object -First 1
-                            $major = $nextFirmware.to.major
-                            $minor = $nextFirmware.to.minor
-                            $patch = $nextFirmware.to.patch
-                            $upgradePath = $upgradePath + " -> v$($major).$($minor).$($patch)"
-                        }Until($major -eq $FullUpdateVersion.Major -and $minor -eq $FullUpdateVersion.Minor -and $patch -eq $FullUpdateVersion.Build)
-                        $tab_upgradePath = [pscustomobject]@{
-                            "Installed"    = $($FortiOS.version)
-                            "Update"       = $($FullUpdate.version)
-                            "Upgrade Path" = $upgradePath
-                        }
+                    #$BranchUpdateVersion = [version]"$(($firmware.available | Where-Object { $_.major -eq $CurrentVersion.Major -and $_.minor -eq $CurrentVersion.Minor } | Select-Object -First 1).major).$(($firmware.available | Where-Object { $_.major -eq $CurrentVersion.Major -and $_.minor -eq $CurrentVersion.Minor } | Select-Object -First 1).minor).$(($firmware.available | Where-Object { $_.major -eq $CurrentVersion.Major -and $_.minor -eq $CurrentVersion.Minor } | Select-Object -First 1).patch)"
+                    #if (($CurrentVersion -lt $FullUpdateVersion)) {
+                    $upgradePath = "v$($CurrentVersion.Major).$($CurrentVersion.Minor).$($CurrentVersion.Build)"
+                    $major = $CurrentVersion.Major
+                    $minor = $CurrentVersion.Minor
+                    $patch = $CurrentVersion.Build
+                    Do {
+                        $nextFirmware = $firmware_upgrade_paths | Where-Object { $_.from.major -eq $major -and $_.from.minor -eq $minor -and $_.from.patch -eq $patch } | Select-Object -First 1
+                        $major = $nextFirmware.to.major
+                        $minor = $nextFirmware.to.minor
+                        $patch = $nextFirmware.to.patch
+                        $upgradePath = $upgradePath + " -> v$($major).$($minor).$($patch)"
+                    }Until($major -eq $FullUpdateVersion.Major -and $minor -eq $FullUpdateVersion.Minor -and $patch -eq $FullUpdateVersion.Build)
+                    $tab_upgradePath = [pscustomobject]@{
+                        "Installed"    = $($FortiOS.version)
+                        "Update"       = $($FullUpdate.version)
+                        "Upgrade Path" = $upgradePath
                     }
+                    #}
                 }
             }
             else {
