@@ -105,31 +105,33 @@ function Get-AbrFgtSDWAN {
                         $OutObj | Table @TableParams
                     }
 
-                    Section -Style Heading3 'SD-WAN Members' {
-                        $OutObj = @()
+                    if ($sdwan.members) {
+                        Section -Style Heading3 'SD-WAN Members' {
+                            $OutObj = @()
 
-                        foreach ($member in $sdwan.members) {
-                            $OutObj += [pscustomobject]@{
-                                "Num"       = $member.'seq-num'
-                                "Interface" = $member.interface
-                                "Zone"      = $member.zone
-                                "Gateway"   = $member.gateway
-                                "Status"    = $member.status
-                                "Comment"   = $member.comment
+                            foreach ($member in $sdwan.members) {
+                                $OutObj += [pscustomobject]@{
+                                    "Num"       = $member.'seq-num'
+                                    "Interface" = $member.interface
+                                    "Zone"      = $member.zone
+                                    "Gateway"   = $member.gateway
+                                    "Status"    = $member.status
+                                    "Comment"   = $member.comment
+                                }
                             }
-                        }
 
-                        $TableParams = @{
-                            Name         = "SD-WAN Members"
-                            List         = $false
-                            ColumnWidths = 10, 15, 20, 20, 10, 25
-                        }
+                            $TableParams = @{
+                                Name         = "SD-WAN Members"
+                                List         = $false
+                                ColumnWidths = 10, 15, 20, 20, 10, 25
+                            }
 
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
 
-                        $OutObj | Table @TableParams
+                            $OutObj | Table @TableParams
+                        }
                     }
 
                     Section -Style Heading3 'SD-WAN Health Check' {
