@@ -74,7 +74,7 @@ function Get-AbrFgtFirewall {
                     $policy_count = @($policy).count
                     $policy_text = "$policy_count"
                     if ($policy_count) {
-                        $policy_disable = ($policy | Where-Object {$_.status -eq "disable"}).count
+                        $policy_disable = ($policy | Where-Object { $_.status -eq "disable" }).count
                         $policy_text += " (Disabled: $policy_disable)"
                     }
 
@@ -242,35 +242,95 @@ function Get-AbrFgtFirewall {
 
             if ($Policy -and $InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Policy' {
-                    $OutObj = @()
+                    if ($Options.Label) {
+                        $OutObj = @()
 
-                    foreach ($rule in $Policy) {
+                        foreach ($rule in $Policy) {
 
-                        $OutObj += [pscustomobject]@{
-                            "Name"        = $rule.name
-                            "From"        = $rule.srcintf.name -join ", "
-                            "To"          = $rule.dstintf.name -join ", "
-                            "Source"      = $rule.srcaddr.name -join ", "
-                            "Destination" = $rule.dstaddr.name -join ", "
-                            "Service"     = $rule.service.name -join ", "
-                            "Action"      = $rule.action
-                            "NAT"         = $rule.nat
-                            "Log"         = $rule.logtraffic
-                            "Comments"    = $rule.comments
+                            # There is a global-label (Sequence), Create a new table
+                            if ($rule.'global-label') {
+                                #If there is already label before add the end of table
+                                if ($label) {
+                                    Section -Style NOTOCHeading4 -ExcludeFromTOC  "Policy - $label" {
+                                        $TableParams = @{
+                                            Name         = "Policy - $label"
+                                            List         = $false
+                                            ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+                                        }
+
+                                        if ($Report.ShowTableCaptions) {
+                                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                                        }
+
+                                        $OutObj | Table @TableParams
+                                    }
+                                }
+                                #Reset the table and set label for next table
+                                $OutObj = @()
+                                $label = $rule.'global-label'
+                            }
+
+                            $OutObj += [pscustomobject]@{
+                                "Name"        = $rule.name
+                                "From"        = $rule.srcintf.name -join ", "
+                                "To"          = $rule.dstintf.name -join ", "
+                                "Source"      = $rule.srcaddr.name -join ", "
+                                "Destination" = $rule.dstaddr.name -join ", "
+                                "Service"     = $rule.service.name -join ", "
+                                "Action"      = $rule.action
+                                "NAT"         = $rule.nat
+                                "Log"         = $rule.logtraffic
+                                "Comments"    = $rule.comments
+                            }
+                        }
+
+                        #last Table
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC  "Policy - $label" {
+                            $TableParams = @{
+                                Name         = "Policy - $label"
+                                List         = $false
+                                ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
                         }
                     }
+                    else {
 
-                    $TableParams = @{
-                        Name         = "Policy"
-                        List         = $false
-                        ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+                        $OutObj = @()
+
+                        foreach ($rule in $Policy) {
+
+                            $OutObj += [pscustomobject]@{
+                                "Name"        = $rule.name
+                                "From"        = $rule.srcintf.name -join ", "
+                                "To"          = $rule.dstintf.name -join ", "
+                                "Source"      = $rule.srcaddr.name -join ", "
+                                "Destination" = $rule.dstaddr.name -join ", "
+                                "Service"     = $rule.service.name -join ", "
+                                "Action"      = $rule.action
+                                "NAT"         = $rule.nat
+                                "Log"         = $rule.logtraffic
+                                "Comments"    = $rule.comments
+                            }
+                        }
+
+                        $TableParams = @{
+                            Name         = "Policy"
+                            List         = $false
+                            ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Table @TableParams
                     }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
                 }
             }
 
