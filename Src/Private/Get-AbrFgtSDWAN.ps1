@@ -134,33 +134,35 @@ function Get-AbrFgtSDWAN {
                         }
                     }
 
-                    Section -Style Heading3 'SD-WAN Health Check' {
-                        $OutObj = @()
+                    if ($sdwan.'health-check') {
+                        Section -Style Heading3 'SD-WAN Health Check' {
+                            $OutObj = @()
 
-                        foreach ($hc in $sdwan.'health-check') {
+                            foreach ($hc in $sdwan.'health-check') {
 
 
-                            $OutObj += [pscustomobject]@{
-                                "Name"                = $hc.name
-                                "Detect Mode"         = $hc.'detect-mode'
-                                "Protocol"            = $hc.protocol
-                                "Server"              = $hc.server -replace ('"', '')
-                                "Update Static Route" = $hc.'update-static-route'
-                                "Members"             = $hc.members.'seq-num'
+                                $OutObj += [pscustomobject]@{
+                                    "Name"                = $hc.name
+                                    "Detect Mode"         = $hc.'detect-mode'
+                                    "Protocol"            = $hc.protocol
+                                    "Server"              = $hc.server -replace ('"', '')
+                                    "Update Static Route" = $hc.'update-static-route'
+                                    "Members"             = $hc.members.'seq-num'
+                                }
                             }
-                        }
 
-                        $TableParams = @{
-                            Name         = "SD-WAN Health Check"
-                            List         = $false
-                            ColumnWidths = 14, 20, 20, 20, 15, 11
-                        }
+                            $TableParams = @{
+                                Name         = "SD-WAN Health Check"
+                                List         = $false
+                                ColumnWidths = 14, 20, 20, 20, 15, 11
+                            }
 
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
 
-                        $OutObj | Table @TableParams
+                            $OutObj | Table @TableParams
+                        }
                     }
 
                     if ($sdwan.service) {
