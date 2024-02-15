@@ -241,6 +241,106 @@ function Get-AbrFgtFirewall {
             }
 
             if ($Policy -and $InfoLevel.Firewall -ge 1) {
+                Section -Style Heading3 'Policy Summary' {
+                    Paragraph "The following section provides a policy summary of firewall settings."
+                    BlankLine
+                    $policy_count = @($Policy).count
+
+                    $policy_status = @($Policy | Where-Object { $_.status -eq 'enable' }).count
+                    $status_text = "$policy_status"
+                    if ($policy_count) {
+                        $status_pourcentage = [math]::Round(($policy_status / $policy_count * 100), 2)
+                        $status_text += " ($status_pourcentage%)"
+                    }
+
+                    $policy_deny = @($Policy | Where-Object { $_.action -eq 'deny' }).count
+                    $deny_text = "$policy_deny"
+                    if ($policy_count) {
+                        $deny_pourcentage = [math]::Round(($policy_deny / $policy_count * 100), 2)
+                        $deny_text += " ($deny_pourcentage%)"
+                    }
+
+                    $policy_nat = @($Policy | Where-Object { $_.nat -eq 'enable' }).count
+                    $nat_text = "$policy_nat"
+                    if ($policy_count) {
+                        $nat_pourcentage = [math]::Round(($policy_nat / $policy_count * 100), 2)
+                        $nat_text += " ($nat_pourcentage%)"
+                    }
+
+                    $policy_log_all = @($Policy | Where-Object { $_.logtraffic -eq 'all' }).count
+                    $log_text = "All: $policy_log_all"
+                    if ($policy_count) {
+                        $log_pourcentage = [math]::Round(($policy_log_all / $policy_count * 100), 2)
+                        $log_text += " ($log_pourcentage%)"
+                    }
+
+                    $policy_log_utm = @($Policy | Where-Object { $_.logtraffic -eq 'utm' }).count
+                    $log_text += " UTM: $policy_log_utm"
+                    if ($policy_count) {
+                        $log_pourcentage = [math]::Round(($policy_log_utm / $policy_count * 100), 2)
+                        $log_text += " ($log_pourcentage%)"
+                    }
+
+                    $policy_log_disable = @($Policy | Where-Object { $_.logtraffic -eq 'disable' }).count
+                    $log_text += " Disable: $policy_log_disable"
+                    if ($policy_count) {
+                        $log_pourcentage = [math]::Round(($policy_log_disable / $policy_count * 100), 2)
+                        $log_text += " ($log_pourcentage%)"
+                    }
+
+                    $policy_unnamed = @($Policy | Where-Object { $_.name -eq '' }).count
+                    $unnamed_text = "$policy_unnamed"
+                    if ($policy_count) {
+                        $unnamed_pourcentage = [math]::Round(($policy_unnamed / $policy_count * 100), 2)
+                        $unnamed_text += " ($unnamed_pourcentage%)"
+                    }
+
+                    $policy_comments = @($Policy | Where-Object { $_.comments -ne '' }).count
+                    $comments_text = "$policy_comments"
+                    if ($policy_count) {
+                        $comments_pourcentage = [math]::Round(($policy_comments / $policy_count * 100), 2)
+                        $comments_text += " ($comments_pourcentage%)"
+                    }
+
+                    $policy_comments = @($Policy | Where-Object { $_.comments -ne '' }).count
+                    $comments_text = "$policy_comments"
+                    if ($policy_count) {
+                        $comments_pourcentage = [math]::Round(($policy_comments / $policy_count * 100), 2)
+                        $comments_text += " ($comments_pourcentage%)"
+                    }
+
+                    $policy_no_inspection = @($Policy | Where-Object { $_.'ssl-ssh-profile' -eq '' -or $_.'ssl-ssh-profile' -eq 'no-inspection' }).count
+                    $policy_inspection = $policy_count - $policy_no_inspection
+                    $inspection_text = "$policy_inspection"
+                    if ($policy_count) {
+                        $inspection_pourcentage = [math]::Round(($policy_inspection / $policy_count * 100), 2)
+                        $inspection_text += " ($inspection_pourcentage%)"
+                    }
+
+                    $OutObj = [pscustomobject]@{
+                        "Policy"             = $policy_count
+                        "Enabled"            = $status_text
+                        "Deny"               = $deny_text
+                        "NAT"                = $nat_text
+                        "Logging"            = $log_text
+                        "Unnamed"            = $unnamed_text
+                        "Comments"           = $comments_text
+                        "SSH/SSH Inspection" = $inspection_text
+                    }
+
+                    $TableParams = @{
+                        Name         = "Policy Summary"
+                        List         = $true
+                        ColumnWidths = 50, 50
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+
                 Section -Style Heading3 'Policy' {
                     if ($Options.Label) {
                         $OutObj = @()
