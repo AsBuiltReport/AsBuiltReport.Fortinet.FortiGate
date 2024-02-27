@@ -242,7 +242,9 @@ function Get-AbrFgtFirewall {
 
             if ($Policy -and $InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Policy' {
-                    if ($Options.Label) {
+
+                    #Policy With Sequence Grouping (Global Label)
+                    if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "sequencegrouping" ) {
                         $OutObj = @()
 
                         foreach ($rule in $Policy) {
@@ -299,7 +301,9 @@ function Get-AbrFgtFirewall {
                             $OutObj | Table @TableParams
                         }
                     }
-                    else {
+
+                    #Policy sorted by default (id)
+                    if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "normal" ) {
 
                         $OutObj = @()
 
