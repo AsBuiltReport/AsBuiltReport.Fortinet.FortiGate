@@ -242,9 +242,10 @@ function Get-AbrFgtFirewall {
 
             if ($Policy -and $InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Policy' {
-
+                    #get Sequence Grouping (global-label) if there is no label don't display by Sequence Grouping... (it is the same like normal)
+                    $labels = $Policy.'global-label'
                     #Policy With Sequence Grouping (Global Label)
-                    if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "sequencegrouping" ) {
+                    if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "sequencegrouping" -and (($labels | Get-Unique).count -ge "2") ) {
                         Section -Style Heading3 'Policy - Sequence Grouping' {
                             $OutObj = @()
 
