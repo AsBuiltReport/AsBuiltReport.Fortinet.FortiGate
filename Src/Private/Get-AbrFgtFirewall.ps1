@@ -335,6 +335,56 @@ function Get-AbrFgtFirewall {
 
                         $OutObj | Table @TableParams
                     }
+
+                    #Policy sorted by interface pair
+                    if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "interfacepair" ) {
+
+                        $srcintf = $Policy.srcintf.name | Sort-Object | Get-Unique
+                        $dstintf = $Policy.dstintf.name | Sort-Object | Get-Unique
+
+                        foreach ($int_src in $srcintf) {
+                            foreach ($int_dst in $dstintf) {
+                                $OutObj = @()
+
+                                foreach ($rule in $Policy) {
+
+                                    if ($rule.srcintf.name -eq $int_src -and $rule.dstintf.name -eq $int_dst) {
+
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"        = $rule.name
+                                            "Source"      = $rule.srcaddr.name -join ", "
+                                            "Destination" = $rule.dstaddr.name -join ", "
+                                            "Service"     = $rule.service.name -join ", "
+                                            "Action"      = $rule.action
+                                            "NAT"         = $rule.nat
+                                            "Log"         = $rule.logtraffic
+                                            "Comments"    = $rule.comments
+                                        }
+                                    }
+
+                                }
+
+                                #if there is OutObj
+                                if ($OutObj) {
+                                    $interfacepair = "$($int_src) => $($int_dst)"
+                                    Section -Style Heading4 "Policy: $interfacepair" {
+                                        $TableParams = @{
+                                            Name         = "Policy - $interfacepair"
+                                            List         = $false
+                                            ColumnWidths = 15, 15, 15, 10, 10, 10, 10, 15
+                                        }
+
+                                        if ($Report.ShowTableCaptions) {
+                                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                                        }
+
+                                        $OutObj | Table @TableParams
+                                    }
+                                }
+                            }
+                        }
+
+                    }
                 }
             }
 
