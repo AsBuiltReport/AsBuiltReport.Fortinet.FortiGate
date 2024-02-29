@@ -11,7 +11,7 @@
     "Options": {
         "Port": 443,
         "VDOM": "",
-        "Label": false
+        "PolicyLayout": "all"
     },
     "InfoLevel": {
         "_comment_": "0 = Disabled, 1 = Enabled / Summary, 2 = Adv Summary",

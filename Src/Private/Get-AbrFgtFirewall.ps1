@@ -242,52 +242,93 @@ function Get-AbrFgtFirewall {
 
             if ($Policy -and $InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Policy' {
-                    if ($Options.Label) {
-                        $OutObj = @()
+                    #get Sequence Grouping (global-label) if there is no label don't display by Sequence Grouping... (it is the same like normal)
+                    $labels = $Policy.'global-label'
+                    #Policy With Sequence Grouping (Global Label)
+                    if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "sequencegrouping" -and (($labels | Get-Unique).count -ge "2") ) {
+                        Section -Style Heading3 'Policy - Sequence Grouping' {
+                            $OutObj = @()
 
-                        foreach ($rule in $Policy) {
+                            foreach ($rule in $Policy) {
 
-                            # There is a global-label (Sequence), Create a new table
-                            if ($rule.'global-label') {
-                                #If there is already label before add the end of table
-                                if ($label) {
-                                    Section -Style NOTOCHeading4 -ExcludeFromTOC  "Policy - $label" {
-                                        $TableParams = @{
-                                            Name         = "Policy - $label"
-                                            List         = $false
-                                            ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+                                # There is a global-label (Sequence), Create a new table
+                                if ($rule.'global-label') {
+                                    #If there is already label before add the end of table
+                                    if ($label) {
+                                        Section -Style NOTOCHeading4 -ExcludeFromTOC  "Policy - $label" {
+                                            $TableParams = @{
+                                                Name         = "Policy - $label"
+                                                List         = $false
+                                                ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+                                            }
+
+                                            if ($Report.ShowTableCaptions) {
+                                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                                            }
+
+                                            $OutObj | Table @TableParams
                                         }
-
-                                        if ($Report.ShowTableCaptions) {
-                                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                                        }
-
-                                        $OutObj | Table @TableParams
                                     }
+                                    #Reset the table and set label for next table
+                                    $OutObj = @()
+                                    $label = $rule.'global-label'
                                 }
-                                #Reset the table and set label for next table
-                                $OutObj = @()
-                                $label = $rule.'global-label'
+
+                                $OutObj += [pscustomobject]@{
+                                    "Name"        = $rule.name
+                                    "From"        = $rule.srcintf.name -join ", "
+                                    "To"          = $rule.dstintf.name -join ", "
+                                    "Source"      = $rule.srcaddr.name -join ", "
+                                    "Destination" = $rule.dstaddr.name -join ", "
+                                    "Service"     = $rule.service.name -join ", "
+                                    "Action"      = $rule.action
+                                    "NAT"         = $rule.nat
+                                    "Log"         = $rule.logtraffic
+                                    "Comments"    = $rule.comments
+                                }
                             }
 
-                            $OutObj += [pscustomobject]@{
-                                "Name"        = $rule.name
-                                "From"        = $rule.srcintf.name -join ", "
-                                "To"          = $rule.dstintf.name -join ", "
-                                "Source"      = $rule.srcaddr.name -join ", "
-                                "Destination" = $rule.dstaddr.name -join ", "
-                                "Service"     = $rule.service.name -join ", "
-                                "Action"      = $rule.action
-                                "NAT"         = $rule.nat
-                                "Log"         = $rule.logtraffic
-                                "Comments"    = $rule.comments
+                            #last Table
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC  "Policy - $label" {
+                                $TableParams = @{
+                                    Name         = "Policy - $label"
+                                    List         = $false
+                                    ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Table @TableParams
                             }
                         }
+                    }
 
-                        #last Table
-                        Section -Style NOTOCHeading4 -ExcludeFromTOC  "Policy - $label" {
+                    #Policy sorted by default (id)
+                    if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "normal" ) {
+                        Section -Style Heading3 'Policy - Normal' {
+
+                            $OutObj = @()
+
+                            foreach ($rule in $Policy) {
+
+                                $OutObj += [pscustomobject]@{
+                                    "Name"        = $rule.name
+                                    "From"        = $rule.srcintf.name -join ", "
+                                    "To"          = $rule.dstintf.name -join ", "
+                                    "Source"      = $rule.srcaddr.name -join ", "
+                                    "Destination" = $rule.dstaddr.name -join ", "
+                                    "Service"     = $rule.service.name -join ", "
+                                    "Action"      = $rule.action
+                                    "NAT"         = $rule.nat
+                                    "Log"         = $rule.logtraffic
+                                    "Comments"    = $rule.comments
+                                }
+                            }
+
                             $TableParams = @{
-                                Name         = "Policy - $label"
+                                Name         = "Policy"
                                 List         = $false
                                 ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
                             }
@@ -299,37 +340,57 @@ function Get-AbrFgtFirewall {
                             $OutObj | Table @TableParams
                         }
                     }
-                    else {
 
-                        $OutObj = @()
+                    #Policy sorted by interface pair
+                    if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "interfacepair" ) {
 
-                        foreach ($rule in $Policy) {
+                        Section -Style Heading3 'Policy - Interface Pair ' {
+                            $srcintf = $Policy.srcintf.name | Sort-Object | Get-Unique
+                            $dstintf = $Policy.dstintf.name | Sort-Object | Get-Unique
 
-                            $OutObj += [pscustomobject]@{
-                                "Name"        = $rule.name
-                                "From"        = $rule.srcintf.name -join ", "
-                                "To"          = $rule.dstintf.name -join ", "
-                                "Source"      = $rule.srcaddr.name -join ", "
-                                "Destination" = $rule.dstaddr.name -join ", "
-                                "Service"     = $rule.service.name -join ", "
-                                "Action"      = $rule.action
-                                "NAT"         = $rule.nat
-                                "Log"         = $rule.logtraffic
-                                "Comments"    = $rule.comments
+                            foreach ($int_src in $srcintf) {
+                                foreach ($int_dst in $dstintf) {
+                                    $OutObj = @()
+
+                                    foreach ($rule in $Policy) {
+
+                                        if ($rule.srcintf.name -eq $int_src -and $rule.dstintf.name -eq $int_dst) {
+
+                                            $OutObj += [pscustomobject]@{
+                                                "Name"        = $rule.name
+                                                "Source"      = $rule.srcaddr.name -join ", "
+                                                "Destination" = $rule.dstaddr.name -join ", "
+                                                "Service"     = $rule.service.name -join ", "
+                                                "Action"      = $rule.action
+                                                "NAT"         = $rule.nat
+                                                "Log"         = $rule.logtraffic
+                                                "Comments"    = $rule.comments
+                                            }
+                                        }
+
+                                    }
+
+                                    #if there is OutObj
+                                    if ($OutObj) {
+                                        $interfacepair = "$($int_src) => $($int_dst)"
+                                        Section -Style Heading4 "Policy: $interfacepair" {
+                                            $TableParams = @{
+                                                Name         = "Policy - $interfacepair"
+                                                List         = $false
+                                                ColumnWidths = 15, 15, 15, 10, 10, 10, 10, 15
+                                            }
+
+                                            if ($Report.ShowTableCaptions) {
+                                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                                            }
+
+                                            $OutObj | Table @TableParams
+                                        }
+                                    }
+                                }
                             }
                         }
 
-                        $TableParams = @{
-                            Name         = "Policy"
-                            List         = $false
-                            ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
-                        }
-
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
-
-                        $OutObj | Table @TableParams
                     }
                 }
             }
