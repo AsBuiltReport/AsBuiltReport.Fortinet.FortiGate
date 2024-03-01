@@ -12,7 +12,7 @@
 RootModule = 'AsBuiltReport.Fortinet.FortiGate.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.2.2'
+ModuleVersion = '0.3.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -58,7 +58,7 @@ RequiredModules = @(
     },
     @{
         ModuleName = 'PowerFGT';
-        ModuleVersion = '0.7.0'
+        ModuleVersion = '0.8.0'
     }
 
 )
