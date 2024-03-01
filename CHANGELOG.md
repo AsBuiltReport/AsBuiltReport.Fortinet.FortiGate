@@ -2,13 +2,19 @@
 
 ## [0.3.0] - 2024-02-29
 
+### Added
 - Add Policy summary (number of policy, comments, nat...) [67](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/67)
-- Enhance Policy layout (normal, interface pair, sequence grouping) [66](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/66)
-- Fix forticare: don't check BranchUpdateVersion [64](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/64)
 - Add SD-WAN Chapiter (Configuration, Members, Rules...) [#59](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/59)
+- Add Firewall Address/AddressGroup/IP Pool/Virtual reference [#56](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/56)
+
+### Changed
+- Enhance Policy layout (normal, interface pair, sequence grouping) [66](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/66)
 - Route(Static): Enhance display when using Blackhole, ISDB... [#58](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/58)
 - Route(monitor): fix when there is Blackhole on Route Monitor [#57](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/57)
-- Add Firewall Address/AddressGroup/IP Pool/Virtual reference [#56](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/56)
+
+### Fixed
+- Fix forticare: don't check BranchUpdateVersion [64](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/64)
+
 
 ## [0.2.2] - 2023-10-03
 
