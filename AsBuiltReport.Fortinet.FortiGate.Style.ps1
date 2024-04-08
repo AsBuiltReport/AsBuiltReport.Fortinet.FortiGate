@@ -49,11 +49,11 @@ TableStyle -Id 'Borderless' -HeaderStyle Normal -RowStyle Normal -BorderWidth 0
 # Header & Footer
 if ($ReportConfig.Report.ShowHeaderFooter) {
     Header -Default {
-        Paragraph -Style Header "$($ReportConfig.Report.Name) - v$($ReportConfig.Report.Version)"
+        Paragraph -Style Header "$($ReportConfig.Report.ClientName)     |     $($ReportConfig.Report.Name)     |     $($ReportConfig.Report.ProjectRef)"
     }
 
     Footer -Default {
-        Paragraph -Style Footer 'Page <!# PageNumber #!>'
+        Paragraph -Style Footer "Page <!# PageNumber #!> of <!# TotalPages #!>     |     Copyright $((Get-Date).Year) $($AsBuiltConfig.Company.FullName)"
     }
 }
 
