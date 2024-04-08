@@ -96,6 +96,29 @@ function Get-AbrFgtFirewall {
                         $TableParams['Caption'] = "- $($TableParams.Name)"
                     }
 
+                    # Identify and remove empty columns
+                    $propertiesToRemove = @()
+                    foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                        $allEmpty = $True
+                        foreach ($obj in $OutObj) {
+                            if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                $allEmpty = $False
+                                break
+                            }
+                        }
+                        if ($allEmpty) {
+                            $propertiesToRemove += $prop
+                        }
+                    }
+
+                    $OutObj = $OutObj | ForEach-Object {
+                        $obj = $_
+                        foreach ($prop in $propertiesToRemove) {
+                            $obj.PSObject.Properties.Remove($prop)
+                        }
+                        $obj
+                    }
+
                     $OutObj | Table @TableParams
                 }
             }
@@ -130,6 +153,29 @@ function Get-AbrFgtFirewall {
                             "Comment"   = $add.comment
                             "ref"       = $add.q_ref
                         }
+                    }
+
+                    # Identify and remove empty columns
+                    $propertiesToRemove = @()
+                    foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                        $allEmpty = $True
+                        foreach ($obj in $OutObj) {
+                            if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                $allEmpty = $False
+                                break
+                            }
+                        }
+                        if ($allEmpty) {
+                            $propertiesToRemove += $prop
+                        }
+                    }
+
+                    $OutObj = $OutObj | ForEach-Object {
+                        $obj = $_
+                        foreach ($prop in $propertiesToRemove) {
+                            $obj.PSObject.Properties.Remove($prop)
+                        }
+                        $obj
                     }
 
                     $TableParams = @{
@@ -170,6 +216,29 @@ function Get-AbrFgtFirewall {
                         $TableParams['Caption'] = "- $($TableParams.Name)"
                     }
 
+                    # Identify and remove empty columns
+                    $propertiesToRemove = @()
+                    foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                        $allEmpty = $True
+                        foreach ($obj in $OutObj) {
+                            if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                $allEmpty = $False
+                                break
+                            }
+                        }
+                        if ($allEmpty) {
+                            $propertiesToRemove += $prop
+                        }
+                    }
+
+                    $OutObj = $OutObj | ForEach-Object {
+                        $obj = $_
+                        foreach ($prop in $propertiesToRemove) {
+                            $obj.PSObject.Properties.Remove($prop)
+                        }
+                        $obj
+                    }
+
                     $OutObj | Table @TableParams
                 }
             }
@@ -203,6 +272,29 @@ function Get-AbrFgtFirewall {
                         $TableParams['Caption'] = "- $($TableParams.Name)"
                     }
 
+                    # Identify and remove empty columns
+                    $propertiesToRemove = @()
+                    foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                        $allEmpty = $True
+                        foreach ($obj in $OutObj) {
+                            if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                $allEmpty = $False
+                                break
+                            }
+                        }
+                        if ($allEmpty) {
+                            $propertiesToRemove += $prop
+                        }
+                    }
+
+                    $OutObj = $OutObj | ForEach-Object {
+                        $obj = $_
+                        foreach ($prop in $propertiesToRemove) {
+                            $obj.PSObject.Properties.Remove($prop)
+                        }
+                        $obj
+                    }
+
                     $OutObj | Table @TableParams
                 }
             }
@@ -234,6 +326,29 @@ function Get-AbrFgtFirewall {
 
                     if ($Report.ShowTableCaptions) {
                         $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    # Identify and remove empty columns
+                    $propertiesToRemove = @()
+                    foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                        $allEmpty = $True
+                        foreach ($obj in $OutObj) {
+                            if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                $allEmpty = $False
+                                break
+                            }
+                        }
+                        if ($allEmpty) {
+                            $propertiesToRemove += $prop
+                        }
+                    }
+
+                    $OutObj = $OutObj | ForEach-Object {
+                        $obj = $_
+                        foreach ($prop in $propertiesToRemove) {
+                            $obj.PSObject.Properties.Remove($prop)
+                        }
+                        $obj
                     }
 
                     $OutObj | Table @TableParams
@@ -338,6 +453,29 @@ function Get-AbrFgtFirewall {
                         $TableParams['Caption'] = "- $($TableParams.Name)"
                     }
 
+                    # Identify and remove empty columns
+                    $propertiesToRemove = @()
+                    foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                        $allEmpty = $True
+                        foreach ($obj in $OutObj) {
+                            if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                $allEmpty = $False
+                                break
+                            }
+                        }
+                        if ($allEmpty) {
+                            $propertiesToRemove += $prop
+                        }
+                    }
+
+                    $OutObj = $OutObj | ForEach-Object {
+                        $obj = $_
+                        foreach ($prop in $propertiesToRemove) {
+                            $obj.PSObject.Properties.Remove($prop)
+                        }
+                        $obj
+                    }
+
                     $OutObj | Table @TableParams
                 }
 
@@ -400,6 +538,29 @@ function Get-AbrFgtFirewall {
                                     $TableParams['Caption'] = "- $($TableParams.Name)"
                                 }
 
+                                # Identify and remove empty columns
+                                $propertiesToRemove = @()
+                                foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                                    $allEmpty = $True
+                                    foreach ($obj in $OutObj) {
+                                        if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                            $allEmpty = $False
+                                            break
+                                        }
+                                    }
+                                    if ($allEmpty) {
+                                        $propertiesToRemove += $prop
+                                    }
+                                }
+
+                                $OutObj = $OutObj | ForEach-Object {
+                                    $obj = $_
+                                    foreach ($prop in $propertiesToRemove) {
+                                        $obj.PSObject.Properties.Remove($prop)
+                                    }
+                                    $obj
+                                }
+                                
                                 $OutObj | Table @TableParams
                             }
                         }
@@ -435,6 +596,29 @@ function Get-AbrFgtFirewall {
 
                             if ($Report.ShowTableCaptions) {
                                 $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            # Identify and remove empty columns
+                            $propertiesToRemove = @()
+                            foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                                $allEmpty = $True
+                                foreach ($obj in $OutObj) {
+                                    if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                        $allEmpty = $False
+                                        break
+                                    }
+                                }
+                                if ($allEmpty) {
+                                    $propertiesToRemove += $prop
+                                }
+                            }
+
+                            $OutObj = $OutObj | ForEach-Object {
+                                $obj = $_
+                                foreach ($prop in $propertiesToRemove) {
+                                    $obj.PSObject.Properties.Remove($prop)
+                                }
+                                $obj
                             }
 
                             $OutObj | Table @TableParams
@@ -484,6 +668,29 @@ function Get-AbrFgtFirewall {
                                                 $TableParams['Caption'] = "- $($TableParams.Name)"
                                             }
 
+                                            # Identify and remove empty columns
+                                            $propertiesToRemove = @()
+                                            foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                                                $allEmpty = $True
+                                                foreach ($obj in $OutObj) {
+                                                    if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                                        $allEmpty = $False
+                                                        break
+                                                    }
+                                                }
+                                                if ($allEmpty) {
+                                                    $propertiesToRemove += $prop
+                                                }
+                                            }
+
+                                            $OutObj = $OutObj | ForEach-Object {
+                                                $obj = $_
+                                                foreach ($prop in $propertiesToRemove) {
+                                                    $obj.PSObject.Properties.Remove($prop)
+                                                }
+                                                $obj
+                                            }
+                                            
                                             $OutObj | Table @TableParams
                                         }
                                     }
