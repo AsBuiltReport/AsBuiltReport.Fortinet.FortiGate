@@ -44,13 +44,13 @@ function Get-AbrFgtSystem {
                     }
 
                     $OutObj = [pscustomobject]@{
-                        "Nom"            = $info.'hostname'
-                        "Alias"          = $info.'alias'
-                        "Reboot"         = $reboot
-                        "Port SSH"       = $info.'admin-ssh-port'
-                        "Port HTTP"      = $info.'admin-port'
-                        "Port HTTPS"     = $info.'admin-sport'
-                        "HTTPS Redirect" = $info.'admin-https-redirect'
+                        "Nom"                       = $info.'hostname'
+                        "Alias"                     = $info.'alias'
+                        "Recurring Reboot"          = $reboot
+                        "Port SSH"                  = $info.'admin-ssh-port'
+                        "Port HTTP"                 = $info.'admin-port'
+                        "Port HTTPS"                = $info.'admin-sport'
+                        "HTTPS Redirect"            = $info.'admin-https-redirect'
                     }
 
                     $TableParams = @{
@@ -96,7 +96,7 @@ function Get-AbrFgtSystem {
             }
 
             if ($info -and $settings -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'GUI Settings' {
+                Section -Style Heading3 'Feature GUI visibility' {
                     $OutObj = @()
 
                     $OutObj = [pscustomobject]@{
@@ -223,14 +223,13 @@ function Get-AbrFgtSystem {
                             "Name"          = $admin.name
                             "Profile"       = $admin.accprofile
                             "Trusted Hosts" = $trustedHosts
-                            "MFA"           = $admin.'two-factor'
                         }
                     }
 
                     $TableParams = @{
                         Name         = "Administrator"
                         List         = $false
-                        ColumnWidths = 25, 25, 35, 15
+                        ColumnWidths = 30, 30, 40
                     }
 
                     if ($Report.ShowTableCaptions) {
@@ -243,52 +242,215 @@ function Get-AbrFgtSystem {
 
             $interfaces = Get-FGTSystemInterface
 
-            #By 'API' design, it is always return all interfaces (not filtering by vdom)
+            # Filter interfaces by VDOM if specified
             if ("" -ne $Options.vdom) {
-                $interfaces = $interfaces | Where-Object {$_.vdom -eq $Options.vdom }
+                $interfaces = $interfaces | Where-Object { $_.vdom -eq $Options.vdom }
             }
 
             if ($interfaces -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'Interfaces' {
-                    $OutObj = @()
+                    Paragraph "The following section details FortiGate interfaces, grouped by interface type."
+                    BlankLine
+                    Paragraph "Please note the following assumptions, where applicable:"
+                    Paragraph "1. Roles and MTU are considered 'default' if not explicitly specified."
+                    Paragraph "2. Interface IP Addressing mode is assumed to be Static if not explicitly specified."
+                    Paragraph "3. Secondary IP addresses are not shown if not explicitly assigned."
+                    Paragraph "4. Interfaces are assumed to be in the global/root VDOM if not explicitly specified."
+                    Paragraph "5. Interface speed is assumed to be 'auto' if not explicitly specified." 
+                    BlankLine                    
+                    # Group interfaces by their 'type'
+                    $groupedInterfaces = $interfaces | Group-Object -Property type
 
-                    foreach ($interface in $interfaces) {
+                    foreach ($group in $groupedInterfaces) {
+                        $interfaceType = $group.Name
+                       
+                        # Create a heading for each interface type
+                        Section -Style Heading4 "$interfaceType Interfaces" {
+                            $OutObj = @()                        
 
-                        if ($interface.role -eq "undefined") {
-                            $interface.role = "n/a"
-                        }
-                        $alias_description = $interface.alias
-                        if ($interface.description) {
-                            $alias_description += "($($interface.description))"
-                        }
-                        $OutObj += [pscustomobject]@{
-                            "Name"                = $interface.name
-                            "Alias (Description)" = $alias_description
-                            "Role"                = $interface.role
-                            "Type"                = $interface.type
-                            "Vlan ID"             = $interface.vlanid
-                            "Mode"                = $interface.mode
-                            "IP Address"          = $interface.ip.Replace(' ', '/')
-                            #"Allow Access"        = $interface.allowaccess
-                            #'DHCP Relais'        = $interface.'dhcp-relay-ip'
-                            "Status"              = $interface.status
-                            #"Speed"              = $interface.speed
+                            foreach ($interface in $group.Group) {
+
+                                # Standardise interface properties
+                                $interface.name = $interface.name + $($interface.alias ? "`n($($interface.alias))" : "")
+                                $interface.role = $interface.role -eq 'undefined' ? "" : ($interface.role).ToUpper()
+                                $interface.member = $interface.member.count -gt 0 ? $interface.member.'interface-name' -join ', ' : ""
+                                $interface.mtu = $interface.'mtu-override' -eq 'disable' ? '' : $interface.mtu
+                                $interface.mode = $interface.mode -eq 'static' ? '' : $interface.mode
+                                $interface.ip = $interface.ip -eq '0.0.0.0 0.0.0.0' ? '' : $interface.ip.Replace(' ', "`n/")
+                                $interface.'secondaryip' = $interface.'secondary-ip' -ne 'disable' ? $($interface.'secondaryip').Replace(' ', '/') : ""
+                                $interface.mode = $interface.mode -eq 'static' ? '' : $interface.mode              
+                                $interface.vdom = $interface.vdom -eq 'root' ? '' : $interface.vdom
+                                $interface.vlanid = ($interface.vlanid -gt 0 ) ? $interface.vlanid : ""
+                                $interface.speed = $interface.speed -eq 'auto' ? '' : $interface.speed
+                                $interface.'remote-ip' = $interface.'remote-ip' -eq '0.0.0.0 0.0.0.0' ? '' : $interface.'remote-ip'
+                             
+
+                                switch ($interfaceType) {
+                                    "Aggregate" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom
+                                            "Role"                = $interface.role
+                                            "Members"             = $interface.member
+                                            "LACP Mode"           = $interface.'lacp-mode'
+                                            "MTU"                 = $interface.mtu
+                                            "Addressing mode"     = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            "Secondary IP"        = $interface.'secondaryip'                                       
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            "Comments"            = $interface.description
+                                        }
+                                    }
+                                    "hard-switch" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom                                            
+                                            "Role"                = $interface.role
+                                            "Members"             = $interface.member
+                                            "MTU"                 = $interface.mtu
+                                            "Addressing mode"     = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            "Secondary IP"        = $interface.'secondaryip'
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            "Comments"            = $interface.description
+                                        }
+                                    }
+                                    "loopback" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom                                            
+                                            "Role"                = $interface.role
+                                            "MTU"                 = $interface.mtu
+                                            "IP Address"          = $interface.ip
+                                            "Secondary IP"        = $interface.'secondaryip'
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            "Comments"            = $interface.description
+                                        }                                        
+
+                                    }
+                                    "physical"{
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom                                            
+                                            "Role"                = $interface.role
+                                            "MTU"                 = $interface.mtu
+                                            "Speed"               = $interface.speed
+                                            "Addressing mode"     = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            "Secondary IP"        = $interface.'secondaryip'
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            "Comments"            = $interface.description
+                                        }                                        
+
+                                    }
+                                    "tunnel" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "Parent Interface"    = $interface.interface
+                                            "VDOM"                = $interface.vdom                                            
+                                            "Role"                = $interface.role
+                                            "MTU"                 = $interface.mtu
+                                            "IP Address"          = $interface.ip
+                                            "Secondary IP"        = $interface.'secondaryip'
+                                            "Remote IP"           = $interface.'remote-ip'
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            "Comments"            = $interface.description
+                                        }    
+                                    }
+                                    "vlan" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "Parent Interface"    = $interface.interface
+                                            "VLAN ID"             = $interface.vlanid
+                                            "VDOM"                = $interface.vdom                                            
+                                            "Role"                = $interface.role
+                                            "MTU"                 = $interface.mtu
+                                            "Mode"                = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            "Secondary IP"        = $interface.'secondaryip'                                            
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                        }
+                                    }
+                                    # vap-switch falls under default
+                                    Default {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom                                            
+                                            "Role"                = $interface.role
+                                            "MTU"                 = $interface.mtu
+                                            "VLAN ID"             = $interface.vlanid
+                                            "Mode"                = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            "Secondary IP"        = $interface.'secondaryip'                                            
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                        }
+                                    }
+                                }
+                            }
+
+                            # Identify and remove empty columns
+                            $propertiesToRemove = @()
+                            foreach ($prop in ($OutObj | Get-Member -MemberType NoteProperty).Name) {
+                                $allEmpty = $True
+                                foreach ($obj in $OutObj) {
+                                    if (![string]::IsNullOrWhiteSpace($obj.$prop)) {
+                                        $allEmpty = $False
+                                        break
+                                    }
+                                }
+                                if ($allEmpty) {
+                                    $propertiesToRemove += $prop
+                                }
+                            }
+
+                            $OutObj = $OutObj | ForEach-Object {
+                                $obj = $_
+                                foreach ($prop in $propertiesToRemove) {
+                                    $obj.PSObject.Properties.Remove($prop)
+                                }
+                                $obj
+                            }
+
+                            # Introduction section for VLAN interfaces
+                            $vlanUpCount = 0
+                            $vlanDownCount = 0
+                            if ($interfaceType -eq "VLAN") {
+                                $vlanUpCount = ($OutObj | Where-Object { $_.Status -eq 'up' }).Count
+                                $vlanDownCount = ($OutObj | Where-Object { $_.Status -ne 'up' }).Count
+                                Paragraph "Total number of unique VLANs found: $($vlanUpCount + $vlanDownCount), of which $vlanUpCount are up and $vlanDownCount are down."
+                                if ($vlanUpCount -gt 0) {
+                                    $vlanUpIDs = ($OutObj | Where-Object { $_.Status -eq 'up' } | Select-Object -ExpandProperty 'VLAN ID' -Unique)
+                                    Paragraph "- Up VLANs are: $($vlanUpIDs -join ', ')."
+                                }
+                                if ($vlanDownCount -gt 0) {
+                                    $vlanDownIDs = ($OutObj | Where-Object { $_.Status -ne 'up' } | Select-Object -ExpandProperty 'VLAN ID' -Unique)
+                                    Paragraph "- Down VLANs are: $($vlanDownIDs -join ', ')."
+                                }
+                                BlankLine                                
+                            }
+
+                            $TableParams = @{
+                                Name         = "$interfaceType Interfaces"
+                                List         = $false
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Interface"
-                        List         = $false
-                        ColumnWidths = 12, 20, 7, 11, 6, 8, 28, 8
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
                 }
             }
+
 
             $zones = Get-FGTSystemZone
 
@@ -317,6 +479,84 @@ function Get-AbrFgtSystem {
 
                     $OutObj | Table @TableParams
                 }
+            }
+
+            # Fetch HA Configuration
+            $haConfig = Get-FGTSystemHA
+            $haPeers = Get-FGTMonitorSystemHAPeer
+            $haChecksums = Get-FGTMonitorSystemHAChecksum
+
+            if( $haConfig.mode -ne 'standalone' -and $infoLevel.System -ge 1) {
+                Section -Style Heading3 'High Availability' {
+                    Paragraph "The following section details HA settings."
+                    BlankLine
+                
+                    Section -Style Heading4 'HA Configuration' {
+                        $OutObj = @()
+    
+                        $OutObj = [pscustomobject]@{
+                            "Group Name / ID / Mode" = $haConfig.'group-name'+' / '+$haConfig.'group-id'+' / '+$haConfig.mode
+                            "HB Device" = $haConfig.'hbdev'
+                            "HA Override" = $haConfig.'override'
+                            "Route TTL" = $haConfig.'route-ttl'
+                            "Route Wait" = $haConfig.'route-wait'
+                            "Route Hold" = $haConfig.'route-hold'
+                            "Session sync (TCP)" = $haConfig.'session-pickup'
+                            "Session sync (UDP)" = $haConfig.'session-pickup-connectionless'
+                            "Session sync (Pinholes)" = $haConfig.'session-pickup-expectation'
+                            "Uninterruptible Upgrade" = $haConfig.'uninterrup-upgrade'
+                            "HA Management Status" = $haConfig.'ha-mgmt-status'
+                            "HA Management Interfaces" = $haConfig.'ha-mgmt-interfaces'
+                        }
+    
+                        $TableParams = @{
+                            Name         = "HA Configuration"
+                            List         = $true
+                            ColumnWidths = 50, 50
+                        }
+    
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+    
+                        $OutObj | Table @TableParams
+                    }
+
+                    Section -Style Heading4 'HA Members' {
+                        $OutObj = @()
+                    
+                        foreach ($haPeer in $haPeers) {
+                            $haChecksum = $haChecksums | Where-Object { $_.serial_no -eq $haPeer.serial_no }
+                            
+                            # Correctly using the if statement for assignment
+                            $manageMaster = if ($haChecksum.is_manage_master -eq 1) { "Yes" } else { "No" }
+                            $rootMaster = if ($haChecksum.is_root_master -eq 1) { "Yes" } else { "No" }
+                                     
+                            # Correctly reference properties from $haPeer
+                            $OutObj += [pscustomobject]@{
+                                "Hostname" = $haPeer.hostname
+                                "Serial"   = $haPeer.serial_no
+                                "Priority" = $haPeer.priority
+                                "Manage Master" = $manageMaster
+                                "Root Master" = $rootMaster
+                            }
+                        }
+                    
+                        $TableParams = @{
+                            Name         = "HA Members"
+                            List         = $false
+                            ColumnWidths = 30, 30, 10, 10, 10, 10
+                        }
+                    
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+                    
+                        $OutObj | Table @TableParams
+                    }
+                                                           
+
+                }               
             }
 
         }
