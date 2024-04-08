@@ -1,6 +1,9 @@
 {
     "Report": {
         "Name": "Fortinet FortiGate As Built Report",
+        "Assets": "Your Firewall HostNames",
+        "ProjectRef": "Your Project Reference name and number",
+        "ClientName": "Your Client's Name",
         "Version": "1.0",
         "Status": "Released",
         "ShowCoverPageImage": true,
