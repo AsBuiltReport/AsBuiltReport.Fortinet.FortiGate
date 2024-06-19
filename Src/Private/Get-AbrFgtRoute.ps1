@@ -116,6 +116,9 @@ function Get-AbrFgtRoute {
                         #when Blackhole is enable, display blackhole for interface
                         if ($static.blackhole -eq "enable") {
                             $interface = "Blackhole"
+                        } elseif ($static.device -eq "") {
+                            #No device => SD-Wan (Zone)
+                            $interface = $static.'sdwan-zone'.name
                         } else {
                             $interface = $static.device
                         }
