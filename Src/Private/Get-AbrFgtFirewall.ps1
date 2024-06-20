@@ -374,12 +374,21 @@ function Get-AbrFgtFirewall {
                                     $label = $rule.'global-label'
                                 }
 
+                                #Using ISDB for Destination ?
+                                if ($rule.'internet-service' -eq "enable") {
+
+                                    $dst = $rule.'internet-service-name'.name -join ", "
+                                }
+                                else {
+                                    $dst = $rule.dstaddr.name -join ", "
+                                }
+
                                 $OutObj += [pscustomobject]@{
                                     "Name"        = $rule.name
                                     "From"        = $rule.srcintf.name -join ", "
                                     "To"          = $rule.dstintf.name -join ", "
                                     "Source"      = $rule.srcaddr.name -join ", "
-                                    "Destination" = $rule.dstaddr.name -join ", "
+                                    "Destination" = $dst
                                     "Service"     = $rule.service.name -join ", "
                                     "Action"      = $rule.action
                                     "NAT"         = $rule.nat
@@ -413,12 +422,20 @@ function Get-AbrFgtFirewall {
 
                             foreach ($rule in $Policy) {
 
+                                #Using ISDB for Destination ?
+                                if ($rule.'internet-service' -eq "enable") {
+                                    $dst = $rule.'internet-service-name'.name -join ", "
+                                }
+                                else {
+                                    $dst = $rule.dstaddr.name -join ", "
+                                }
+
                                 $OutObj += [pscustomobject]@{
                                     "Name"        = $rule.name
                                     "From"        = $rule.srcintf.name -join ", "
                                     "To"          = $rule.dstintf.name -join ", "
                                     "Source"      = $rule.srcaddr.name -join ", "
-                                    "Destination" = $rule.dstaddr.name -join ", "
+                                    "Destination" = $dst
                                     "Service"     = $rule.service.name -join ", "
                                     "Action"      = $rule.action
                                     "NAT"         = $rule.nat
@@ -455,11 +472,18 @@ function Get-AbrFgtFirewall {
                                     foreach ($rule in $Policy) {
 
                                         if ($rule.srcintf.name -eq $int_src -and $rule.dstintf.name -eq $int_dst) {
+                                            #Using ISDB for Destination ?
+                                            if ($rule.'internet-service' -eq "enable") {
+                                                $dst = $rule.'internet-service-name'.name -join ", "
+                                            }
+                                            else {
+                                                $dst = $rule.dstaddr.name -join ", "
+                                            }
 
                                             $OutObj += [pscustomobject]@{
                                                 "Name"        = $rule.name
                                                 "Source"      = $rule.srcaddr.name -join ", "
-                                                "Destination" = $rule.dstaddr.name -join ", "
+                                                "Destination" = $dst
                                                 "Service"     = $rule.service.name -join ", "
                                                 "Action"      = $rule.action
                                                 "NAT"         = $rule.nat
