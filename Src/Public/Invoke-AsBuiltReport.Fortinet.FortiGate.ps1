@@ -42,8 +42,25 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
             $Model = (Get-FGTMonitorSystemFirmware).current.'platform-id'
             Write-PScriboMessage "Connect to $System : $Model ($($DefaultFGTConnection.serial)) "
 
-            Section -Style Heading1 "Implementation Report $($DefaultFGTConnection.serial)" {
-                Paragraph "The following section provides a summary of the implemented components on the Fortinet FortiGate infrastructure."
+            #Get firewall hostname(s) and serials (HA or standalone configurations supported)
+            $haConfig = Get-FGTSystemHA
+            if( $haConfig.mode -ne 'standalone' ) {
+                $haPeers = Get-FGTMonitorSystemHAPeer
+                #Get hostnames from HA config
+                $hostnames = ($haPeers | ForEach-Object { $_.hostname }) -join ', '
+
+                #Get serials for HA config
+                $serials = ($haPeers | ForEach-Object { $_.serial_no }) -join ', '
+
+            } else {
+                #Get hostnames and serials for standalone config
+                $globalSettings = Get-FGTSystemGlobal
+                $hostnames = $globalSettings.hostname
+                $serials = $DefaultFGTConnection.serial
+            }
+
+            Section -Style Heading1 "$hostnames Configuration" {
+                Paragraph "The following provides as-built documentation for the Fortinet FortiGate $Model firewalls $hostnames ($serials)."
                 BlankLine
                 if ($InfoLevel.FortiGate.PSObject.Properties.Value -ne 0) {
                     Get-AbrFgtFortiCare
