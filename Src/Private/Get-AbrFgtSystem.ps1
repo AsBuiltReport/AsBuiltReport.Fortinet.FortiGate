@@ -46,7 +46,7 @@ function Get-AbrFgtSystem {
                     $OutObj = [pscustomobject]@{
                         "Nom"            = $info.'hostname'
                         "Alias"          = $info.'alias'
-                        "Reboot"         = $reboot
+                        "Recurring Reboot"         = $reboot
                         "Port SSH"       = $info.'admin-ssh-port'
                         "Port HTTP"      = $info.'admin-port'
                         "Port HTTPS"     = $info.'admin-sport'
