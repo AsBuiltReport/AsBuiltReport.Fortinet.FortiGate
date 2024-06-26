@@ -26,11 +26,122 @@ function Get-AbrFgtForticare {
 
     process {
 
-        $Forticare = (Get-FGTMonitorLicenseStatus).forticare
+        $LicenseStatus = Get-FGTMonitorLicenseStatus
+        if ($LicenseStatus -and $InfoLevel.Forticare -ge 1) {
 
-        if ($Forticare -and $InfoLevel.Forticare -ge 1) {
+            $FortiGuardservicesDescriptions = @{
+                "forticare" = "FortiCare Support Services"
+                "forticloud" = "FortiCloud Management"
+                "security_rating" = "Security Fabric Rating and Compliance Service"
+                "antivirus" = "Antivirus Service"
+                "mobile_malware" = "Mobile Malware Service"
+                "ai_malware_detection" = "AI-based Inline Malware Prevention"
+                "ips" = "Intrusion Prevention System (IPS)"
+                "industrial_db" = "OT Industrial Signatures Database"
+                "appctrl" = "Application Control"
+                "internet_service_db" = "Internet Service (SaaS) Database"
+                "device_os_id" = "Device/OS Detection"
+                "botnet_ip" = "Botnet IP Reputation Service"
+                "botnet_domain" = "Botnet Domain Reputation Service"
+                "psirt_security_rating" = "Attack Surface Security Rating"
+                "outbreak_security_rating" = "Outbreak Security Rating Service"
+                "icdb" = "OT Industrial Signatures Database"
+                "inline_casb" = "Inline SaaS Application Security (CASB)"
+                "local_in_virtual_patching" = "OT Virtual Patching"
+                "malicious_urls" = "Malicious URL Database"
+                "blacklisted_certificates" = "Blacklisted Certificates Service"
+                "firmware_updates" = "Firmware Updates"
+                "web_filtering" = "Web Filtering Service"
+                "outbreak_prevention" = "Outbreak Prevention"
+                "antispam" = "Antispam Service"
+                "iot_detection" = "IoT Detection Service"
+                "ot_detection" = "OT Detection Service"
+                "forticloud_sandbox" = "FortiCloud Sandbox"
+                "forticonverter" = "FortiConverter Service"
+                "fortiguard" = "FortiGuard Services"
+                "data_leak_prevention" = "Data Leak Prevention"
+                "sdwan_network_monitor" = "SD-WAN Network Monitor"
+                "forticloud_logging" = "FortiCloud Logging"
+                "fortianalyzer_cloud" = "FortiAnalyzer Cloud"
+                "fortianalyzer_cloud_premium" = "FortiAnalyzer Cloud Premium"
+                "fortimanager_cloud" = "FortiManager Cloud"
+                "fortisandbox_cloud" = "FortiSandbox Cloud"
+                "fortiguard_ai_based_sandbox" = "FortiGuard AI-based Sandbox"
+                "sdwan_overlay_aas" = "SD-WAN Overlay-as-a-Service"
+                "fortisase_private_access" = "FortiSASE Private Access"
+                "fortisase_lan_extension" = "FortiSASE LAN Extension"
+                "fortiems_cloud" = "FortiEMS Cloud"
+                "fortimanager_cloud_alci" = "FortiManager Cloud ALCI"
+                "fortisandbox_cloud_alci" = "FortiSandbox Cloud ALCI"
+                "vdom" = "Virtual Domains (platform capability)"
+                "sms" = "SMS Service"
+            }
+            $licenseSummary = @()
+
+            $typeDescriptions = @{
+                downloaded_fds_object = 'Update Feed'
+                live_fortiguard_service = 'Real-time Services'
+                live_cloud_service = 'Cloud Services'
+                functionality_enabling = 'Feature'
+            }
+
+            $excludeServices = @(
+                'fortiguard', 'forticare', 'forticloud', 'sms', 'vdom',
+                'forticloud_logging', 'fortianalyzer_cloud', 'fortianalyzer_cloud_premium',
+                'fortimanager_cloud', 'fortisandbox_cloud', 'fortiguard_ai_based_sandbox',
+                'forticonverter', 'fortiems_cloud', 'fortimanager_cloud_alci', 'fortisandbox_cloud_alci'
+            )
+
+            $FortiGuardSvcOrder = @(
+                'internet_service_db', 'device_os_id', 'firmware_updates', 'ips',
+                'blacklisted_certificates', 'appctrl', 'antivirus', 'botnet_ip', 'botnet_domain',
+                'mobile_malware', 'antispam', 'outbreak_prevention', 'forticloud_sandbox',
+                'ai_malware_detection', 'web_filtering', 'malicious_urls', 'security_rating',
+                'psirt_security_rating', 'outbreak_security_rating', 'inline_casb',
+                'data_leak_prevention', 'ot_detection', 'iot_detection', 'local_in_virtual_patching',
+                'industrial_db', 'icdb', 'sdwan_network_monitor', 'sdwan_overlay_aas',
+                'fortisase_private_access', 'fortisase_lan_extension'
+            )
+
+            $licenseSummaryUnordered = @()
+
+            foreach ($property in $LicenseStatus.PSObject.Properties) {
+                if ($excludeServices -contains $property.Name) {
+                    continue
+                }
+
+                $feature = $property.Value
+                $status = $feature.status
+                $description = $FortiGuardservicesDescriptions[$property.Name]
+                if ($null -ne $feature.expires) {
+                    $expires = (Get-Date '01/01/1970').AddSeconds($feature.expires) | Get-Date -Format "dd/MM/yyyy"
+                } else {
+                    $expires = $null
+                }
+                $type = $feature.type
+                $entitlement = $feature.entitlement
+                $typeDescription = $typeDescriptions[$type]
+
+                $licenseSummaryUnordered += [PSCustomObject]@{
+                    name = $property.Name
+                    description = $description
+                    status = $status
+                    expiration = $expires
+                    type = $type
+                    typeDescription = $typeDescription
+                    entitlement = $entitlement
+                }
+            }
+
+            # Ordering $licenseSummary based on the specified order
+            $licenseSummary = $FortiGuardSvcOrder | ForEach-Object {
+                $serviceName = $_
+                $licenseSummaryUnordered | Where-Object { $_.Name -eq $serviceName }
+            }
+
+            $Forticare = $LicenseStatus.forticare
             Section -Style Heading2 'FortiCare' {
-                Paragraph "The following section details FortiCare settings configured on FortiGate."
+                Paragraph "The following table details FortiCare settings configured on FortiGate."
                 BlankLine
 
                 $OutObj = @()
@@ -56,6 +167,34 @@ function Get-AbrFgtForticare {
                 }
 
                 $OutObj | Table @TableParams
+
+
+                Paragraph "The following table details FortiGuard subscriptions and services on FortiGate."
+                BlankLine
+
+                $OutObj = @()
+                foreach ($license in $licenseSummary) {
+                    $licenseStatus = $license.status -eq 'licensed' ? 'Licensed' : 'Unlicensed'
+                    $OutObj += [pscustomobject]@{
+                        "Name" = $license.description
+                        "Type" = $license.typeDescription
+                        "Status"   = $licenseStatus
+                        "Expiration" = $license.expiration
+                    }
+                }
+
+                $TableParams = @{
+                    Name         = "FortiGuard Services"
+                    List         = $false
+                    ColumnWidths = 50, 20, 15, 15
+                }
+
+                if ($Report.ShowTableCaptions) {
+                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                }
+
+                $OutObj | Table @TableParams
+
 
                 Paragraph "The following section details support settings configured on FortiGate."
                 BlankLine
