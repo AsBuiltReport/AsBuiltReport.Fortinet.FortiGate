@@ -319,6 +319,86 @@ function Get-AbrFgtSystem {
                 }
             }
 
+            # Fetch HA Configuration
+            $haConfig = Get-FGTSystemHA
+            $haPeers = Get-FGTMonitorSystemHAPeer
+            $haChecksums = Get-FGTMonitorSystemHAChecksum
+
+            if ( $haConfig.mode -ne 'standalone' -and $infoLevel.System -ge 1) {
+                Section -Style Heading3 'High Availability' {
+                    Paragraph "The following section details HA settings."
+                    BlankLine
+
+                    Section -Style Heading4 'HA Configuration' {
+                        $OutObj = @()
+
+                        $OutObj = [pscustomobject]@{
+                            "Group Name"               = $haConfig.'group-name'
+                            "Group ID"                 = $haConfig.'group-id'
+                            "Mode"                     = $haConfig.mode
+                            "HB Device"                = $haConfig.'hbdev'
+                            "HA Override"              = $haConfig.'override'
+                            "Route TTL"                = $haConfig.'route-ttl'
+                            "Route Wait"               = $haConfig.'route-wait'
+                            "Route Hold"               = $haConfig.'route-hold'
+                            "Session sync (TCP)"       = $haConfig.'session-pickup'
+                            "Session sync (UDP)"       = $haConfig.'session-pickup-connectionless'
+                            "Session sync (Pinholes)"  = $haConfig.'session-pickup-expectation'
+                            "Uninterruptible Upgrade"  = $haConfig.'uninterrup-upgrade'
+                            "HA Management Status"     = $haConfig.'ha-mgmt-status'
+                            "HA Management Interfaces" = $haConfig.'ha-mgmt-interfaces'
+                        }
+
+                        $TableParams = @{
+                            Name         = "HA Configuration"
+                            List         = $true
+                            ColumnWidths = 50, 50
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Table @TableParams
+                    }
+
+                    Section -Style Heading4 'HA Members' {
+                        $OutObj = @()
+
+                        foreach ($haPeer in $haPeers) {
+                            $haChecksum = $haChecksums | Where-Object { $_.serial_no -eq $haPeer.serial_no }
+
+                            # Correctly using the if statement for assignment
+                            $manageMaster = if ($haChecksum.is_manage_master -eq 1) { "Yes" } else { "No" }
+                            $rootMaster = if ($haChecksum.is_root_master -eq 1) { "Yes" } else { "No" }
+
+                            # Correctly reference properties from $haPeer
+                            $OutObj += [pscustomobject]@{
+                                "Hostname"      = $haPeer.hostname
+                                "Serial"        = $haPeer.serial_no
+                                "Priority"      = $haPeer.priority
+                                "Manage Master" = $manageMaster
+                                "Root Master"   = $rootMaster
+                            }
+                        }
+
+                        $TableParams = @{
+                            Name         = "HA Members"
+                            List         = $false
+                            ColumnWidths = 30, 30, 10, 10, 10, 10
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Table @TableParams
+                    }
+
+
+                }
+            }
+
         }
     }
 
