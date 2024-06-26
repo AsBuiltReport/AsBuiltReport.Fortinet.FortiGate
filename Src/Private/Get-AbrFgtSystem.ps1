@@ -96,7 +96,7 @@ function Get-AbrFgtSystem {
             }
 
             if ($info -and $settings -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'GUI Settings' {
+                Section -Style Heading3 'Feature GUI visibility' {
                     $OutObj = @()
 
                     $OutObj = [pscustomobject]@{
@@ -127,7 +127,7 @@ function Get-AbrFgtSystem {
                     }
 
                     $TableParams = @{
-                        Name         = "Settings"
+                        Name         = "Feature GUI visibility"
                         List         = $true
                         ColumnWidths = 50, 50
                     }
