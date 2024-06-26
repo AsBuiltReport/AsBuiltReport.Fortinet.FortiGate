@@ -206,17 +206,17 @@ function Get-AbrFgtSystem {
 
                         $trustedHosts = $admin.trusthost1 + "`n"
                         $trustedHosts += $admin.trusthost2 + "`n"
-                        $trustedHosts += $admin.trusthost3 +  "`n"
-                        $trustedHosts += $admin.trusthost4 +  "`n"
-                        $trustedHosts += $admin.trusthost5 +  "`n"
+                        $trustedHosts += $admin.trusthost3 + "`n"
+                        $trustedHosts += $admin.trusthost4 + "`n"
+                        $trustedHosts += $admin.trusthost5 + "`n"
                         $trustedHosts += $admin.trusthost6 + "`n"
-                        $trustedHosts += $admin.trusthost7 +  "`n"
-                        $trustedHosts += $admin.trusthost8 +  "`n"
+                        $trustedHosts += $admin.trusthost7 + "`n"
+                        $trustedHosts += $admin.trusthost8 + "`n"
                         $trustedHosts += $admin.trusthost9 + "`n"
-                        $trustedHosts += $admin.trusthost10 +  "`n"
+                        $trustedHosts += $admin.trusthost10 + "`n"
 
                         $trustedHosts = $trustedHosts -replace "0.0.0.0 0.0.0.0`n", "" #Remove 'All Network'
-                        if($trustedHosts -eq ""){
+                        if ($trustedHosts -eq "") {
                             $trustedHosts = "All" #TODO: Add Health Warning !
                         }
                         $OutObj += [pscustomobject]@{
@@ -245,7 +245,7 @@ function Get-AbrFgtSystem {
 
             #By 'API' design, it is always return all interfaces (not filtering by vdom)
             if ("" -ne $Options.vdom) {
-                $interfaces = $interfaces | Where-Object {$_.vdom -eq $Options.vdom }
+                $interfaces = $interfaces | Where-Object { $_.vdom -eq $Options.vdom }
             }
 
             if ($interfaces -and $InfoLevel.System -ge 1) {
