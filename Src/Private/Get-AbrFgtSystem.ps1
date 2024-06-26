@@ -332,11 +332,20 @@ function Get-AbrFgtSystem {
                     Section -Style Heading4 'HA Configuration' {
                         $OutObj = @()
 
+                        switch ($haConfig.mode) {
+                            "a-p" { $mode = "Active/Passive" }
+                            "a-a" { $mode = "Active/Active" }
+                            Default {}
+                        }
+                        #API return multi same interface ?! (remove extra space, quote and )
+                        $monitor = (($haConfig.monitor.trim() -replace '  ', ' ' -replace '"', '').Split(" ") | Sort-Object -Unique) -Join ", "
+
                         $OutObj = [pscustomobject]@{
                             "Group Name"               = $haConfig.'group-name'
                             "Group ID"                 = $haConfig.'group-id'
-                            "Mode"                     = $haConfig.mode
+                            "Mode"                     = $mode
                             "HB Device"                = $haConfig.'hbdev'
+                            "Monitor"                  = $monitor
                             "HA Override"              = $haConfig.'override'
                             "Route TTL"                = $haConfig.'route-ttl'
                             "Route Wait"               = $haConfig.'route-wait'
@@ -385,7 +394,7 @@ function Get-AbrFgtSystem {
                         $TableParams = @{
                             Name         = "HA Members"
                             List         = $false
-                            ColumnWidths = 30, 30, 10, 10, 10, 10
+                            ColumnWidths = 35, 35, 10, 10, 10
                         }
 
                         if ($Report.ShowTableCaptions) {
