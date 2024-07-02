@@ -302,11 +302,12 @@ function Get-AbrFgtFirewall {
                         $comments_text += " ($comments_pourcentage%)"
                     }
 
-                    $policy_comments = @($Policy | Where-Object { $_.comments -ne '' }).count
-                    $comments_text = "$policy_comments"
-                    if ($policy_count) {
-                        $comments_pourcentage = [math]::Round(($policy_comments / $policy_count * 100), 2)
-                        $comments_text += " ($comments_pourcentage%)"
+                    #Policy with comments contains Copy, Clone or Reverse
+                    $policy_comments_ccr = @($Policy | Where-Object { $_.comments -like "*copy*" -or $_.comments -like "*clone*" -or $_.comments -like "*reverse*" }).count
+                    $comments_ccr_text = "$policy_comments_ccr"
+                    if ($policy_comments) {
+                        $comments_ccr_pourcentage = [math]::Round(($policy_comments_ccr / $policy_comments * 100), 2)
+                        $comments_ccr_text += " ($comments_ccr_pourcentage%)"
                     }
 
                     $policy_no_inspection = @($Policy | Where-Object { $_.'ssl-ssh-profile' -eq '' -or $_.'ssl-ssh-profile' -eq 'no-inspection' }).count
@@ -318,14 +319,15 @@ function Get-AbrFgtFirewall {
                     }
 
                     $OutObj = [pscustomobject]@{
-                        "Policy"             = $policy_count
-                        "Enabled"            = $status_text
-                        "Deny"               = $deny_text
-                        "NAT"                = $nat_text
-                        "Logging"            = $log_text
-                        "Unnamed"            = $unnamed_text
-                        "Comments"           = $comments_text
-                        "SSH/SSH Inspection" = $inspection_text
+                        "Policy"                                 = $policy_count
+                        "Enabled"                                = $status_text
+                        "Deny"                                   = $deny_text
+                        "NAT"                                    = $nat_text
+                        "Logging"                                = $log_text
+                        "Unnamed"                                = $unnamed_text
+                        "Comments"                               = $comments_text
+                        "Comments (with Copy, Clone or Reverse)" = $comments_ccr_text
+                        "SSH/SSH Inspection"                     = $inspection_text
                     }
 
                     $TableParams = @{
