@@ -349,6 +349,45 @@ function Get-AbrFgtSystem {
 
                     $OutObj | Table @TableParams
                 }
+
+                #DHCP Server detail
+                if ($InfoLevel.System -ge 2) {
+                    foreach ($dhcp_server in $dhcp_servers) {
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP: $($dhcp_server.id) - $($dhcp_server.interface)" {
+                            BlankLine
+
+                            $dns = ($dhcp_server.'dns-server1' -replace "0.0.0.0", "") + ($dhcp_server.'dns-server2' -replace "0.0.0.0", "") + ($dhcp_server.'dns-server3' -replace "0.0.0.0", "") + ($dhcp_server.'dns-server4' -replace "0.0.0.0", "")
+                            $ntp = ($dhcp_server.'ntp-server1' -replace "0.0.0.0", "") + ($dhcp_server.'ntp-server2' -replace "0.0.0.0", "") + ($dhcp_server.'ntp-server3' -replace "0.0.0.0", "") + ($dhcp_server.'ntp-server4' -replace "0.0.0.0", "")
+                            $OutObj = [pscustomobject]@{
+                                "id"         = $dhcp_server.id
+                                "Status"     = $dhcp_server.status
+                                "Lease Time" = $dhcp_server.'lease-time'
+                                "Interface"  = $dhcp_server.interface
+                                "Start IP"   = $dhcp_server.'ip-range'.'start-ip'
+                                "End IP"     = $dhcp_server.'ip-range'.'end-ip'
+                                "Netmask"    = $dhcp_server.netmask
+                                "Gateway"    = $dhcp_server.'default-gateway'
+                                "DNS"        = $dns
+                                "Domain"     = $dhcp_server.domain
+                                "NTP"        = $ntp
+                            }
+
+                            $TableParams = @{
+                                Name         = "DHCP $($dhcp_server.id) - $($dhcp_server.interface)"
+                                List         = $true
+                                ColumnWidths = 25, 75
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+                    }
+                }
+
+
             }
 
             # Fetch HA Configuration
