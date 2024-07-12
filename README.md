@@ -144,7 +144,7 @@ The table below outlines the default and maximum InfoLevel settings for each *Fo
 | Sub-Schema | Default Settings | Maximum Settings |
 |:----------:|------------------|------------------|
 | Forticare  | 1                | 1                |
-| System     | 1                | 1                |
+| System     | 2                | 2                |
 | Route      | 1                | 1                |
 | Firewall   | 1                | 1                |
 | User       | 2                | 2                |
