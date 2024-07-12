@@ -412,6 +412,38 @@ function Get-AbrFgtSystem {
                             $OutObj | Table @TableParams
                         }
                     }
+
+                    #DHCP Leases (from Monitoring) => no yet Get-FGTMonitorDHCP cmdlet on PowerFGT...
+                    $dhcp_leases = (Invoke-FGTRestMethod -uri api/v2/monitor/system/dhcp).results
+
+                    if ($dhcp_leases) {
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP Leases" {
+                            $OutObj = @()
+                            foreach ($dhcp_lease in $dhcp_leases) {
+                                $OutObj += [pscustomobject]@{
+                                    "IP"          = $dhcp_lease.ip
+                                    "MAC"         = $dhcp_lease.mac
+                                    "Hostname"    = $dhcp_lease.hostname
+                                    "Status"      = $dhcp_lease.status
+                                    "Reserved"    = $dhcp_lease.reserved
+                                    "Expire Time" = ( Get-Date -UnixTimeSeconds $dhcp_lease.expire_time)
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "DHCP Server Reserved Address"
+                                List         = $false
+                                ColumnWidths = 19, 19, 24, 8, 11, 18
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+                    }
+
                 }
 
             }
