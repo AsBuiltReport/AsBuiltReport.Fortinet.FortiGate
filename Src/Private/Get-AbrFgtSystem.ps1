@@ -319,6 +319,38 @@ function Get-AbrFgtSystem {
                 }
             }
 
+            #DHCP Server
+            $dhcp_servers = Get-FGTSystemDHCPServer
+
+            if ($dhcp_servers -and $InfoLevel.System -ge 1) {
+                Section -Style Heading3 'DHCP Server' {
+                    $OutObj = @()
+
+                    foreach ($dhcp_server in $dhcp_servers) {
+                        $OutObj += [pscustomobject]@{
+                            "id"        = $dhcp_server.id
+                            "Status"    = $dhcp_server.status
+                            "Interface" = $dhcp_server.interface
+                            "Range"     = "$($dhcp_server.'ip-range'.'start-ip')-$($dhcp_server.'ip-range'.'end-ip')"
+                            "Netmask"   = $dhcp_server.netmask
+                            "Gateway"   = $dhcp_server.'default-gateway'
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "DHCP Server"
+                        List         = $false
+                        ColumnWidths = 5, 11, 15, 35, 17, 17
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
             # Fetch HA Configuration
             $haConfig = Get-FGTSystemHA
             $haPeers = Get-FGTMonitorSystemHAPeer
