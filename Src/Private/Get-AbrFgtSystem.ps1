@@ -350,8 +350,8 @@ function Get-AbrFgtSystem {
                     $OutObj | Table @TableParams
                 }
 
-                #DHCP Server detail
                 if ($InfoLevel.System -ge 2) {
+                    #DHCP Server detail
                     foreach ($dhcp_server in $dhcp_servers) {
                         Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP: $($dhcp_server.id) - $($dhcp_server.interface)" {
                             BlankLine
@@ -385,8 +385,34 @@ function Get-AbrFgtSystem {
                             $OutObj | Table @TableParams
                         }
                     }
-                }
 
+                    #DHCP Server Reservation
+                    if ($dhcp_servers.'reserved_address') {
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP Server Reserved Address" {
+                            $OutObj = @()
+                            foreach ($reserved_address in ($dhcp_servers.'reserved-address')) {
+                                $OutObj += [pscustomobject]@{
+                                    "id"     = $reserved_address.id
+                                    "IP"     = $reserved_address.ip
+                                    "MAC"    = $reserved_address.mac
+                                    "Action" = $reserved_address.action
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "DHCP Server Reserved Address"
+                                List         = $false
+                                ColumnWidths = 5, 35, 35, 25
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+                    }
+                }
 
             }
 
