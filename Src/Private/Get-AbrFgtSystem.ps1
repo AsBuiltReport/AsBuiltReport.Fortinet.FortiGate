@@ -387,7 +387,7 @@ function Get-AbrFgtSystem {
                     }
 
                     #DHCP Server Reservation
-                    if ($dhcp_servers.'reserved_address') {
+                    if ($null -ne $dhcp_servers.'reserved-address') {
                         Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP Server Reserved Address" {
                             $OutObj = @()
                             foreach ($reserved_address in ($dhcp_servers.'reserved-address')) {
