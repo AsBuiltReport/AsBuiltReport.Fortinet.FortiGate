@@ -1,5 +1,22 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+## [0.4.0] - 2024-07-15
+
+### Added
+- Add DHCP Server (Reservation, Leases...) [82](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/82)
+- FortiCare: Add information about FortiGuard Services [78](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/78)
+- Add System HA (Configuration and Members) info [79](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/79)
+
+### Changed
+- Firewall: display number of rules with comment contain Copy, Clone... [75](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/75)
+- Add ISDB support for Policy Source & Destination [77](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/77)
+- Invoke: Add Name and Serial of all members on top of report [81](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/81)
+
+### Fixed
+- samples: fix empty samples... [71](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/71)
+- Route: Fix when Static Route is SD-WAN (Zone) [76](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/76)
+- Fix typo found on System Chapiter [80](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/80)
+
 ## [0.3.0] - 2024-02-29
 
 ### Added
