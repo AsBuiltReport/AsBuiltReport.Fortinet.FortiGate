@@ -433,7 +433,7 @@ function Get-AbrFgtSystem {
                             $TableParams = @{
                                 Name         = "DHCP Server Reserved Address"
                                 List         = $false
-                                ColumnWidths = 19, 19, 24, 8, 11, 18
+                                ColumnWidths = 19, 19, 25, 8, 11, 18
                             }
 
                             if ($Report.ShowTableCaptions) {
