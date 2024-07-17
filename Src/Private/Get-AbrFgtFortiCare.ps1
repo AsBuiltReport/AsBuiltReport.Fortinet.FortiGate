@@ -175,7 +175,12 @@ function Get-AbrFgtForticare {
 
                 $OutObj = @()
                 foreach ($license in $licenseSummary) {
-                    $licenseStatus = $license.status -eq 'licensed' ? 'Licensed' : 'Unlicensed'
+                    if ($license.status -eq 'licensed') {
+                        $licenseStatus = 'Licensed'
+                    }
+                    else {
+                        $licenseStatus = 'Unlicensed'
+                    }
                     $OutObj += [pscustomobject]@{
                         "Name"       = $license.description
                         "Type"       = $license.typeDescription
