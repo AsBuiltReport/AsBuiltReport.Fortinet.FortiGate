@@ -1,5 +1,10 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+## [0.4.1] - 2024-07-17
+
+### Fixed
+- Fix FortiCare with PowerShell 5.0 [87](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/87)
+
 ## [0.4.0] - 2024-07-15
 
 ### Added
