@@ -35,6 +35,7 @@ function Get-AbrFgtFirewall {
             $IPPool = Get-FGTFirewallIPPool -meta
             $VIP = Get-FGTFirewallVip -meta
             $Policy = Get-FGTFirewallPolicy -meta
+            $fqdn = (invoke-FGTRestMethod -uri "api/v2/monitor/firewall/address-fqdns").results.psobject.properties.value
 
             if ($InfoLevel.Firewall -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -78,12 +79,20 @@ function Get-AbrFgtFirewall {
                         $policy_text += " (Disabled: $policy_disable)"
                     }
 
+                    $fqdn_count = @($fqdn).count
+                    $fqdn_text = "$fqdn_count"
+                    if ($fqdn_count) {
+                        $fqdn_unresolved = ($fqdn | Where-Object { $_.addrs.count -eq 0 }).count
+                        $fqdn_text += " (Unresolved: $fqdn_unresolved)"
+                    }
+
                     $OutObj = [pscustomobject]@{
                         "Address"    = $address_text
                         "Group"      = $group_text
                         "IP Pool"    = $ippool_text
                         "Virtual IP" = $vip_text
                         "Policy"     = $policy_text
+                        "FQDN"       = $fqdn_text
                     }
 
                     $TableParams = @{
@@ -230,6 +239,39 @@ function Get-AbrFgtFirewall {
                         Name         = "Virtual IP"
                         List         = $false
                         ColumnWidths = 14, 14, 12, 11, 11, 11, 11, 11, 5
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
+            if ($fqdn -and $InfoLevel.Firewall -ge 1) {
+                Section -Style Heading3 'FQDN' {
+                    $OutObj = @()
+
+                    foreach ($f in $fqdn) {
+
+                        if ($f.addrs.count -eq 0) {
+                            $addr = "Unresolved"
+                        }
+                        else {
+                            $addr = $f.addrs -join ", "
+                        }
+                        $OutObj += [pscustomobject]@{
+                            "Name"      = $f.fqdn
+                            "Addresses" = $addr
+                            "wildcard"  = $f.wildcard
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "FQDN"
+                        List         = $false
+                        ColumnWidths = 25, 65, 10
                     }
 
                     if ($Report.ShowTableCaptions) {
