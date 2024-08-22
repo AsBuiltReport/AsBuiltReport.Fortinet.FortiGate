@@ -548,6 +548,254 @@ function Get-AbrFgtFirewall {
                 }
             }
 
+            $MonitorRules = Get-FGTMonitorFirewallPolicy
+            if ($MonitorRules -and $InfoLevel.Firewall -ge 1) {
+
+                $monitor_result = @()
+                $now = [int64](Get-Date -UFormat %s)
+                $one_day = 86400        # 1 day en seconds
+                $seven_days = 604800    # 7 day en seconds
+                $thirty_days = 2592000  # 30 day en seconds
+
+                foreach ($monitor in $MonitorRules) {
+
+                    #Skip the policy id 0 (Implicit Deny)
+                    if ($monitor.policyid -eq "0 ") {
+                        continue;
+                    }
+                    $last_policy_use = "Never"
+                    $now_minus_one_day = $now - $one_day
+                    $now_minus_seven_days = $now - $seven_days
+                    $now_minus_thirty_days = $now - $thirty_days
+                    if ($monitor.last_used -ge $now_minus_thirty_days) {
+                        $last_policy_use = "Last Month"
+                    }
+                    if ($monitor.last_used -ge $now_minus_seven_days) {
+                        $last_policy_use = "Last Week"
+                    }
+                    if ($monitor.last_used -ge $now_minus_one_day) {
+                        $last_policy_use = "Last Day"
+                    }
+
+                    $rule = $policy | Where-Object { $_.policyid -eq $monitor.policyid }
+
+                    #Using ISDB for Destination ?
+                    if ($rule.'internet-service' -eq "enable") {
+
+                        $dst = $rule.'internet-service-name'.name -join ", "
+                    }
+                    else {
+                        $dst = $rule.dstaddr.name -join ", "
+                    }
+
+                    $dst += " (To $($rule.dstintf.name -join ", "))"
+
+                    #Using ISDB for Source ?
+                    if ($rule.'internet-service-src ' -eq "enable") {
+
+                        $src = $rule.'internet-service-src-name'.name -join ", "
+                    }
+                    else {
+                        $src = $rule.srcaddr.name -join ", "
+                    }
+                    $src += " (From $($rule.srcintf.name -join ', '))"
+
+                    $monitor_result += [pscustomobject]@{
+                        "Id"          = $rule.policyid
+                        "Name"        = $rule.name
+                        "Source"      = $src
+                        "Destination" = $dst
+                        "Service"     = $rule.service.name -join ", "
+                        "Action"      = $rule.action
+                        "Hit"         = $monitor.hit_count
+                        "Usage"       = $last_policy_use
+                    }
+                }
+
+                Section -Style Heading3 'Usage Policy Summary' {
+                    Paragraph "The following section provides an usage policy summary of firewall."
+                    BlankLine
+                    $usage_count = @($monitor_result).count
+
+                    $never_status = @($monitor_result | Where-Object { $_.usage -eq 'Never' }).count
+                    $never_text = "$never_status"
+                    if ($usage_count) {
+                        $never_pourcentage = [math]::Round(($never_status / $usage_count * 100), 2)
+                        $never_text += " ($never_pourcentage%)"
+                    }
+
+                    $thirty_status = @($monitor_result | Where-Object { $_.usage -eq 'Last Month' }).count
+                    $thirty_text = "$thirty_status"
+                    if ($usage_count) {
+                        $thirty_pourcentage = [math]::Round(($thirty_status / $usage_count * 100), 2)
+                        $thirty_text += " ($thirty_pourcentage%)"
+                    }
+
+                    $seven_status = @($monitor_result | Where-Object { $_.usage -eq 'Last Week' }).count
+                    $seven_text = "$seven_status"
+                    if ($usage_count) {
+                        $seven_pourcentage = [math]::Round(($seven_status / $usage_count * 100), 2)
+                        $seven_text += " ($seven_pourcentage%)"
+                    }
+
+                    $one_status = @($monitor_result | Where-Object { $_.usage -eq 'Last Day' }).count
+                    $one_text = "$one_status"
+                    if ($usage_count) {
+                        $one_pourcentage = [math]::Round(($one_status / $usage_count * 100), 2)
+                        $one_text += " ($one_pourcentage%)"
+                    }
+
+                    $OutObj = [pscustomobject]@{
+                        "Never"       = $never_text
+                        "Last 30 Day" = $thirty_text
+                        "Last 7 Day"  = $seven_text
+                        "Last 1 day"  = $one_text
+                    }
+
+                    $TableParams = @{
+                        Name         = "Usage Policy Summary"
+                        List         = $true
+                        ColumnWidths = 50, 50
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+
+                $usages = $monitor_result | Where-Object { $_.usage -eq 'Never' }
+
+                if ($usages) {
+                    Section -Style Heading3 'Usage Policy (Never)' {
+                        $OutObj = @()
+
+
+                        foreach ($usage in $usages) {
+                            $OutObj += [pscustomobject]@{
+                                "Id"          = $usage.id
+                                "Name"        = $usage.name
+                                "Source"      = $usage.source
+                                "Destination" = $usage.destination
+                                "Service"     = $usage.service
+                                "Action"      = $usage.action
+                                "Hit"         = $usage.hit
+                            }
+                        }
+
+                        $TableParams = @{
+                            Name         = "Usage Policy (Never)"
+                            List         = $false
+                            ColumnWidths = 5, 10, 29, 29, 10, 8, 9
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Table @TableParams
+                    }
+                }
+
+                $usages = $monitor_result | Where-Object { $_.usage -eq 'Last Month' }
+
+                if ($usages) {
+                    Section -Style Heading3 'Usage Policy (1 Month)' {
+                        $OutObj = @()
+
+                        foreach ($usage in $usages) {
+                            $OutObj += [pscustomobject]@{
+                                "Id"          = $usage.id
+                                "Name"        = $usage.name
+                                "Source"      = $usage.source
+                                "Destination" = $usage.destination
+                                "Service"     = $usage.service
+                                "Action"      = $usage.action
+                                "Hit"         = $usage.hit
+                            }
+                        }
+
+                        $TableParams = @{
+                            Name         = "Usage Policy (1 Month)"
+                            List         = $false
+                            ColumnWidths = 5, 10, 29, 29, 10, 8, 9
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Table @TableParams
+                    }
+                }
+
+                $usages = $monitor_result | Where-Object { $_.usage -eq 'Last Week' }
+
+                if ($usages) {
+                    Section -Style Heading3 'Usage Policy (1 Week)' {
+                        $OutObj = @()
+
+                        foreach ($usage in $usages) {
+                            $OutObj += [pscustomobject]@{
+                                "Id"          = $usage.id
+                                "Name"        = $usage.name
+                                "Source"      = $usage.source
+                                "Destination" = $usage.destination
+                                "Service"     = $usage.service
+                                "Action"      = $usage.action
+                                "Hit"         = $usage.hit
+                            }
+                        }
+
+                        $TableParams = @{
+                            Name         = "Usage Policy (1 Week)"
+                            List         = $false
+                            ColumnWidths = 5, 10, 29, 29, 10, 8, 9
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Table @TableParams
+                    }
+                }
+
+                $usages = $monitor_result | Where-Object { $_.usage -eq 'Last Day' }
+
+                if ($usages) {
+                    Section -Style Heading3 'Usage Policy (1 Day)' {
+                        $OutObj = @()
+
+                        foreach ($usage in $usages) {
+                            $OutObj += [pscustomobject]@{
+                                "Id"          = $usage.id
+                                "Name"        = $usage.name
+                                "Source"      = $usage.source
+                                "Destination" = $usage.destination
+                                "Service"     = $usage.service
+                                "Action"      = $usage.action
+                                "Hit"         = $usage.hit
+                            }
+                        }
+
+                        $TableParams = @{
+                            Name         = "Usage Policy (1 day)"
+                            List         = $false
+                            ColumnWidths = 5, 10, 29, 29, 10, 8, 9
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Table @TableParams
+                    }
+                }
+
+            }
+
         }
     }
 
