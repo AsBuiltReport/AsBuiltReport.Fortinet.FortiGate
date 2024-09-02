@@ -119,6 +119,9 @@ function Get-AbrFgtFirewall {
                             "fqdn" {
                                 $value = $add.fqdn
                             }
+                            default {
+                                $value = "Unknown Type"
+                            }
 
                         }
 
