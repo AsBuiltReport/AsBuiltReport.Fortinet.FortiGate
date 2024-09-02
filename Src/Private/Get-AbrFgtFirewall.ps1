@@ -110,7 +110,7 @@ function Get-AbrFgtFirewall {
                             "ipmask" {
                                 $value = $add.subnet.Replace(' ', '/')
                             }
-                            "ipprange" {
+                            "iprange" {
                                 $value = $add.'start-ip' + "-" + $add.'end-ip'
                             }
                             "geography" {
