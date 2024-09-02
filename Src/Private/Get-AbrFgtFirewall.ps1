@@ -128,6 +128,9 @@ function Get-AbrFgtFirewall {
                             "fqdn" {
                                 $value = $add.fqdn
                             }
+                            "mac" {
+                                $value = $add.macaddr.macaddr -join ", "
+                            }
                             default {
                                 $value = "Unknown Type"
                             }
