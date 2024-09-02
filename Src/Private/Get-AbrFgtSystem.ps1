@@ -548,8 +548,9 @@ function Get-AbrFgtSystem {
                             if ($Report.ShowTableCaptions) {
                                 $TableParams['Caption'] = "- $($TableParams.Name)"
                             }
-
-                            $OutObj | Table @TableParams
+                            if ($OutObj.count) {
+                                $OutObj | Table @TableParams
+                            }
                         }
                     }
 
