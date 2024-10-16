@@ -375,7 +375,7 @@ function Get-AbrFgtFirewall {
                         "Unnamed"                                = $unnamed_text
                         "Comments"                               = $comments_text
                         "Comments (with Copy, Clone or Reverse)" = $comments_ccr_text
-                        "SSH/SSH Inspection"                     = $inspection_text
+                        "SSL/SSH Inspection"                     = $inspection_text
                     }
 
                     $TableParams = @{
