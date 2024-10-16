@@ -366,6 +366,27 @@ function Get-AbrFgtFirewall {
                         $inspection_text += " ($inspection_pourcentage%)"
                     }
 
+                    $from_ssl = @($Policy | Where-Object { $_.srcintf.name -like 'ssl.*' }).count
+                    $from_ssl_with_nat = @($Policy | Where-Object { $_.srcintf.name -like 'ssl.*' -and $_.nat -eq "enable" }).count
+                    $from_ssl_disabled = @($Policy | Where-Object { $_.srcintf.name -like 'ssl.*' -and $_.status -eq "disable" }).count
+                    $from_ssl_text = "$from_ssl"
+                    if ($policy_count) {
+                        $from_ssl_pourcentage = [math]::Round(($from_ssl / $policy_count * 100), 2)
+                        $from_ssl_text += " ($from_ssl_pourcentage%)"
+                    }
+                    $from_ssl_text += " (With NAT: $from_ssl_with_nat, Disabled: $from_ssl_disabled)"
+
+                    $to_ssl = @($Policy | Where-Object { $_.dstintf.name -like 'ssl.*' }).count
+                    $to_ssl_with_nat = @($Policy | Where-Object { $_.dstintf.name -like 'ssl.*' -and $_.nat -eq "enable" }).count
+                    $to_ssl_disabled = @($Policy | Where-Object { $_.dstintf.name -like 'ssl.*' -and $_.status -eq "disable" }).count
+                    $to_ssl_text = "$to_ssl"
+                    if ($policy_count) {
+                        $to_ssl_pourcentage = [math]::Round(($to_ssl / $policy_count * 100), 2)
+                        $to_ssl_text += " ($to_ssl_pourcentage%)"
+                    }
+                    $to_ssl_text += " (With NAT: $to_ssl_with_nat, Disabled: $to_ssl_disabled)"
+
+
                     $OutObj = [pscustomobject]@{
                         "Policy"                                 = $policy_count
                         "Enabled"                                = $status_text
@@ -376,6 +397,8 @@ function Get-AbrFgtFirewall {
                         "Comments"                               = $comments_text
                         "Comments (with Copy, Clone or Reverse)" = $comments_ccr_text
                         "SSL/SSH Inspection"                     = $inspection_text
+                        "From VPN SSL"                           = $from_ssl_text
+                        "To VPN SSL"                             = $to_ssl_text
                     }
 
                     $TableParams = @{
