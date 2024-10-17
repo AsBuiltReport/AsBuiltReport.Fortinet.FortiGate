@@ -26,7 +26,8 @@ function Get-AbrFgtVPNSSL {
 
     process {
 
-        Section -Style Heading2 'VPN SSL' {
+        $TableName = "VPN SSL"
+        Section -Style Heading2 $TableName {
             Paragraph "The following section details VPN SSL settings configured on FortiGate."
             BlankLine
 
@@ -35,30 +36,21 @@ function Get-AbrFgtVPNSSL {
             $users = Get-FGTMonitorVpnSsl
 
             if ($InfoLevel.VPNSSL -ge 1) {
-                Section -Style Heading3 'Summary' {
+                $TableName = "Summary"
+                Section -Style Heading3 $TableName {
                     Paragraph "The following section provides a summary of VPN SSL settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
                         "Portal"           = @($settings).count
                         "User (connected)" = @($users).Count
                     }
-
-                    $TableParams = @{
-                        Name         = "Summary"
-                        List         = $true
-                        ColumnWidths = 50, 50
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                 }
             }
 
             if ($settings -and $InfoLevel.VPNSSL -ge 1) {
-                Section -Style Heading3 'VPN SSL Settings' {
+                $TableName = "VPN SSL Settings"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     $OutObj += [pscustomobject]@{
@@ -78,22 +70,14 @@ function Get-AbrFgtVPNSSL {
                         "DNS Server2"           = $settings.'dns-server2'
                     }
 
-
-                    $TableParams = @{
-                        Name         = "VPN SSL Settings"
-                        List         = $true
-                        ColumnWidths = 30, 70
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List -TableParams @{ColumnWidths = 30, 70}
 
                     $OutObj | Table @TableParams
 
                     if ($settings.'authentication-rule' -and $InfoLevel.VPNSSL -ge 2) {
 
-                        Section -Style Heading3 "VPN SSL Settings: Authentication Rule" {
+                        $TableName = "VPN SSL Settings: Authentication Rule"
+                        Section -Style Heading3 $TableName {
                             BlankLine
                             $OutObj = @()
                             foreach ($ar in $settings.'authentication-rule') {
@@ -107,18 +91,7 @@ function Get-AbrFgtVPNSSL {
                                     "auth"   = $ar.auth
                                 }
                             }
-
-                            $TableParams = @{
-                                Name         = "VPN SSL Settings: Authentication Rule"
-                                List         = $false
-                                ColumnWidths = 10, 20, 20, 20, 15, 15
-                            }
-
-                            if ($Report.ShowTableCaptions) {
-                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                            }
-
-                            $OutObj | Table @TableParams
+                            Write-FormattedTable -InputObject $OutObj -TableName $tableName
                         }
                     }
                 }
@@ -139,24 +112,15 @@ function Get-AbrFgtVPNSSL {
                                 "IP Pools"    = $portal.'ip-pools'.name
                             }
                         }
-
-                        $TableParams = @{
-                            Name         = "VPN SSL Portal Summary"
-                            List         = $false
-                            ColumnWidths = 30, 20, 20, 30
-                        }
-
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
-
-                        $OutObj | Table @TableParams
+                        $TableName = "VPN SSL Portal Summary"
+                        Write-FormattedTable -InputObject $OutObj -TableName $tableName
                     }
 
                     if ($InfoLevel.VPNSSL -ge 2) {
 
                         foreach ($portal in $portals) {
-                            Section -Style Heading3 "VPN SSL Portal: $($portal.name)" {
+                            $TableName = "VPN SSL Portal: $($portal.name)"
+                            Section -Style Heading3 $TableName {
                                 BlankLine
                                 $OutObj = @()
 
@@ -188,19 +152,7 @@ function Get-AbrFgtVPNSSL {
                                     "OS Check"                        = $portal.'os-check'
                                     #>
                                 }
-
-
-                                $TableParams = @{
-                                    Name         = "VPN SSL Portal: $($portal.name)"
-                                    List         = $true
-                                    ColumnWidths = 50, 50
-                                }
-
-                                if ($Report.ShowTableCaptions) {
-                                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                                }
-
-                                $OutObj | Table @TableParams
+                                Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                             }
                         }
                     }
@@ -208,7 +160,8 @@ function Get-AbrFgtVPNSSL {
 
             }
             if ($users -and $InfoLevel.VPNSSL -ge 1) {
-                Section -Style Heading3 'VPN SSL Users Connected' {
+                $TableName = "VPN SSL Users Connected"
+                Section -Style Heading3 $TableName {
 
                     $OutObj = @()
 
@@ -221,19 +174,7 @@ function Get-AbrFgtVPNSSL {
                             "Last Login Time" = $user.last_login_time
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "VPN SSL Users Connected"
-                        List         = $false
-                        ColumnWidths = 30, 20, 20, 30
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
-
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName
                 }
 
             }

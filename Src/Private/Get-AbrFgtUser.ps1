@@ -26,7 +26,8 @@ function Get-AbrFgtUser {
 
     process {
 
-        Section -Style Heading2 'User' {
+        $TableName = "User"
+        Section -Style Heading2 $TableName {
             Paragraph "The following section details user settings configured on FortiGate."
             BlankLine
 
@@ -49,23 +50,13 @@ function Get-AbrFgtUser {
                         "RADIUS" = @($RADIUS).count
                         "SAML"   = @($SAML).count
                     }
-
-                    $TableParams = @{
-                        Name         = "Summary"
-                        List         = $true
-                        ColumnWidths = 50, 50
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                 }
             }
 
             if ($Users -and $InfoLevel.User -ge 1) {
-                Section -Style Heading3 'User Local' {
+                $TableName = "User Local"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     foreach ($user in $Users) {
@@ -77,23 +68,13 @@ function Get-AbrFgtUser {
                             "Password Time" = $user.'passwd-time'
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "User"
-                        List         = $false
-                        ColumnWidths = 25, 25, 25, 25
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName
                 }
             }
 
             if ($Groups -and $InfoLevel.User -ge 1) {
-                Section -Style Heading3 'User Group' {
+                $TableName = "User Group"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     foreach ($grp in $Groups) {
@@ -105,23 +86,13 @@ function Get-AbrFgtUser {
                             "Match"  = $grp.match.'group-name' -join ", "
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "User Group"
-                        List         = $false
-                        ColumnWidths = 25, 25, 25, 25
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName
                 }
             }
 
             if ($LDAPS -and $InfoLevel.User -ge 1) {
-                Section -Style Heading3 'LDAP' {
+                $TableName = "LDAP"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     foreach ($ldap in $LDAPS) {
@@ -143,23 +114,12 @@ function Get-AbrFgtUser {
                             "User"      = $ldap.username
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "LDAP"
-                        List         = $false
-                        ColumnWidths = 14, 26, 12, 12, 12, 12, 12
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Server(s)"=26;}
 
                     if ($InfoLevel.User -ge 2) {
                         foreach ($ldap in $LDAPS) {
-                            Section -Style NOTOCHeading4 -ExcludeFromTOC "LDAP: $($ldap.name)" {
-                                BlankLine
+                            $TableName = "LDAP $($ldap.name)"
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC $TableName {
                                 $OutObj = [pscustomobject]@{
                                     "Name"                = $ldap.name
                                     "Server"              = $ldap.server
@@ -177,18 +137,7 @@ function Get-AbrFgtUser {
                                     "Group Search Base"   = $ldap.'group-search-base'
                                     "Group Object Filter" = $ldap.'group-object-filter'
                                 }
-
-                                $TableParams = @{
-                                    Name         = "LDAP $($ldap.name)"
-                                    List         = $true
-                                    ColumnWidths = 25, 75
-                                }
-
-                                if ($Report.ShowTableCaptions) {
-                                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                                }
-
-                                $OutObj | Table @TableParams
+                                Write-FormattedTable -InputObject $OutObj -TableName $tableName -List -TableParams @{ColumnWidths = 25, 75}
                             }
                         }
                     }
@@ -196,7 +145,8 @@ function Get-AbrFgtUser {
             }
 
             if ($RADIUS -and $InfoLevel.User -ge 1) {
-                Section -Style Heading3 'RADIUS' {
+                $TableName = "RADIUS"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     foreach ($rad in $RADIUS) {
@@ -214,23 +164,12 @@ function Get-AbrFgtUser {
                             "NAS-IP"    = $rad.'nas-ip'
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "RADIUS"
-                        List         = $false
-                        ColumnWidths = 20, 40, 20, 20
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Server(s)"=40;}
 
                     if ($InfoLevel.User -ge 2) {
                         foreach ($rad in $RADIUS) {
-                            Section -Style NOTOCHeading4 -ExcludeFromTOC "RADIUS: $($rad.name)" {
-                                BlankLine
+                            $TableName = "RADIUS $($rad.name)"
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC $TableName {
                                 $OutObj = [pscustomobject]@{
 
                                     "Name"                    = $rad.name
@@ -260,18 +199,7 @@ function Get-AbrFgtUser {
                                     "MAC Case"                = $rad.'mac-case'
                                     "Delimiter"               = $rad.delimiter
                                 }
-
-                                $TableParams = @{
-                                    Name         = "RADIUS $($rad.name)"
-                                    List         = $true
-                                    ColumnWidths = 25, 75
-                                }
-
-                                if ($Report.ShowTableCaptions) {
-                                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                                }
-
-                                $OutObj | Table @TableParams
+                                Write-FormattedTable -InputObject $OutObj -TableName $tableName -List -TableParams @{ColumnWidths = 30, 70}
                             }
                         }
                     }
@@ -279,7 +207,8 @@ function Get-AbrFgtUser {
             }
 
             if ($SAML -and $InfoLevel.User -ge 1) {
-                Section -Style Heading3 'SAML' {
+                $TableName = "SAML"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     foreach ($sml in $SAML) {
@@ -292,23 +221,13 @@ function Get-AbrFgtUser {
                         }
 
                     }
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"IdP Entity-ID" = 40;}
 
-                    $TableParams = @{
-                        Name         = "SAML"
-                        List         = $false
-                        ColumnWidths = 20, 20, 40, 20
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
 
                     if ($SAML -and $InfoLevel.User -ge 2) {
                         foreach ($sml in $SAML) {
-                            Section -Style NOTOCHeading4 -ExcludeFromTOC "SAML: $($sml.name)" {
-                                BlankLine
+                            $TableName = "SAML $($sml.name)"
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC $TableName {
                                 $OutObj = [pscustomobject]@{
                                     "Name"                   = $sml.name
                                     "Certificate"            = $sml.cert
@@ -321,18 +240,7 @@ function Get-AbrFgtUser {
                                     "User Name"              = $sml.'user-name'
                                     "Group Name"             = $sml.'group-name'
                                 }
-
-                                $TableParams = @{
-                                    Name         = "SAML $($sml.name)"
-                                    List         = $true
-                                    ColumnWidths = 25, 75
-                                }
-
-                                if ($Report.ShowTableCaptions) {
-                                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                                }
-
-                                $OutObj | Table @TableParams
+                                Write-FormattedTable -InputObject $OutObj -TableName $tableName -List -TableParams @{ColumnWidths = 25, 75}
                             }
                         }
                     }

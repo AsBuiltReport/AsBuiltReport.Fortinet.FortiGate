@@ -141,7 +141,8 @@ function Get-AbrFgtForticare {
             }
 
             $Forticare = $LicenseStatus.forticare
-            Section -Style Heading2 'FortiCare' {
+            $TableName = "FortiCare"
+            Section -Style Heading2 $TableName {
                 Paragraph "The following table details FortiCare settings configured on FortiGate."
                 BlankLine
 
@@ -156,20 +157,10 @@ function Get-AbrFgtForticare {
                     "Account" = $Forticare.account.ToLower()
                     "Company" = $Forticare.company
                 }
-
-                $TableParams = @{
-                    Name         = "FortiCare"
-                    List         = $true
-                    ColumnWidths = 50, 50
-                }
-
-                if ($Report.ShowTableCaptions) {
-                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                }
-
-                $OutObj | Table @TableParams
+                Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
 
 
+                $TableName = "FortiGuard Services"
                 Paragraph "The following table details FortiGuard subscriptions and services on FortiGate."
                 BlankLine
 
@@ -188,20 +179,10 @@ function Get-AbrFgtForticare {
                         "Expiration" = $license.expiration
                     }
                 }
-
-                $TableParams = @{
-                    Name         = "FortiGuard Services"
-                    List         = $false
-                    ColumnWidths = 50, 20, 15, 15
-                }
-
-                if ($Report.ShowTableCaptions) {
-                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                }
-
-                $OutObj | Table @TableParams
+                Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Name" = 50; "Status" = 15; "Expiration" = 15;}
 
 
+                $TableName = "Support"
                 Paragraph "The following section details support settings configured on FortiGate."
                 BlankLine
                 $ExpiresHW = (($Forticare | Select-Object -ExpandProperty support).hardware).expires
@@ -218,21 +199,11 @@ function Get-AbrFgtForticare {
                     "Status"          = $Forticare.support.enhanced.status
                     "Expiration Date" = (Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds($ExpiresEn)) | Get-Date -Format dd/MM/yyyy
                 }
-
-                $TableParams = @{
-                    Name         = "Support"
-                    List         = $false
-                    ColumnWidths = 25, 25, 25, 25
-                }
-
-                if ($Report.ShowTableCaptions) {
-                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                }
-
                 $Support = @()
                 $Support += $SupportHW
                 $Support += $SupportEn
-                $Support | Table @TableParams
+                $OutObj = $Support
+                Write-FormattedTable -InputObject $OutObj -TableName $tableName
             }
 
         }
@@ -247,7 +218,8 @@ function Get-AbrFgtForticare {
 
 
         if ($firmware -and $firmware_upgrade_paths -and $InfoLevel.Forticare -ge 1) {
-            Paragraph "The following section details firmware information on FortiGate."
+            $TableName = "Firmware"
+            Paragraph "The following section details current and available firmware information on FortiGate."
             BlankLine
 
             $FortiOS = $firmware.current
@@ -318,18 +290,8 @@ function Get-AbrFgtForticare {
                     "Upgrade Path" = "N/A"
                 }
             }
-
-            $TableParams = @{
-                Name         = "Firmware"
-                List         = $true
-                ColumnWidths = 50, 50
-            }
-
-            if ($Report.ShowTableCaptions) {
-                $TableParams['Caption'] = "- $($TableParams.Name)"
-            }
-
-            $tab_upgradePath | Table @TableParams
+            $OutObj = $tab_upgradePath
+            Write-FormattedTable -InputObject $OutObj -TableName $tableName
         }
 
     }

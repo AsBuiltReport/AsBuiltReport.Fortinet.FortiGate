@@ -35,7 +35,8 @@ function Get-AbrFgtRoute {
             $PolicyBasedRouting = Get-FGTRouterPolicy
 
             if ($InfoLevel.Route -ge 1) {
-                Section -Style Heading3 'Summary' {
+                $tableName = "Summary"
+                Section -Style Heading3 $tableName {
                     Paragraph "The following section provides a summary of route settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
@@ -43,23 +44,13 @@ function Get-AbrFgtRoute {
                         "Static Route"       = @($Statics).count
                         "Policy Based Route" = @($PolicyBasedRouting).count
                     }
-
-                    $TableParams = @{
-                        Name         = "Summary"
-                        List         = $true
-                        ColumnWidths = 50, 50
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                 }
             }
 
             if ($MonitorRouterIPv4 -and $InfoLevel.Route -ge 1) {
-                Section -Style Heading3 'Route Monitor' {
+                $tableName = "Route Monitor"
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     foreach ($route in $MonitorRouterIPv4) {
@@ -80,23 +71,13 @@ function Get-AbrFgtRoute {
                             "Distance/Metric/Priority" = "$($route.distance) / $($route.metric) / $($route.priority)"
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Route Monitor"
-                        List         = $false
-                        ColumnWidths = 15, 25, 20, 20, 20
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Type" = 15; "IP/Mask" = 25;}
                 }
             }
 
             if ($Statics -and $InfoLevel.Route -ge 1) {
-                Section -Style Heading3 'Static Route' {
+                $tableName = "Static Route"
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     foreach ($static in $statics) {
@@ -110,7 +91,7 @@ function Get-AbrFgtRoute {
                             #TODO: add Lookup, only display the id...
                             $dst = $static.'internet-service'
                         } else {
-                            $dst = $static.dst
+                            $dst = $($static.dst | ConvertTo-CIDR)
                         }
 
                         #when Blackhole is enable, display blackhole for interface
@@ -131,18 +112,7 @@ function Get-AbrFgtRoute {
                             "Distance/Weight/Priority" = "$($static.distance) / $($static.weight) / $($static.priority)"
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Static Route"
-                        List         = $false
-                        ColumnWidths = 15, 25, 20, 20, 20
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Status" = 15; "Destination" = 25;}
                 }
             }
 
@@ -153,13 +123,13 @@ function Get-AbrFgtRoute {
                     foreach ($pbr in $PolicyBasedRouting) {
 
                         if ($pbr.src) {
-                            $src = $pbr.src.subnet
+                            $src = $($pbr.src.subnet | ConvertTo-CIDR)
                         }
                         else {
                             $src = $pbr.srcaddr.name
                         }
                         if ($pbr.dst) {
-                            $dst = $pbr.dst.subnet
+                            $dst = $($pbr.dst.subnet | ConvertTo-CIDR)
                         }
                         else {
                             $dst = $pbr.dstaddr.name
@@ -176,18 +146,7 @@ function Get-AbrFgtRoute {
                             "Action"      = $pbr.action
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Policy Based Route"
-                        List         = $false
-                        ColumnWidths = 10, 12, 13, 13, 13, 13, 13, 13
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName
                 }
             }
 

@@ -30,10 +30,12 @@ function Get-AbrFgtSystem {
             Paragraph "The following section details system settings configured on FortiGate."
             BlankLine
 
+            #Global settings
             $info = Get-FGTSystemGlobal
 
             if ($info -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'Global' {
+                $tableName = 'Global'
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     if ($info.'daily-restart' -eq "enable") {
@@ -52,25 +54,16 @@ function Get-AbrFgtSystem {
                         "Port HTTPS"       = $info.'admin-sport'
                         "HTTPS Redirect"   = $info.'admin-https-redirect'
                     }
-
-                    $TableParams = @{
-                        Name         = "Global"
-                        List         = $true
-                        ColumnWidths = 50, 50
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                 }
             }
 
+            #System Settings
             $settings = Get-FGTSystemSettings
 
             if ($settings -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'Settings' {
+                $tableName = 'Settings'
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     $OutObj = [pscustomobject]@{
@@ -80,23 +73,13 @@ function Get-AbrFgtSystem {
                         "LLDP Transmission" = $settings.'lldp-transmission'
                         "Comments"          = $settings.comments
                     }
-
-                    $TableParams = @{
-                        Name         = "Settings"
-                        List         = $true
-                        ColumnWidths = 50, 50
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                 }
             }
 
             if ($info -and $settings -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'Feature GUI visibility' {
+                $tableName = 'Feature GUI visibility'
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     $OutObj = [pscustomobject]@{
@@ -125,25 +108,16 @@ function Get-AbrFgtSystem {
                         "ZTNA"                       = $settings.'gui-ztna'
                         "OT"                         = $settings.'gui-ot'
                     }
-
-                    $TableParams = @{
-                        Name         = "Feature GUI visibility"
-                        List         = $true
-                        ColumnWidths = 50, 50
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                 }
             }
 
+            #DNS
             $dns = Get-FGTSystemDns
 
             if ($dns -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'DNS' {
+                $tableName = 'DNS'
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     $OutObj = [pscustomobject]@{
@@ -152,25 +126,16 @@ function Get-AbrFgtSystem {
                         "Domain"    = $dns.domain.domain
                         "Protocol"  = $dns.protocol
                     }
-
-                    $TableParams = @{
-                        Name         = "DNS"
-                        List         = $true
-                        ColumnWidths = 50, 50
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                 }
             }
 
+            #DNS Servers
             $DNSServers = Get-FGTSystemDnsServer
 
             if ($DNSServers -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'DNS Server' {
+                $tableName = 'DNS Server'
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     foreach ($DNSServer in $DNSServers) {
@@ -181,66 +146,49 @@ function Get-AbrFgtSystem {
                             "DOH"                = $DNSServer.doh
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "DNS Server"
-                        List         = $false
-                        ColumnWidths = 25, 25, 25, 25
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName
                 }
             }
 
+            #Admin accounts
             $Admins = Get-FGTSystemAdmin
 
             if ($Admins -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'Admin' {
+                $tableName = 'Administrators'
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     foreach ($admin in $Admins) {
+                        $trustedHosts = @()
 
-                        $trustedHosts = $admin.trusthost1 + "`n"
-                        $trustedHosts += $admin.trusthost2 + "`n"
-                        $trustedHosts += $admin.trusthost3 + "`n"
-                        $trustedHosts += $admin.trusthost4 + "`n"
-                        $trustedHosts += $admin.trusthost5 + "`n"
-                        $trustedHosts += $admin.trusthost6 + "`n"
-                        $trustedHosts += $admin.trusthost7 + "`n"
-                        $trustedHosts += $admin.trusthost8 + "`n"
-                        $trustedHosts += $admin.trusthost9 + "`n"
-                        $trustedHosts += $admin.trusthost10 + "`n"
+                        for ($i = 1; $i -le 10; $i++) {
+                            $hostProperty = "trusthost$i"
+                            $hostValue = $admin.$hostProperty
 
-                        $trustedHosts = $trustedHosts -replace "0.0.0.0 0.0.0.0`n", "" #Remove 'All Network'
-                        if ($trustedHosts -eq "") {
-                            $trustedHosts = "All" #TODO: Add Health Warning !
+                            if ($hostValue -and $hostValue -ne "0.0.0.0 0.0.0.0") {
+                                $trustedHosts += $($hostValue | ConvertTo-CIDR)
+                            }
                         }
+
+                        $trustedHostsString = if ($trustedHosts.Count -eq 0) {
+                            "All" #TODO: Add Health Warning !
+                        }
+                        else {
+                            $trustedHosts -join "`n"
+                        }
+
                         $OutObj += [pscustomobject]@{
                             "Name"          = $admin.name
                             "Profile"       = $admin.accprofile
-                            "Trusted Hosts" = $trustedHosts
+                            "Trusted Hosts" = $trustedHostsString
                             "MFA"           = $admin.'two-factor'
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Administrator"
-                        List         = $false
-                        ColumnWidths = 25, 25, 35, 15
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Trusted Hosts" = 20; "MFA" = 10; }
                 }
             }
 
+            #Interfaces
             $interfaces = Get-FGTSystemInterface
 
             #By 'API' design, it is always return all interfaces (not filtering by vdom)
@@ -249,51 +197,208 @@ function Get-AbrFgtSystem {
             }
 
             if ($interfaces -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'Interfaces' {
-                    $OutObj = @()
+                $tableName = 'Interfaces'
+                Section -Style Heading3 $tableName {
+                    Paragraph "The following section details FortiGate interfaces, grouped by interface type."
 
-                    foreach ($interface in $interfaces) {
+                    # Group interfaces by their 'type'
+                    $groupedInterfaces = $interfaces | Group-Object -Property type
 
-                        if ($interface.role -eq "undefined") {
-                            $interface.role = "n/a"
-                        }
-                        $alias_description = $interface.alias
-                        if ($interface.description) {
-                            $alias_description += "($($interface.description))"
-                        }
-                        $OutObj += [pscustomobject]@{
-                            "Name"                = $interface.name
-                            "Alias (Description)" = $alias_description
-                            "Role"                = $interface.role
-                            "Type"                = $interface.type
-                            "Vlan ID"             = $interface.vlanid
-                            "Mode"                = $interface.mode
-                            "IP Address"          = $interface.ip.Replace(' ', '/')
-                            #"Allow Access"        = $interface.allowaccess
-                            #'DHCP Relais'        = $interface.'dhcp-relay-ip'
-                            "Status"              = $interface.status
-                            #"Speed"              = $interface.speed
+                    foreach ($group in $groupedInterfaces) {
+                        $interfaceType = $group.Name
+
+                        # Create a heading for each interface type
+                        Section -Style Heading4 "$interfaceType Interfaces" {
+                            $OutObj = @()
+
+                            foreach ($interface in $group.Group) {
+
+                                # Standardise interface properties
+                                $interface.name = $interface.name + $($interface.alias ? "`n($($interface.alias))" : "")
+                                $interface.role = $interface.role -eq 'undefined' ? "" : ($interface.role).ToUpper()
+                                $interface.member = $interface.member.count -gt 0 ? $interface.member.'interface-name' -join ', ' : ""
+                                $interface.mtu = $interface.'mtu-override' -eq 'disable' ? '' : $interface.mtu
+                                $interface.mode = $interface.mode -eq 'static' ? '' : $interface.mode
+                                $interface.ip = $interface.ip -eq '0.0.0.0 0.0.0.0' ? '' : $($interface.ip | ConvertTo-CIDR)
+                                $interface.'secondaryip' = if ($interface.'secondary-ip' -eq 'enable' -and $null -ne $interface.'secondaryip') {
+                                    ($interface.'secondaryip' | ForEach-Object {
+                                        $($_.ip | ConvertTo-CIDR)
+                                    }) -join ', '
+                                }
+                                else {
+                                    ""
+                                }
+                                $interface.mode = $interface.mode -eq 'static' ? '' : $interface.mode
+                                $interface.vdom = $interface.vdom -eq 'root' ? '' : $interface.vdom
+                                $interface.vlanid = ($interface.vlanid -gt 0 ) ? $interface.vlanid : ""
+                                $interface.speed = $interface.speed -eq 'auto' ? '' : $interface.speed
+                                $interface.'remote-ip' = $interface.'remote-ip' -eq '0.0.0.0 0.0.0.0' ? '' : $($interface.'remote-ip' | ConvertTo-CIDR)
+
+
+                                switch ($interfaceType) {
+                                    "Aggregate" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"            = $interface.name
+                                            "VDOM"            = $interface.vdom
+                                            "Role"            = $interface.role
+                                            "Members"         = $interface.member
+                                            "LACP Mode"       = $interface.'lacp-mode'
+                                            "MTU"             = $interface.mtu
+                                            "Addressing mode" = $interface.mode
+                                            "IP Address"      = $interface.ip
+                                            "Secondary IP"    = $interface.'secondaryip'
+                                            "Allow Access"    = $interface.allowaccess
+                                            "Status"          = $interface.status
+                                            "Comments"        = $interface.description
+                                        }
+                                    }
+                                    "hard-switch" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"            = $interface.name
+                                            "VDOM"            = $interface.vdom
+                                            "Role"            = $interface.role
+                                            "Members"         = $interface.member
+                                            "MTU"             = $interface.mtu
+                                            "Addressing mode" = $interface.mode
+                                            "IP Address"      = $interface.ip
+                                            "Secondary IP"    = $interface.'secondaryip'
+                                            "Allow Access"    = $interface.allowaccess
+                                            "Status"          = $interface.status
+                                            "Comments"        = $interface.description
+                                        }
+                                    }
+                                    "loopback" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"         = $interface.name
+                                            "VDOM"         = $interface.vdom
+                                            "Role"         = $interface.role
+                                            "MTU"          = $interface.mtu
+                                            "IP Address"   = $interface.ip
+                                            "Secondary IP" = $interface.'secondaryip'
+                                            "Allow Access" = $interface.allowaccess
+                                            "Status"       = $interface.status
+                                            "Comments"     = $interface.description
+                                        }
+
+                                    }
+                                    "physical" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"            = $interface.name
+                                            "VDOM"            = $interface.vdom
+                                            "Role"            = $interface.role
+                                            "MTU"             = $interface.mtu
+                                            "Speed"           = $interface.speed
+                                            "Addressing mode" = $interface.mode
+                                            "IP Address"      = $interface.ip
+                                            "Secondary IP"    = $interface.'secondaryip'
+                                            "Allow Access"    = $interface.allowaccess
+                                            "Status"          = $interface.status
+                                            "Comments"        = $interface.description
+                                        }
+
+                                    }
+                                    "tunnel" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"             = $interface.name
+                                            "Parent Interface" = $interface.interface
+                                            "VDOM"             = $interface.vdom
+                                            "Role"             = $interface.role
+                                            "MTU"              = $interface.mtu
+                                            "IP Address"       = $interface.ip
+                                            "Secondary IP"     = $interface.'secondaryip'
+                                            "Remote IP"        = $interface.'remote-ip'
+                                            "Allow Access"     = $interface.allowaccess
+                                            "Status"           = $interface.status
+                                            "Comments"         = $interface.description
+                                        }
+                                    }
+                                    "vlan" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"             = $interface.name
+                                            "Parent Interface" = $interface.interface
+                                            "VLAN ID"          = $interface.vlanid
+                                            "VDOM"             = $interface.vdom
+                                            "Role"             = $interface.role
+                                            "MTU"              = $interface.mtu
+                                            "Mode"             = $interface.mode
+                                            "IP Address"       = $interface.ip
+                                            "Secondary IP"     = $interface.'secondaryip'
+                                            "Allow Access"     = $interface.allowaccess
+                                            "Status"           = $interface.status
+                                        }
+                                    }
+                                    # vap-switch falls under default
+                                    Default {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"         = $interface.name
+                                            "VDOM"         = $interface.vdom
+                                            "Role"         = $interface.role
+                                            "MTU"          = $interface.mtu
+                                            "VLAN ID"      = $interface.vlanid
+                                            "Mode"         = $interface.mode
+                                            "IP Address"   = $interface.ip
+                                            "Secondary IP" = $interface.'secondaryip'
+                                            "Allow Access" = $interface.allowaccess
+                                            "Status"       = $interface.status
+                                        }
+                                    }
+                                }
+                            }
+
+                            #Introduction section for VLAN interfaces
+                            if ($interfaceType -eq "vlan") {
+                                $vlanUpCount = ($OutObj | Where-Object { $_.Status -eq 'up' }).Count
+                                $vlanDownCount = ($OutObj | Where-Object { $_.Status -ne 'up' }).Count
+                                Paragraph "Total number of unique VLANs found: $($vlanUpCount + $vlanDownCount), of which $vlanUpCount are up and $vlanDownCount are down."
+                                if ($vlanUpCount -gt 0) {
+                                    $vlanUpIDs = ($OutObj | Where-Object { $_.Status -eq 'up' } | Select-Object -ExpandProperty 'VLAN ID' -Unique)
+                                    Paragraph "- Up VLANs are: $($vlanUpIDs -join ', ')."
+                                }
+                                if ($vlanDownCount -gt 0) {
+                                    $vlanDownIDs = ($OutObj | Where-Object { $_.Status -ne 'up' } | Select-Object -ExpandProperty 'VLAN ID' -Unique)
+                                    Paragraph "- Down VLANs are: $($vlanDownIDs -join ', ')."
+                                }
+                                BlankLine
+                            }
+
+                            $downInterfaces = @()
+                            $upInterfaces = @()
+
+                            foreach ($interface in $OutObj) {
+                                if ($interface.PSObject.Properties.Name -contains 'Status') {
+                                    if ($interface.Status -eq 'up') {
+                                        $upInterfaces += $interface
+                                    }
+                                    else {
+                                        $downInterfaces += $interface
+                                    }
+                                }
+                                else {
+                                    $downInterfaces += $interface
+                                }
+                            }
+
+                            if ($upInterfaces.Count -gt 0) {
+                                Write-FormattedTable -InputObject $upInterfaces -TableName $tableName -CustomColumnWidths @{"Name" = 15; "VLAN ID" = 8; "Status" = 10; "IP Address" = 18; "Secondary IP" = 18; "Role" = 8; "Parent Interface" = 12 }
+                            }
+
+
+                            if ($downInterfaces.Count -gt 0) {
+                                $downInterfaceNames = $downInterfaces | Select-Object -ExpandProperty Name
+                                Paragraph -Style Notation "The following interface(s) were omitted from the table above due to being down: $($downInterfaceNames -join ', ')."
+                                BlankLine
+                            }
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Interface"
-                        List         = $false
-                        ColumnWidths = 12, 20, 7, 11, 6, 8, 28, 8
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
                 }
             }
 
+            #Zones
             $zones = Get-FGTSystemZone
 
             if ($zones -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'Zone' {
+                $tableName = 'Zones'
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     foreach ($zone in $zones) {
@@ -304,26 +409,17 @@ function Get-AbrFgtSystem {
                             "Description" = $zone.description
                         }
                     }
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName
 
-                    $TableParams = @{
-                        Name         = "Zone"
-                        List         = $false
-                        ColumnWidths = 25, 25, 25, 25
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
                 }
             }
 
             #DHCP Server
             $dhcp_servers = Get-FGTSystemDHCPServer
 
-            if ($dhcp_servers -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'DHCP Server' {
+            if ($null -ne $dhcp_servers -and $dhcp_servers.Count -gt 0 -and $InfoLevel.System -ge 1) {
+                $tableName = 'DHCP Server'
+                Section -Style Heading3 $tableName {
                     $OutObj = @()
 
                     foreach ($dhcp_server in $dhcp_servers) {
@@ -337,24 +433,14 @@ function Get-AbrFgtSystem {
                         }
                     }
 
-                    $TableParams = @{
-                        Name         = "DHCP Server"
-                        List         = $false
-                        ColumnWidths = 5, 11, 15, 35, 17, 17
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"id" = 5; "Status" = 10; "Range" = 35; }
                 }
 
                 if ($InfoLevel.System -ge 2) {
                     #DHCP Server detail
                     foreach ($dhcp_server in $dhcp_servers) {
-                        Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP: $($dhcp_server.id) - $($dhcp_server.interface)" {
-                            BlankLine
+                        $tableName = "DHCP $($dhcp_server.id) - $($dhcp_server.interface)"
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC $tableName {
 
                             $dns = ($dhcp_server.'dns-server1' -replace "0.0.0.0", "") + ($dhcp_server.'dns-server2' -replace "0.0.0.0", "") + ($dhcp_server.'dns-server3' -replace "0.0.0.0", "") + ($dhcp_server.'dns-server4' -replace "0.0.0.0", "")
                             $ntp = ($dhcp_server.'ntp-server1' -replace "0.0.0.0", "") + ($dhcp_server.'ntp-server2' -replace "0.0.0.0", "") + ($dhcp_server.'ntp-server3' -replace "0.0.0.0", "") + ($dhcp_server.'ntp-server4' -replace "0.0.0.0", "")
@@ -371,23 +457,13 @@ function Get-AbrFgtSystem {
                                 "Domain"     = $dhcp_server.domain
                                 "NTP"        = $ntp
                             }
-
-                            $TableParams = @{
-                                Name         = "DHCP $($dhcp_server.id) - $($dhcp_server.interface)"
-                                List         = $true
-                                ColumnWidths = 25, 75
-                            }
-
-                            if ($Report.ShowTableCaptions) {
-                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                            }
-
-                            $OutObj | Table @TableParams
+                            Write-FormattedTable -InputObject $OutObj -TableName $tableName -list -TableParams @{ColumnWidths = 25, 75 }
                         }
                     }
 
                     #DHCP Server Reservation
-                    if ($null -ne $dhcp_servers.'reserved-address') {
+                    if ($null -ne $dhcp_servers.'reserved-address' -and $dhcp_servers.'reserved-address'.Count -gt 0) {
+                        $tableName = "DHCP Server Reserved Address"
                         Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP Server Reserved Address" {
                             $OutObj = @()
                             foreach ($reserved_address in ($dhcp_servers.'reserved-address')) {
@@ -399,17 +475,7 @@ function Get-AbrFgtSystem {
                                 }
                             }
 
-                            $TableParams = @{
-                                Name         = "DHCP Server Reserved Address"
-                                List         = $false
-                                ColumnWidths = 5, 35, 35, 25
-                            }
-
-                            if ($Report.ShowTableCaptions) {
-                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                            }
-
-                            $OutObj | Table @TableParams
+                            Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"id" = 5; "IP" = 35; "MAC" = 35; }
                         }
                     }
 
@@ -417,7 +483,8 @@ function Get-AbrFgtSystem {
                     $dhcp_leases = (Invoke-FGTRestMethod -uri api/v2/monitor/system/dhcp).results
 
                     if ($dhcp_leases) {
-                        Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP Leases" {
+                        $tableName = "DHCP Leases"
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC $tableName {
                             $OutObj = @()
                             foreach ($dhcp_lease in $dhcp_leases) {
                                 $OutObj += [pscustomobject]@{
@@ -430,17 +497,7 @@ function Get-AbrFgtSystem {
                                 }
                             }
 
-                            $TableParams = @{
-                                Name         = "DHCP Server Reserved Address"
-                                List         = $false
-                                ColumnWidths = 19, 19, 25, 8, 11, 18
-                            }
-
-                            if ($Report.ShowTableCaptions) {
-                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                            }
-
-                            $OutObj | Table @TableParams
+                            Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"IP" = 18; "MAC" = 18; }
                         }
                     }
 
@@ -448,7 +505,7 @@ function Get-AbrFgtSystem {
 
             }
 
-            # Fetch HA Configuration
+            #HA Configuration
             $haConfig = Get-FGTSystemHA
             $haPeers = Get-FGTMonitorSystemHAPeer
             $haChecksums = Get-FGTMonitorSystemHAChecksum
@@ -457,8 +514,8 @@ function Get-AbrFgtSystem {
                 Section -Style Heading3 'High Availability' {
                     Paragraph "The following section details HA settings."
                     BlankLine
-
-                    Section -Style Heading4 'HA Configuration' {
+                    $tableName = 'HA Configuration'
+                    Section -Style Heading4 $tableName {
                         $OutObj = @()
 
                         switch ($haConfig.mode) {
@@ -487,20 +544,11 @@ function Get-AbrFgtSystem {
                             "HA Management Interfaces" = $haConfig.'ha-mgmt-interfaces'
                         }
 
-                        $TableParams = @{
-                            Name         = "HA Configuration"
-                            List         = $true
-                            ColumnWidths = 50, 50
-                        }
-
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
-
-                        $OutObj | Table @TableParams
+                        Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                     }
 
-                    Section -Style Heading4 'HA Members' {
+                    $tableName = 'HA Members'
+                    Section -Style Heading4 $tableName {
                         $OutObj = @()
 
                         foreach ($haPeer in $haPeers) {
@@ -519,18 +567,7 @@ function Get-AbrFgtSystem {
                                 "Root Master"   = $rootMaster
                             }
                         }
-
-                        $TableParams = @{
-                            Name         = "HA Members"
-                            List         = $false
-                            ColumnWidths = 35, 35, 10, 10, 10
-                        }
-
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
-
-                        $OutObj | Table @TableParams
+                        Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Hostname" = 30; "Serial" = 20; }
                     }
 
 

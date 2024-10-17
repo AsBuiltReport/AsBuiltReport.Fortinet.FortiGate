@@ -36,7 +36,8 @@ function Get-AbrFgtSDWAN {
 
 
                 if ($sdwan -and $InfoLevel.SDWAN -ge 1) {
-                    Section -Style Heading3 'Summary' {
+                    $TableName = "Summary"
+                    Section -Style Heading3 $TableName {
                         Paragraph "The following section provides a summary of SD-WAN settings."
                         BlankLine
                         $OutObj = [pscustomobject]@{
@@ -45,21 +46,11 @@ function Get-AbrFgtSDWAN {
                             "Health Check" = @($sdwan.'health-check').count
                             "Rules"        = @($sdwan.'service').count
                         }
-
-                        $TableParams = @{
-                            Name         = "Summary"
-                            List         = $true
-                            ColumnWidths = 50, 50
+                        Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                         }
 
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
-
-                        $OutObj | Table @TableParams
-                    }
-
-                    Section -Style Heading3 'Configuration' {
+                    $TableName = "Configuration"
+                    Section -Style Heading3 $TableName {
                         Paragraph "The following section provides configuration of SD-WAN settings."
                         BlankLine
                         $OutObj = [pscustomobject]@{
@@ -68,21 +59,11 @@ function Get-AbrFgtSDWAN {
                             "Neighbor Hold Down" = $sdwan.'neighbor-hold-down'
                             "Fail Detect"        = $sdwan.'fail-detect'
                         }
-
-                        $TableParams = @{
-                            Name         = "Configuration"
-                            List         = $true
-                            ColumnWidths = 50, 50
+                        Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                         }
 
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
-
-                        $OutObj | Table @TableParams
-                    }
-
-                    Section -Style Heading3 'SD-WAN Zone' {
+                    $TableName = "SD-WAN Zone"
+                    Section -Style Heading3 $TableName {
                         $OutObj = @()
 
                         foreach ($zone in $sdwan.zone) {
@@ -91,22 +72,12 @@ function Get-AbrFgtSDWAN {
                                 "Service SLA" = $zone.'service-sla-tie-break'
                             }
                         }
-
-                        $TableParams = @{
-                            Name         = "SD-WAN Zone"
-                            List         = $false
-                            ColumnWidths = 50, 50
-                        }
-
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
-
-                        $OutObj | Table @TableParams
+                        Write-FormattedTable -InputObject $OutObj -TableName $tableName
                     }
 
                     if ($sdwan.members) {
-                        Section -Style Heading3 'SD-WAN Members' {
+                        $TableName = "SD-WAN Members"
+                        Section -Style Heading3 $TableName {
                             $OutObj = @()
 
                             foreach ($member in $sdwan.members) {
@@ -119,23 +90,13 @@ function Get-AbrFgtSDWAN {
                                     "Comment"   = $member.comment
                                 }
                             }
-
-                            $TableParams = @{
-                                Name         = "SD-WAN Members"
-                                List         = $false
-                                ColumnWidths = 10, 15, 20, 20, 10, 25
-                            }
-
-                            if ($Report.ShowTableCaptions) {
-                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                            }
-
-                            $OutObj | Table @TableParams
+                            Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Num" = 10; "Status" = 10;}
                         }
                     }
 
                     if ($sdwan.'health-check') {
-                        Section -Style Heading3 'SD-WAN Health Check' {
+                        $TableName = "SD-WAN Health Check"
+                        Section -Style Heading3 $TableName {
                             $OutObj = @()
 
                             foreach ($hc in $sdwan.'health-check') {
@@ -150,23 +111,13 @@ function Get-AbrFgtSDWAN {
                                     "Members"             = $hc.members.'seq-num'
                                 }
                             }
-
-                            $TableParams = @{
-                                Name         = "SD-WAN Health Check"
-                                List         = $false
-                                ColumnWidths = 14, 20, 20, 20, 15, 11
-                            }
-
-                            if ($Report.ShowTableCaptions) {
-                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                            }
-
-                            $OutObj | Table @TableParams
+                            Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Name" = 10; "Members" = 10;}
                         }
                     }
 
                     if ($sdwan.service) {
-                        Section -Style Heading3 'SD-WAN Rule' {
+                        $TableName = "SD-WAN Rule"
+                        Section -Style Heading3 $TableName {
                             $OutObj = @()
 
                             foreach ($service in $sdwan.service) {
@@ -181,18 +132,7 @@ function Get-AbrFgtSDWAN {
                                     "Status"           = $service.status
                                 }
                             }
-
-                            $TableParams = @{
-                                Name         = "SD-WAN Rule"
-                                List         = $false
-                                ColumnWidths = 14, 20, 15, 15, 15, 11, 10
-                            }
-
-                            if ($Report.ShowTableCaptions) {
-                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                            }
-
-                            $OutObj | Table @TableParams
+                            Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Name" = 10; "Members" = 10;}
                         }
 
                     }

@@ -26,7 +26,8 @@ function Get-AbrFgtVPNIPsec {
 
     process {
 
-        Section -Style Heading2 'VPN IPsec' {
+        $TableName = "VPN IPsec"
+        Section -Style Heading2 $TableName {
             Paragraph "The following section details VPN IPsec settings configured on FortiGate."
             BlankLine
 
@@ -41,23 +42,13 @@ function Get-AbrFgtVPNIPsec {
                         "VPN IPsec Phase 1" = @($vpn_ph1).count
                         "VPN IPsec Phase 2" = @($vpn_ph2).count
                     }
-
-                    $TableParams = @{
-                        Name         = "Summary"
-                        List         = $true
-                        ColumnWidths = 50, 50
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                 }
             }
 
             if ($vpn_ph1 -and $InfoLevel.VPNIPsec -ge 1) {
-                Section -Style Heading3 'VPN IPsec Phase 1' {
+                $TableName = "VPN IPsec Phase 1"
+                Section -Style Heading3 $TableName {
                     Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
                         $OutObj = @()
 
@@ -72,25 +63,15 @@ function Get-AbrFgtVPNIPsec {
                                 "Auth method"    = $v1.authmethod
                             }
                         }
-
-                        $TableParams = @{
-                            Name         = "VPN IPsec Phase 1 Summary"
-                            List         = $false
-                            ColumnWidths = 20, 16, 16, 16, 16, 16
-                        }
-
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
-
-                        $OutObj | Table @TableParams
+                        Write-FormattedTable -InputObject $OutObj -TableName $tableName
                     }
 
                     if ($vpn_ph1 -and $InfoLevel.VPNIPsec -ge 2) {
 
 
                         foreach ($v1 in $vpn_ph1) {
-                            Section -Style Heading3 "Phase 1: $($v1.name)" {
+                            $TableName = "VPN IPsec Phase 1: $($v1.name)"
+                            Section -Style Heading3 $TableName {
                                 BlankLine
                                 $OutObj = @()
 
@@ -115,19 +96,7 @@ function Get-AbrFgtVPNIPsec {
                                     "NAT Traversal"  = $v1.nattraversal
                                     "Rekey"          = $v1.rekey
                                 }
-
-
-                                $TableParams = @{
-                                    Name         = "VPN IPsec Phase 1: $($v1.name)"
-                                    List         = $true
-                                    ColumnWidths = 50, 50
-                                }
-
-                                if ($Report.ShowTableCaptions) {
-                                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                                }
-
-                                $OutObj | Table @TableParams
+                                Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                             }
                         }
                     }
@@ -136,7 +105,8 @@ function Get-AbrFgtVPNIPsec {
             }
 
             if ($vpn_ph2 -and $InfoLevel.VPNIPsec -ge 1) {
-                Section -Style Heading3 'VPN IPsec Phase 2' {
+                $TableName = "VPN IPsec Phase 2"
+                Section -Style Heading3 $TableName {
                     Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
                         $OutObj = @()
 
@@ -146,7 +116,7 @@ function Get-AbrFgtVPNIPsec {
                                     $src = $v2.'src-name'
                                 }
                                 "subnet" {
-                                    $src = $v2.'src-subnet' -replace " ", "/"
+                                    $src = $($v2.'src-subnet' | ConvertTo-CIDR)
                                 }
                                 Default {}
                             }
@@ -155,7 +125,7 @@ function Get-AbrFgtVPNIPsec {
                                     $dst = $v2.'dst-name'
                                 }
                                 "subnet" {
-                                    $dst = $v2.'dst-subnet' -replace " ", "/"
+                                    $dst = $($v2.'dst-subnet' | ConvertTo-CIDR)
                                 }
                                 Default {}
                             }
@@ -168,24 +138,14 @@ function Get-AbrFgtVPNIPsec {
                                 "Destination Address"      = $dst
                             }
                         }
-
-                        $TableParams = @{
-                            Name         = "VPN IPsec Phase 1 Summary"
-                            List         = $false
-                            ColumnWidths = 20, 16, 16, 16, 16, 16
-                        }
-
-                        if ($Report.ShowTableCaptions) {
-                            $TableParams['Caption'] = "- $($TableParams.Name)"
-                        }
-
-                        $OutObj | Table @TableParams
+                        Write-FormattedTable -InputObject $OutObj -TableName $tableName
                     }
 
                     if ($vpn_ph1 -and $InfoLevel.VPNIPsec -ge 2) {
 
                         foreach ($v2 in $vpn_ph2) {
-                            Section -Style Heading3 "Phase 2: $($v2.name) ($($v2.phase1name))" {
+                            $TableName = "VPN IPsec Phase 2: $($v2.name) ($($v2.phase1name))"
+                            Section -Style Heading3 $TableName {
                                 BlankLine
                                 $OutObj = @()
 
@@ -202,24 +162,12 @@ function Get-AbrFgtVPNIPsec {
                                     "Keylife Kbs"                = $v2.keylifekbs
                                     'Source Address Type'        = $v2.'src-addr-type'
                                     'Source Address Name'        = $v2.'src-name'
-                                    'Source Address Subnet'      = $v2.'src-subnet'
+                                    'Source Address Subnet'      = if ($v2.'src-subnet') { $v2.'src-subnet' | ConvertTo-CIDR } else { $null }
                                     'Destination Address Type'   = $v2.'dst-addr-type'
                                     'Destination Address Name'   = $v2.'dst-name'
-                                    'Destination Address Subnet' = $v2.'dst-subnet'
+                                    'Destination Address Subnet' = if ($v2.'dst-subnet') { $v2.'dst-subnet' | ConvertTo-CIDR } else { $null }
                                 }
-
-
-                                $TableParams = @{
-                                    Name         = "VPN IPsec Phase 2: $($v2.name)"
-                                    List         = $true
-                                    ColumnWidths = 50, 50
-                                }
-
-                                if ($Report.ShowTableCaptions) {
-                                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                                }
-
-                                $OutObj | Table @TableParams
+                                Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                             }
                         }
                     }

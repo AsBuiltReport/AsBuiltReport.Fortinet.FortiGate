@@ -37,7 +37,8 @@ function Get-AbrFgtFirewall {
             $Policy = Get-FGTFirewallPolicy -meta
 
             if ($InfoLevel.Firewall -ge 1) {
-                Section -Style Heading3 'Summary' {
+                $TableName = "Summary"
+                Section -Style Heading3 $TableName {
                     Paragraph "The following section provides a summary of firewall settings."
                     BlankLine
                     $address_count = @($Address).count
@@ -85,30 +86,20 @@ function Get-AbrFgtFirewall {
                         "Virtual IP" = $vip_text
                         "Policy"     = $policy_text
                     }
-
-                    $TableParams = @{
-                        Name         = "Summary"
-                        List         = $true
-                        ColumnWidths = 50, 50
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                 }
             }
 
             if ($Address -and $InfoLevel.Firewall -ge 1) {
-                Section -Style Heading3 'Address' {
+                $TableName = "Address"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     foreach ($add in $Address) {
 
                         switch ( $add.type ) {
                             "ipmask" {
-                                $value = $add.subnet.Replace(' ', '/')
+                                $value = $($add.subnet | ConvertTo-CIDR)
                             }
                             "ipprange" {
                                 $value = $add.'start-ip' + "-" + $add.'end-ip'
@@ -128,26 +119,16 @@ function Get-AbrFgtFirewall {
                             "Value"     = $value
                             "Interface" = $add.'associated-interface'
                             "Comment"   = $add.comment
-                            "ref"       = $add.q_ref
+                            "Ref"       = $add.q_ref
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Address"
-                        List         = $false
-                        ColumnWidths = 25, 10, 30, 10, 20, 5
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Type" = 10; "Ref" = 5;}
                 }
             }
 
             if ($Group -and $InfoLevel.Firewall -ge 1) {
-                Section -Style Heading3 'Address Group' {
+                $TableName = "Address Group"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     foreach ($grp in $Group) {
@@ -159,23 +140,13 @@ function Get-AbrFgtFirewall {
                             "Ref"     = $grp.q_ref
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Address Group"
-                        List         = $false
-                        ColumnWidths = 20, 55, 20, 5
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Name" = 15; "Ref" = 5;}
                 }
             }
 
             if ($IPPool -and $InfoLevel.Firewall -ge 1) {
-                Section -Style Heading3 'IP Pool' {
+                $TableName = "IP Pool"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     foreach ($ip in $IPPool) {
@@ -192,23 +163,13 @@ function Get-AbrFgtFirewall {
                             "Ref"             = $ip.q_ref
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Virtual IP"
-                        List         = $false
-                        ColumnWidths = 14, 14, 12, 11, 11, 11, 11, 11, 5
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Ref" = 5;}
                 }
             }
 
             if ($VIP -and $InfoLevel.Firewall -ge 1) {
-                Section -Style Heading3 'Virtual IP' {
+                $TableName = "Virtual IP"
+                Section -Style Heading3 $TableName {
                     $OutObj = @()
 
                     foreach ($virtualip in $VIP) {
@@ -225,23 +186,13 @@ function Get-AbrFgtFirewall {
                             "Ref"           = $virtualip.q_ref
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Virtual IP"
-                        List         = $false
-                        ColumnWidths = 14, 14, 12, 11, 11, 11, 11, 11, 5
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"Protocol" = 7; "Mapped Port" = 7; "Ref" = 5;}
                 }
             }
 
             if ($Policy -and $InfoLevel.Firewall -ge 1) {
-                Section -Style Heading3 'Policy Summary' {
+                $TableName = "Policy Summary"
+                Section -Style Heading3 $TableName {
                     Paragraph "The following section provides a policy summary of firewall settings."
                     BlankLine
                     $policy_count = @($Policy).count
@@ -329,21 +280,11 @@ function Get-AbrFgtFirewall {
                         "Comments (with Copy, Clone or Reverse)" = $comments_ccr_text
                         "SSH/SSH Inspection"                     = $inspection_text
                     }
-
-                    $TableParams = @{
-                        Name         = "Policy Summary"
-                        List         = $true
-                        ColumnWidths = 50, 50
+                    Write-FormattedTable -InputObject $OutObj -TableName $tableName -List
                     }
 
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
-                }
-
-                Section -Style Heading3 'Policy' {
+                $TableName = "Policy"
+                Section -Style Heading3 $TableName{
                     #get Sequence Grouping (global-label) if there is no label don't display by Sequence Grouping... (it is the same like normal)
                     $labels = $Policy.'global-label'
                     #Policy With Sequence Grouping (Global Label)
@@ -357,18 +298,9 @@ function Get-AbrFgtFirewall {
                                 if ($rule.'global-label') {
                                     #If there is already label before add the end of table
                                     if ($label) {
-                                        Section -Style NOTOCHeading4 -ExcludeFromTOC  "Policy - $label" {
-                                            $TableParams = @{
-                                                Name         = "Policy - $label"
-                                                List         = $false
-                                                ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
-                                            }
-
-                                            if ($Report.ShowTableCaptions) {
-                                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                                            }
-
-                                            $OutObj | Table @TableParams
+                                        $tableName = "Policy - $label"
+                                        Section -Style NOTOCHeading4 -ExcludeFromTOC  $tableName {
+                                            Write-FormattedTable -InputObject $OutObj -TableName $tableName
                                         }
                                     }
                                     #Reset the table and set label for next table
@@ -395,6 +327,7 @@ function Get-AbrFgtFirewall {
                                 }
 
                                 $OutObj += [pscustomobject]@{
+                                    "ID"          = $rule.policyid
                                     "Name"        = $rule.name
                                     "From"        = $rule.srcintf.name -join ", "
                                     "To"          = $rule.dstintf.name -join ", "
@@ -409,25 +342,17 @@ function Get-AbrFgtFirewall {
                             }
 
                             #last Table
-                            Section -Style NOTOCHeading4 -ExcludeFromTOC  "Policy - $label" {
-                                $TableParams = @{
-                                    Name         = "Policy - $label"
-                                    List         = $false
-                                    ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
-                                }
-
-                                if ($Report.ShowTableCaptions) {
-                                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                                }
-
-                                $OutObj | Table @TableParams
+                            $tableName = "Policy - $label"
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC  $tableName {
+                                Write-FormattedTable -InputObject $OutObj -TableName $tableName
                             }
                         }
                     }
 
                     #Policy sorted by default (id)
                     if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "normal" ) {
-                        Section -Style Heading3 'Policy - Normal' {
+                        $TableName = "Policy - Normal"
+                        Section -Style Heading3 $TableName {
 
                             $OutObj = @()
 
@@ -451,6 +376,7 @@ function Get-AbrFgtFirewall {
                                 }
 
                                 $OutObj += [pscustomobject]@{
+                                    "ID"          = $rule.policyid
                                     "Name"        = $rule.name
                                     "From"        = $rule.srcintf.name -join ", "
                                     "To"          = $rule.dstintf.name -join ", "
@@ -463,25 +389,14 @@ function Get-AbrFgtFirewall {
                                     "Comments"    = $rule.comments
                                 }
                             }
-
-                            $TableParams = @{
-                                Name         = "Policy"
-                                List         = $false
-                                ColumnWidths = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
-                            }
-
-                            if ($Report.ShowTableCaptions) {
-                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                            }
-
-                            $OutObj | Table @TableParams
+                            Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"ID" = 5;}
                         }
                     }
 
                     #Policy sorted by interface pair
                     if ($Options.PolicyLayout -eq "all" -or $Options.PolicyLayout -eq "interfacepair" ) {
-
-                        Section -Style Heading3 'Policy - Interface Pair ' {
+                        $TableName = "Policy - Interface Pair"
+                        Section -Style Heading3 $TableName {
                             $srcintf = $Policy.srcintf.name | Sort-Object | Get-Unique
                             $dstintf = $Policy.dstintf.name | Sort-Object | Get-Unique
 
@@ -510,6 +425,7 @@ function Get-AbrFgtFirewall {
                                             }
 
                                             $OutObj += [pscustomobject]@{
+                                                "ID"          = $rule.policyid
                                                 "Name"        = $rule.name
                                                 "Source"      = $src
                                                 "Destination" = $dst
@@ -527,17 +443,7 @@ function Get-AbrFgtFirewall {
                                     if ($OutObj) {
                                         $interfacepair = "$($int_src) => $($int_dst)"
                                         Section -Style Heading4 "Policy: $interfacepair" {
-                                            $TableParams = @{
-                                                Name         = "Policy - $interfacepair"
-                                                List         = $false
-                                                ColumnWidths = 15, 15, 15, 10, 10, 10, 10, 15
-                                            }
-
-                                            if ($Report.ShowTableCaptions) {
-                                                $TableParams['Caption'] = "- $($TableParams.Name)"
-                                            }
-
-                                            $OutObj | Table @TableParams
+                                            Write-FormattedTable -InputObject $OutObj -TableName $tableName -CustomColumnWidths @{"ID" = 5;}
                                         }
                                     }
                                 }
@@ -546,6 +452,8 @@ function Get-AbrFgtFirewall {
 
                     }
                 }
+
+
             }
 
         }
