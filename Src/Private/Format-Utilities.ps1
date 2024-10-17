@@ -10,6 +10,7 @@
 
 function ConvertTo-CIDR {
     [CmdletBinding()]
+    [OutputType([System.String])]
     param (
         [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true)]
         [string]$Input
