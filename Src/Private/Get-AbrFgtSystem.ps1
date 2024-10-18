@@ -420,13 +420,19 @@ function Get-AbrFgtSystem {
                         Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP Leases" {
                             $OutObj = @()
                             foreach ($dhcp_lease in $dhcp_leases) {
+                                if ($PSVersionTable.PSEdition -eq "Core") { #PS 6 and after
+                                    $expire_time = Get-Date -UnixTimeSeconds $dhcp_lease.expire_time
+                                } else { #PS 5 and before
+
+                                    $expire_time = [datetime]::UnixEpoch.AddSeconds($dhcp_lease.expire_time)
+                                }
                                 $OutObj += [pscustomobject]@{
                                     "IP"          = $dhcp_lease.ip
                                     "MAC"         = $dhcp_lease.mac
                                     "Hostname"    = $dhcp_lease.hostname
                                     "Status"      = $dhcp_lease.status
                                     "Reserved"    = $dhcp_lease.reserved
-                                    "Expire Time" = ( Get-Date -UnixTimeSeconds $dhcp_lease.expire_time)
+                                    "Expire Time" = $expire_time
                                 }
                             }
 
