@@ -317,7 +317,7 @@ function Get-AbrFgtSystem {
                                             #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
                                         }
                                     }
-                                    "loopback" {
+                                    "Loopback" {
                                         $OutObj += [pscustomobject]@{
                                             "Name"                = $interface.name
                                             "VDOM"                = $interface.vdom
@@ -331,7 +331,7 @@ function Get-AbrFgtSystem {
                                         }
 
                                     }
-                                    "physical"{
+                                    "Physical"{
                                         $OutObj += [pscustomobject]@{
                                             "Name"                = $interface.name
                                             "VDOM"                = $interface.vdom
@@ -347,7 +347,7 @@ function Get-AbrFgtSystem {
                                         }
 
                                     }
-                                    "tunnel" {
+                                    "Tunnel" {
                                         $OutObj += [pscustomobject]@{
                                             "Name"                = $interface.name
                                             "Parent Interface"    = $interface.interface
@@ -362,7 +362,7 @@ function Get-AbrFgtSystem {
                                             #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
                                         }
                                     }
-                                    "vlan" {
+                                    "Vlan" {
                                         $OutObj += [pscustomobject]@{
                                             "Name"                = $interface.name
                                             "Parent Interface"    = $interface.interface
@@ -427,7 +427,6 @@ function Get-AbrFgtSystem {
                             }
 
                             if ($upInterfaces.Count -gt 0) {
-                                Write-FormattedTable -InputObject $upInterfaces -TableName $tableName -CustomColumnWidths @{"Name" = 15;"VLAN ID" = 8;"Status" = 10;"IP Address" = 18;"Secondary IP" = 18;"Role" = 8;"Parent Interface" = 12}
                                 $TableParams = @{
                                     Name         = "Interface"
                                     List         = $false
@@ -443,7 +442,7 @@ function Get-AbrFgtSystem {
 
                             if ($downInterfaces.Count -gt 0) {
                                 $downInterfaceNames = $downInterfaces | Select-Object -ExpandProperty Name
-                                Paragraph -Style Notation "The following interface(s) were omitted due to being down: $($downInterfaceNames -join ', ')."
+                                Paragraph -Style Notation "The following interface(s) were omitted due to being down: $(( $downInterfaceNames | Sort-Object ) -join ', ')."
                                 BlankLine
                             }
                         }
