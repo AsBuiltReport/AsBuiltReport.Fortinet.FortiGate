@@ -1,4 +1,3 @@
-
 function Get-AbrFgtSystem {
     <#
     .SYNOPSIS
@@ -259,7 +258,7 @@ function Get-AbrFgtSystem {
                         $interfaceType = $group.Name
 
                         # Create a heading for each interface type
-                        Section -Style Heading4 "$interfaceType Interfaces" {
+                        Section -Style Heading4 "$([char]::ToUpper($interfaceType[0]) + $interfaceType.Substring(1)) Interfaces" {
                             $OutObj = @()
 
                             foreach ($interface in $group.Group) {
@@ -302,7 +301,7 @@ function Get-AbrFgtSystem {
                                             #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
                                         }
                                     }
-                                    "hard-switch" {
+                                    "Hard-Switch" {
                                         $OutObj += [pscustomobject]@{
                                             "Name"                = $interface.name
                                             "VDOM"                = $interface.vdom
@@ -396,18 +395,29 @@ function Get-AbrFgtSystem {
                             }
 
                             # VLAN interfaces
-                            if ($interfaceType -eq "vlan") {
+                            if ($interfaceType -eq "vlan" -and $Options.ExcludeDownInterfaces ) {
                                 $vlanUpCount = ($OutObj | Where-Object { $_.Status -eq 'up' }).Count
                                 $vlanDownCount = ($OutObj | Where-Object { $_.Status -ne 'up' }).Count
-                                Paragraph "Total number of unique VLANs found: $($vlanUpCount + $vlanDownCount), of which $vlanUpCount are up and $vlanDownCount are down."
-                                if ($vlanUpCount -gt 0) {
-                                    $vlanUpIDs = ($OutObj | Where-Object { $_.Status -eq 'up' } | Select-Object -ExpandProperty 'VLAN ID' -Unique)
-                                    Paragraph "- Up VLANs are: $($vlanUpIDs -join ', ')."
+                                $vlanUpIDs = ($OutObj | Where-Object { $_.Status -eq 'up' } | Select-Object -ExpandProperty 'VLAN ID' | Sort-Object)
+                                $vlanDownIDs = ($OutObj | Where-Object { $_.Status -ne 'up' } | Select-Object -ExpandProperty 'VLAN ID' | Sort-Object)
+
+                                $VlanSummaryObj = [PSCustomObject]@{
+                                    'Up VLANs' = "$vlanUpCount ($($vlanUpIDs -join ', '))"
+                                    'Down VLANs' = "$vlanDownCount ($($vlanDownIDs -join ', '))"
+                                    'Total VLANs' = ($vlanUpCount + $vlanDownCount)
                                 }
-                                if ($vlanDownCount -gt 0) {
-                                    $vlanDownIDs = ($OutObj | Where-Object { $_.Status -ne 'up' } | Select-Object -ExpandProperty 'VLAN ID' -Unique)
-                                    Paragraph "- Down VLANs are: $($vlanDownIDs -join ', ')."
+
+                                $TableParams = @{
+                                    Name = "VLAN Summary"
+                                    List = $true
+                                    ColumnWidths = 20, 80
                                 }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $VlanSummaryObj | Table @TableParams
                                 BlankLine
                             }
 
@@ -428,7 +438,7 @@ function Get-AbrFgtSystem {
 
                             if ($upInterfaces.Count -gt 0) {
                                 $TableParams = @{
-                                    Name         = "Interface"
+                                    Name         = "$([char]::ToUpper($interfaceType[0]) + $interfaceType.Substring(1)) Interfaces"
                                     List         = $false
                                     ColumnWidths = 12, 20, 7, 11, 6, 8, 20, 8, 8
                                 }
@@ -437,10 +447,15 @@ function Get-AbrFgtSystem {
                                     $TableParams['Caption'] = "- $($TableParams.Name)"
                                 }
 
-                                $OutObj | Table @TableParams
+                                # Only show interfaces based on ExcludeDownInterfaces setting
+                                if ($Options.ExcludeDownInterfaces) {
+                                    $upInterfaces | Table @TableParams
+                                } else {
+                                    $OutObj | Table @TableParams
+                                }
                             }
 
-                            if ($downInterfaces.Count -gt 0) {
+                            if ($downInterfaces.Count -gt 0 -and $Options.ExcludeDownInterfaces) {
                                 $downInterfaceNames = $downInterfaces | Select-Object -ExpandProperty Name
                                 Paragraph -Style Notation "The following interface(s) were omitted due to being down: $(( $downInterfaceNames | Sort-Object ) -join ', ')."
                                 BlankLine
