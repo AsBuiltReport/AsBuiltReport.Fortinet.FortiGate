@@ -1,4 +1,3 @@
-
 function Get-AbrFgtSystem {
     <#
     .SYNOPSIS
@@ -250,43 +249,219 @@ function Get-AbrFgtSystem {
 
             if ($interfaces -and $InfoLevel.System -ge 1) {
                 Section -Style Heading3 'Interfaces' {
-                    $OutObj = @()
+                    Paragraph "The following section details FortiGate interfaces, grouped by interface type."
 
-                    foreach ($interface in $interfaces) {
+                    # Group interfaces by their 'type'
+                    $groupedInterfaces = $interfaces | Group-Object -Property type
 
-                        if ($interface.role -eq "undefined") {
-                            $interface.role = "n/a"
-                        }
-                        $alias_description = $interface.alias
-                        if ($interface.description) {
-                            $alias_description += "($($interface.description))"
-                        }
-                        $OutObj += [pscustomobject]@{
-                            "Name"                = $interface.name
-                            "Alias (Description)" = $alias_description
-                            "Role"                = $interface.role
-                            "Type"                = $interface.type
-                            "Vlan ID"             = $interface.vlanid
-                            "Mode"                = $interface.mode
-                            "IP Address"          = $interface.ip.Replace(' ', '/')
-                            #"Allow Access"        = $interface.allowaccess
-                            #'DHCP Relais'        = $interface.'dhcp-relay-ip'
-                            "Status"              = $interface.status
-                            #"Speed"              = $interface.speed
+                    foreach ($group in $groupedInterfaces) {
+                        $interfaceType = $group.Name
+
+                        # Create a heading for each interface type
+                        Section -Style Heading4 "$([char]::ToUpper($interfaceType[0]) + $interfaceType.Substring(1)) Interfaces" {
+                            $OutObj = @()
+
+                            foreach ($interface in $group.Group) {
+
+                                # Standardise interface properties
+                                $interface.name = $interface.name + $($interface.alias ? "`n($($interface.alias))" : "")
+                                $interface.role = $interface.role -eq 'undefined' ? "" : ($interface.role).ToUpper()
+                                $interface.member = $interface.member.count -gt 0 ? $interface.member.'interface-name' -join ', ' : ""
+                                $interface.mtu = $interface.'mtu-override' -eq 'disable' ? '' : $interface.mtu
+                                $interface.mode = $interface.mode -eq 'static' ? '' : $interface.mode
+                                $interface.ip = $interface.ip -eq '0.0.0.0 0.0.0.0' ? '' : $interface.ip
+                                $interface.'secondaryip' = if ($interface.'secondary-ip' -eq 'enable' -and $null -ne $interface.'secondaryip') {
+                                    ($interface.'secondaryip' | ForEach-Object {
+                                        $_.ip
+                                    }) -join ', '
+                                } else {
+                                    ""
+                                }
+                                $interface.mode = $interface.mode -eq 'static' ? '' : $interface.mode
+                                $interface.vdom = $interface.vdom -eq 'root' ? '' : $interface.vdom
+                                $interface.vlanid = ($interface.vlanid -gt 0 ) ? $interface.vlanid : ""
+                                $interface.speed = $interface.speed -eq 'auto' ? '' : $interface.speed
+                                $interface.'remote-ip' = $interface.'remote-ip' -eq '0.0.0.0 0.0.0.0' ? '' : $interface.'remote-ip'
+
+
+                                switch ($interfaceType) {
+                                    "Aggregate" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom
+                                            "Role"                = $interface.role
+                                            "Members"             = $interface.member
+                                            "LACP Mode"           = $interface.'lacp-mode'
+                                            #"MTU"                 = $interface.mtu   # Will be enabled next release when the TableWrite function is added
+                                            "Addressing mode"     = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
+                                        }
+                                    }
+                                    "Hard-Switch" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom
+                                            "Role"                = $interface.role
+                                            "Members"             = $interface.member
+                                            "MTU"                 = $interface.mtu
+                                            "Addressing mode"     = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
+                                        }
+                                    }
+                                    "Loopback" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom
+                                            "Role"                = $interface.role
+                                            "MTU"                 = $interface.mtu
+                                            "IP Address"          = $interface.ip
+                                            "Secondary IP"        = $interface.'secondaryip'
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            "Comments"            = $interface.description
+                                        }
+
+                                    }
+                                    "Physical"{
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom
+                                            "Role"                = $interface.role
+                                            "MTU"                 = $interface.mtu
+                                            "Speed"               = $interface.speed
+                                            "Addressing mode"     = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
+                                        }
+
+                                    }
+                                    "Tunnel" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "Parent Interface"    = $interface.interface
+                                            "VDOM"                = $interface.vdom
+                                            "Role"                = $interface.role
+                                            "MTU"                 = $interface.mtu
+                                            "IP Address"          = $interface.ip
+                                            #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
+                                            "Remote IP"           = $interface.'remote-ip'
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                            #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
+                                        }
+                                    }
+                                    "Vlan" {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "Parent Interface"    = $interface.interface
+                                            "VLAN ID"             = $interface.vlanid
+                                            "VDOM"                = $interface.vdom
+                                            "Role"                = $interface.role
+                                            #"MTU"                 = $interface.mtu   # Will be enabled next release when the TableWrite function is added
+                                            "Mode"                = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                        }
+                                    }
+                                    # vap-switch falls under default
+                                    Default {
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"                = $interface.name
+                                            "VDOM"                = $interface.vdom
+                                            "Role"                = $interface.role
+                                            "MTU"                 = $interface.mtu
+                                            "VLAN ID"             = $interface.vlanid
+                                            "Mode"                = $interface.mode
+                                            "IP Address"          = $interface.ip
+                                            #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
+                                            "Allow Access"        = $interface.allowaccess
+                                            "Status"              = $interface.status
+                                        }
+                                    }
+                                }
+                            }
+
+                            # VLAN interfaces
+                            if ($interfaceType -eq "vlan" -and $Options.ExcludeDownInterfaces ) {
+                                $vlanUpCount = ($OutObj | Where-Object { $_.Status -eq 'up' }).Count
+                                $vlanDownCount = ($OutObj | Where-Object { $_.Status -ne 'up' }).Count
+                                $vlanUpIDs = ($OutObj | Where-Object { $_.Status -eq 'up' } | Select-Object -ExpandProperty 'VLAN ID' | Sort-Object)
+                                $vlanDownIDs = ($OutObj | Where-Object { $_.Status -ne 'up' } | Select-Object -ExpandProperty 'VLAN ID' | Sort-Object)
+
+                                $VlanSummaryObj = [PSCustomObject]@{
+                                    'Up VLANs' = "$vlanUpCount ($($vlanUpIDs -join ', '))"
+                                    'Down VLANs' = "$vlanDownCount ($($vlanDownIDs -join ', '))"
+                                    'Total VLANs' = ($vlanUpCount + $vlanDownCount)
+                                }
+
+                                $TableParams = @{
+                                    Name = "VLAN Summary"
+                                    List = $true
+                                    ColumnWidths = 20, 80
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $VlanSummaryObj | Table @TableParams
+                                BlankLine
+                            }
+
+                            $downInterfaces = @()
+                            $upInterfaces = @()
+
+                            foreach ($interface in $OutObj) {
+                                if ($interface.PSObject.Properties.Name -contains 'Status') {
+                                    if ($interface.Status -eq 'up') {
+                                        $upInterfaces += $interface
+                                    } else {
+                                        $downInterfaces += $interface
+                                    }
+                                } else {
+                                    $downInterfaces += $interface
+                                }
+                            }
+
+                            if ($upInterfaces.Count -gt 0) {
+                                $TableParams = @{
+                                    Name         = "$([char]::ToUpper($interfaceType[0]) + $interfaceType.Substring(1)) Interfaces"
+                                    List         = $false
+                                    ColumnWidths = 12, 20, 7, 11, 6, 8, 20, 8, 8
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                # Only show interfaces based on ExcludeDownInterfaces setting
+                                if ($Options.ExcludeDownInterfaces) {
+                                    $upInterfaces | Table @TableParams
+                                } else {
+                                    $OutObj | Table @TableParams
+                                }
+                            }
+
+                            if ($downInterfaces.Count -gt 0 -and $Options.ExcludeDownInterfaces) {
+                                $downInterfaceNames = $downInterfaces | Select-Object -ExpandProperty Name
+                                Paragraph -Style Notation "The following interface(s) were omitted due to being down: $(( $downInterfaceNames | Sort-Object ) -join ', ')."
+                                BlankLine
+                            }
                         }
                     }
-
-                    $TableParams = @{
-                        Name         = "Interface"
-                        List         = $false
-                        ColumnWidths = 12, 20, 7, 11, 6, 8, 28, 8
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Table @TableParams
                 }
             }
 
