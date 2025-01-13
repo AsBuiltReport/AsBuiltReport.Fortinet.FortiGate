@@ -127,6 +127,7 @@ The **Options** schema allows certain options within the report to be toggled on
 | VDOM | VDOM Name | | Used to specify the VDOM (Virtual Domain)
 | PolicyLayout | Policy Layout | all | Use to display Policy Layout (normal, interfacepair, sequencegroup, all)
 | ExcludeDownInterfaces | true / false | true | Toggle to exclude interfaces that are in down state from the report
+| UseCIDRNotation | true / false | false | Toggle to display IP addresses in CIDR notation format (e.g., 192.168.1.0/24 instead of 192.168.1.0 255.255.255.0)
 
 <!-- ********** Add/Remove the number of InfoLevels as required ********** -->
 ### InfoLevel

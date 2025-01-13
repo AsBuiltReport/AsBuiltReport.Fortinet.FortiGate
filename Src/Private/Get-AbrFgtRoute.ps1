@@ -73,11 +73,7 @@ function Get-AbrFgtRoute {
 
                         $OutObj += [pscustomobject]@{
                             "Type"                     = $route.type
-                            "IP/Mask"                  = if ($Options.UseCIDRNotation) {
-                                                            Convert-AbrFgtSubnetToCIDR -Input $route.ip_mask
-                                                        } else {
-                                                            $route.ip_mask
-                                                        }
+                            "IP/Mask"                  = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $route.ip_mask } else { $route.ip_mask })
                             "Gateway"                  = $route.gateway
                             "Interface"                = $interface
                             "Distance/Metric/Priority" = "$($route.distance) / $($route.metric) / $($route.priority)"
@@ -113,11 +109,7 @@ function Get-AbrFgtRoute {
                             #TODO: add Lookup, only display the id...
                             $dst = $static.'internet-service'
                         } else {
-                            $dst = if ($Options.UseCIDRNotation) {
-                                Convert-AbrFgtSubnetToCIDR -Input $static.dst
-                            } else {
-                                $static.dst
-                            }
+                            $dst = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $static.dst } else { $static.dst })
                         }
 
                         #when Blackhole is enable, display blackhole for interface
@@ -160,21 +152,13 @@ function Get-AbrFgtRoute {
                     foreach ($pbr in $PolicyBasedRouting) {
 
                         if ($pbr.src) {
-                            $src = if ($Options.UseCIDRNotation) {
-                                Convert-AbrFgtSubnetToCIDR -Input $pbr.src.subnet
-                            } else {
-                                $pbr.src.subnet
-                            }
+                            $src = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $pbr.src.subnet } else { $pbr.src.subnet })
                         }
                         else {
                             $src = $pbr.srcaddr.name
                         }
                         if ($pbr.dst) {
-                            $dst = if ($Options.UseCIDRNotation) {
-                                Convert-AbrFgtSubnetToCIDR -Input $pbr.dst.subnet
-                            } else {
-                                $pbr.dst.subnet
-                            }
+                            $dst = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $pbr.dst.subnet } else { $pbr.dst.subnet })
                         }
                         else {
                             $dst = $pbr.dstaddr.name

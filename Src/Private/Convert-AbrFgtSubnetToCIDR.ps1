@@ -77,6 +77,18 @@ function Convert-AbrFgtSubnetMaskToCIDR {
         Github:         alagoutte
         Credits:        Iain Brighton (@iainbrighton) - PScribo module
 
+    .EXAMPLE
+        Convert-AbrFgtSubnetMaskToCIDR "255.255.255.0"
+        Returns: 24
+
+    .EXAMPLE
+        Convert-AbrFgtSubnetMaskToCIDR "255.255.0.0"
+        Returns: 16
+
+    .EXAMPLE
+        Convert-AbrFgtSubnetMaskToCIDR "255.255.255.252"
+        Returns: 30
+
     .LINK
         https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate
     #>
