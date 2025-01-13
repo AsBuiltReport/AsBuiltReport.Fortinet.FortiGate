@@ -23,6 +23,7 @@ function Convert-AbrFgtSubnetToCIDR {
         https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate
     #>
     [CmdletBinding()]
+    [OutputType([System.String])]
     param (
         [Parameter(Mandatory=$true, Position=0, ValueFromPipeline=$true)]
         [string]$Input
@@ -80,6 +81,7 @@ function Convert-AbrFgtSubnetMaskToCIDR {
         https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate
     #>
     [CmdletBinding()]
+    [OutputType([System.String])]
     param (
         [Parameter(Mandatory=$true)]
         [string]$SubnetMask
