@@ -1,0 +1,5 @@
+[33mcommit 7fea62b1a7990d08cc563533574a1d5808b604f2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Max Soukhomlinov <maxs@intellectit.com.au>
+Date:   Wed Dec 4 15:42:01 2024 +1100
+
+    Added ExcludeDownInterfaces to readme

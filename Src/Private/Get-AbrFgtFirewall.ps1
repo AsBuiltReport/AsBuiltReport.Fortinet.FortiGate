@@ -1,4 +1,3 @@
-
 function Get-AbrFgtFirewall {
     <#
     .SYNOPSIS
@@ -117,7 +116,11 @@ function Get-AbrFgtFirewall {
 
                         switch ( $add.type ) {
                             "ipmask" {
-                                $value = $add.subnet.Replace(' ', '/')
+                                if ($Options.UseCIDRNotation) {
+                                    $value = Convert-AbrFgtSubnetToCIDR -Input $add.subnet
+                                } else {
+                                    $value = $add.subnet.Replace(' ', '/')
+                                }
                             }
                             "iprange" {
                                 $value = $add.'start-ip' + "-" + $add.'end-ip'
