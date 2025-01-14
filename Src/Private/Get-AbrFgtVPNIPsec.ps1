@@ -1,4 +1,3 @@
-
 function Get-AbrFgtVPNIPsec {
     <#
     .SYNOPSIS
@@ -146,7 +145,7 @@ function Get-AbrFgtVPNIPsec {
                                     $src = $v2.'src-name'
                                 }
                                 "subnet" {
-                                    $src = $v2.'src-subnet' -replace " ", "/"
+                                    $src = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'src-subnet' } else { $v2.'src-subnet' -replace " ", "/" })
                                 }
                                 Default {}
                             }
@@ -155,7 +154,7 @@ function Get-AbrFgtVPNIPsec {
                                     $dst = $v2.'dst-name'
                                 }
                                 "subnet" {
-                                    $dst = $v2.'dst-subnet' -replace " ", "/"
+                                    $dst = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'dst-subnet' } else { $v2.'dst-subnet' -replace " ", "/" })
                                 }
                                 Default {}
                             }
@@ -202,10 +201,10 @@ function Get-AbrFgtVPNIPsec {
                                     "Keylife Kbs"                = $v2.keylifekbs
                                     'Source Address Type'        = $v2.'src-addr-type'
                                     'Source Address Name'        = $v2.'src-name'
-                                    'Source Address Subnet'      = $v2.'src-subnet'
+                                    'Source Address Subnet'      = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'src-subnet' } else { $v2.'src-subnet' })
                                     'Destination Address Type'   = $v2.'dst-addr-type'
                                     'Destination Address Name'   = $v2.'dst-name'
-                                    'Destination Address Subnet' = $v2.'dst-subnet'
+                                    'Destination Address Subnet' = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'dst-subnet' } else { $v2.'dst-subnet' })
                                 }
 
 

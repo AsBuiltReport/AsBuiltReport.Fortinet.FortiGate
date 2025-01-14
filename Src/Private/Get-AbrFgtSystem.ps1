@@ -198,25 +198,25 @@ function Get-AbrFgtSystem {
             $Admins = Get-FGTSystemAdmin
 
             if ($Admins -and $InfoLevel.System -ge 1) {
-                Section -Style Heading3 'Admin' {
+                Section -Style Heading3 'Administrators' {
                     $OutObj = @()
 
                     foreach ($admin in $Admins) {
 
-                        $trustedHosts = $admin.trusthost1 + "`n"
-                        $trustedHosts += $admin.trusthost2 + "`n"
-                        $trustedHosts += $admin.trusthost3 + "`n"
-                        $trustedHosts += $admin.trusthost4 + "`n"
-                        $trustedHosts += $admin.trusthost5 + "`n"
-                        $trustedHosts += $admin.trusthost6 + "`n"
-                        $trustedHosts += $admin.trusthost7 + "`n"
-                        $trustedHosts += $admin.trusthost8 + "`n"
-                        $trustedHosts += $admin.trusthost9 + "`n"
-                        $trustedHosts += $admin.trusthost10 + "`n"
+                        $trustedHosts = @()
+                        for ($i = 1; $i -le 10; $i++) {
+                            $hostProperty = "trusthost$i"
+                            $hostValue = $admin.$hostProperty
 
-                        $trustedHosts = $trustedHosts -replace "0.0.0.0 0.0.0.0`n", "" #Remove 'All Network'
-                        if ($trustedHosts -eq "") {
-                            $trustedHosts = "All" #TODO: Add Health Warning !
+                            if ($hostValue -and $hostValue -ne "0.0.0.0 0.0.0.0") {
+                                $trustedHosts += $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $hostValue } else { $hostValue })
+                            }
+                        }
+
+                        $trustedHostsString = if ($trustedHosts.Count -eq 0) {
+                            "All" #TODO: Add Health Warning !
+                        } else {
+                            $trustedHosts -join "`n"
                         }
                         $OutObj += [pscustomobject]@{
                             "Name"          = $admin.name
@@ -269,10 +269,10 @@ function Get-AbrFgtSystem {
                                 $interface.member = $interface.member.count -gt 0 ? $interface.member.'interface-name' -join ', ' : ""
                                 $interface.mtu = $interface.'mtu-override' -eq 'disable' ? '' : $interface.mtu
                                 $interface.mode = $interface.mode -eq 'static' ? '' : $interface.mode
-                                $interface.ip = $interface.ip -eq '0.0.0.0 0.0.0.0' ? '' : $interface.ip
+                                $interface.ip = $interface.ip -eq '0.0.0.0 0.0.0.0' ? '' : $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $interface.ip } else { $interface.ip })
                                 $interface.'secondaryip' = if ($interface.'secondary-ip' -eq 'enable' -and $null -ne $interface.'secondaryip') {
                                     ($interface.'secondaryip' | ForEach-Object {
-                                        $_.ip
+                                        $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $_.ip } else { $_.ip })
                                     }) -join ', '
                                 } else {
                                     ""
@@ -281,7 +281,7 @@ function Get-AbrFgtSystem {
                                 $interface.vdom = $interface.vdom -eq 'root' ? '' : $interface.vdom
                                 $interface.vlanid = ($interface.vlanid -gt 0 ) ? $interface.vlanid : ""
                                 $interface.speed = $interface.speed -eq 'auto' ? '' : $interface.speed
-                                $interface.'remote-ip' = $interface.'remote-ip' -eq '0.0.0.0 0.0.0.0' ? '' : $interface.'remote-ip'
+                                $interface.'remote-ip' = $interface.'remote-ip' -eq '0.0.0.0 0.0.0.0' ? '' : $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $interface.'remote-ip' } else { $interface.'remote-ip' })
 
 
                                 switch ($interfaceType) {
