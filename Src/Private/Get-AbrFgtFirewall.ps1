@@ -133,6 +133,9 @@ function Get-AbrFgtFirewall {
                             "dynamic" {
                                 $value = $add.filter
                             }
+                            "interface-subnet" {
+                                $value = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $add.subnet } else { $add.subnet.Replace(' ', '/') })
+                            }
                             default {
                                 $value = "Unknown Type"
                             }
