@@ -153,7 +153,7 @@ function Get-AbrFgtForticare {
                     "Model"   = $Model
                     "Serial"  = $Serial
                     "Status"  = $Forticare.status
-                    "Account" = $Forticare.account.ToLower()
+                    "Account" = $Forticare.account
                     "Company" = $Forticare.company
                 }
 
