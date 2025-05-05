@@ -32,6 +32,8 @@ function Get-AbrFgtRoute {
             $MonitorRouterIPv4 = Get-FGTMonitorRouterIPv4
             $Statics = Get-FGTRouterStatic
             $PolicyBasedRouting = Get-FGTRouterPolicy
+            $BGPNeighbors = get-FGTMonitorRouterBGPNeighbors
+            $BGP = Get-FGTRouterBGP
 
             if ($InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -107,17 +109,20 @@ function Get-AbrFgtRoute {
                         elseif ($static.'internet-service') {
                             #TODO: add Lookup, only display the id...
                             $dst = $static.'internet-service'
-                        } else {
+                        }
+                        else {
                             $dst = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $static.dst } else { $static.dst })
                         }
 
                         #when Blackhole is enable, display blackhole for interface
                         if ($static.blackhole -eq "enable") {
                             $interface = "Blackhole"
-                        } elseif ($static.device -eq "") {
+                        }
+                        elseif ($static.device -eq "") {
                             #No device => SD-Wan (Zone)
                             $interface = $static.'sdwan-zone'.name
-                        } else {
+                        }
+                        else {
                             $interface = $static.device
                         }
 
@@ -177,6 +182,36 @@ function Get-AbrFgtRoute {
                         Name = "Policy Based Route"
                         List = $false
                         ColumnWidths = 10, 12, 13, 13, 13, 13, 13, 13
+                    }
+
+                    if ($Report.ShowTableCaptions) {
+                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                    }
+
+                    $OutObj | Table @TableParams
+                }
+            }
+
+            #There is always BGP config, only display if router-id is configured
+            if ($BGP.'router-id' -ne "0.0.0.0" -and $InfoLevel.Route -ge 1) {
+                Section -Style Heading3 'BGP Configuration' {
+                    $OutObj = @()
+
+                    foreach ($properties in $bgp.PSObject.properties) {
+                        #Skip System Object array (manually display after like Neighbor, network...)
+                        if ($properties.typeNameOfValue -eq "System.Object[]") {
+                            continue
+                        }
+                        $OutObj += [pscustomobject]@{
+                            "Name" = $properties.name
+                            "Value" = $properties.value
+                        }
+                    }
+
+                    $TableParams = @{
+                        Name         = "BGP Configuration"
+                        List         = $false
+                        ColumnWidths = 50, 50
                     }
 
                     if ($Report.ShowTableCaptions) {
