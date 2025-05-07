@@ -327,7 +327,7 @@ function Get-AbrFgtRoute {
                                         "Name"        = $n.name
                                         "Remote AS"   = $n.'remote-as'
                                         "Description" = $n.description
-                                        "Activate"   = $n.activate
+                                        "Activate"    = $n.activate
                                     }
                                 }
 
@@ -395,6 +395,39 @@ function Get-AbrFgtRoute {
 
                         }
                     }
+
+                    if ($bgp.'neighbor-range') {
+
+                        $neighborrange = $bgp.'neighbor-range'
+                        Section -Style Heading3 'Neighbor Range' {
+                            $OutObj = @()
+
+                            foreach ($n in $neighborrange) {
+
+                                $OutObj += [pscustomobject]@{
+                                    "id"                 = $n.id
+                                    "Prefix"             = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
+                                    "Neighbor Group"     = $n.'neighbor-group'
+                                    "Max Neighbor Num  " = $n.'max-neighbor-num'
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "BGP Neighbor Range"
+                                List         = $false
+                                ColumnWidths = 10, 35, 30, 25
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+
+                    }
+
+
                 }
             }
 
