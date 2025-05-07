@@ -436,11 +436,11 @@ function Get-AbrFgtRoute {
                             foreach ($n in $neighbornetwork) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "id"                   = $n.id
-                                    "Prefix "              = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
+                                    "id"                    = $n.id
+                                    "Prefix "               = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
                                     "Network-import-check " = $n.'network-import-check'
-                                    "Backdoor "            = $n.backdoor
-                                    "Route-map"            = $n.'route-map'
+                                    "Backdoor "             = $n.backdoor
+                                    "Route-map"             = $n.'route-map'
                                 }
                             }
 
@@ -454,6 +454,37 @@ function Get-AbrFgtRoute {
                                 $TableParams['Caption'] = "- $($TableParams.Name)"
                             }
 
+                            $OutObj | Table @TableParams
+                        }
+
+                    }
+
+                    if ($bgp.redistribute) {
+
+                        $neighborredistribute = $bgp.redistribute
+                        Section -Style Heading3 'Redistribute' {
+                            $OutObj = @()
+
+                            foreach ($n in $neighborredistribute) {
+
+                                $OutObj += [pscustomobject]@{
+                                    "Name"      = $n.name
+                                    "Status"    = $n.status
+                                    "Route-map" = $n.'route-map'
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "BGP Redistribute"
+                                List         = $false
+                                ColumnWidths = 40, 30, 30
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Where-Object { $_.status -eq "enable" } | Set-Style -Style OK
                             $OutObj | Table @TableParams
                         }
 
