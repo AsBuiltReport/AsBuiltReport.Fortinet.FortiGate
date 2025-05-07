@@ -259,7 +259,6 @@ function Get-AbrFgtRoute {
                                     $TableParams['Caption'] = "- $($TableParams.Name)"
                                 }
 
-                                $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
                                 $OutObj | Table @TableParams
                             }
 
@@ -341,7 +340,6 @@ function Get-AbrFgtRoute {
                                     $TableParams['Caption'] = "- $($TableParams.Name)"
                                 }
 
-                                $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
                                 $OutObj | Table @TableParams
                             }
 
