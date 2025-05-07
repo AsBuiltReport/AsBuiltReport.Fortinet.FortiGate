@@ -427,6 +427,37 @@ function Get-AbrFgtRoute {
 
                     }
 
+                    if ($bgp.network) {
+
+                        $neighbornetwork = $bgp.network
+                        Section -Style Heading3 'Network' {
+                            $OutObj = @()
+
+                            foreach ($n in $neighbornetwork) {
+
+                                $OutObj += [pscustomobject]@{
+                                    "id"                   = $n.id
+                                    "Prefix "              = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
+                                    "Network-import-check " = $n.'network-import-check'
+                                    "Backdoor "            = $n.backdoor
+                                    "Route-map"            = $n.'route-map'
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "BGP Network"
+                                List         = $false
+                                ColumnWidths = 10, 35, 24, 11, 20
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+
+                    }
 
                 }
             }
