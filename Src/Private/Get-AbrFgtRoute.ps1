@@ -490,6 +490,40 @@ function Get-AbrFgtRoute {
 
                     }
 
+                    if ($BGPNeighbors) {
+
+                        Section -Style Heading3 'BGP Neighbor Status' {
+                            $OutObj = @()
+
+                            foreach ($n in $BGPNeighbors) {
+
+                                $OutObj += [pscustomobject]@{
+                                    "Neighbor IP"  = $n.neighbor_ip
+                                    "Local IP"     = $n.local_ip
+                                    "Remote AS"    = $n.remote_as
+                                    "Admin status" = $n.admin_status
+                                    "State"        = $n.state
+                                    "type"         = $n.type
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "BGP Neighbor Status"
+                                List         = $false
+                                ColumnWidths = 15, 15, 15, 25, 15, 15
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Where-Object { $_.state -ne "Established" } | Set-Style -Style Critical
+                            $OutObj | Where-Object { $_.'Admin Status' -ne "True" } | Set-Style -Style Warning
+                            $OutObj | Table @TableParams
+                        }
+
+                    }
+
                 }
             }
 
