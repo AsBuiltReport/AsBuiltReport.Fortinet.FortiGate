@@ -232,6 +232,88 @@ function Get-AbrFgtRoute {
                         $OutObj | Table @TableParams
                     }
 
+                    if ($bgp.'neighbor') {
+
+                        $neighbor = $bgp.'neighbor'
+                        Section -Style Heading3 'Neighbor' {
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
+                                $OutObj = @()
+
+                                foreach ($n in $neighbor) {
+
+                                    $OutObj += [pscustomobject]@{
+                                        "IP"          = $n.ip
+                                        "Remote AS"   = $n.'remote-as'
+                                        "Description" = $n.description
+                                        "Activate"    = $n.activate
+                                    }
+                                }
+
+                                $TableParams = @{
+                                    Name         = "BGP Neighbor"
+                                    List         = $false
+                                    ColumnWidths = 25, 25, 25, 25
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                                $OutObj | Table @TableParams
+                            }
+
+                            if ($InfoLevel.Route -ge 2) {
+
+                                foreach ($n in $neighbor) {
+
+                                    Section -Style NOTOCHeading4 -ExcludeFromTOC "Neighbor : $($n.ip)" {
+
+                                        $OutObj = @()
+
+                                        foreach ($properties in $n.PSObject.properties) {
+
+                                            #Skip System Object array
+                                            if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                                continue
+                                            }
+                                            #Skip q_origin_key properties (Fortigate internal and equal to name)
+                                            if ($properties.name -eq "q_origin_key") {
+                                                continue
+                                            }
+                                            $name = $properties.name
+                                            $value = [string]$properties.value
+                                            #Check the schema of $value
+                                            if ($BGPSchema.'neighbor'.children.PSObject.Properties.Name -contains $name) {
+                                                #found the default value
+                                                $default = $BGPSchema.'neighbor'.children.$name.default
+                                            }
+                                            $OutObj += [pscustomobject]@{
+                                                "Name"    = $name
+                                                "Value"   = $value
+                                                "Default" = $default
+                                            }
+                                        }
+
+                                        $TableParams = @{
+                                            Name         = "BGP Neighbor Configuration"
+                                            List         = $false
+                                            ColumnWidths = 34, 33, 33
+                                        }
+
+                                        if ($Report.ShowTableCaptions) {
+                                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                                        }
+
+                                        $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                                        $OutObj | Table @TableParams
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
                     if ($bgp.'neighbor-group') {
 
                         $neighborgroup = $bgp.'neighbor-group'
