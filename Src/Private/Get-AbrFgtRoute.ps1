@@ -232,6 +232,87 @@ function Get-AbrFgtRoute {
                         $OutObj | Table @TableParams
                     }
 
+                    if ($bgp.'neighbor-group') {
+
+                        $neighborgroup = $bgp.'neighbor-group'
+                        Section -Style Heading3 'Neighbor Group' {
+                            Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
+                                $OutObj = @()
+
+                                foreach ($n in $neighborgroup) {
+
+                                    $OutObj += [pscustomobject]@{
+                                        "Name"        = $n.name
+                                        "Remote AS"   = $n.'remote-as'
+                                        "Description" = $n.description
+                                        "Acttivate"   = $n.activate
+                                    }
+                                }
+
+                                $TableParams = @{
+                                    Name         = "BGP Neighbor Group"
+                                    List         = $false
+                                    ColumnWidths = 25, 25, 25, 25
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                                $OutObj | Table @TableParams
+                            }
+
+                            if ($InfoLevel.Route -ge 2) {
+
+                                foreach ($n in $neighborgroup) {
+
+                                    Section -Style NOTOCHeading4 -ExcludeFromTOC "Neighbor Group : $($n.name)" {
+
+                                        $OutObj = @()
+
+                                        foreach ($properties in $n.PSObject.properties) {
+
+                                            #Skip System Object array
+                                            if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                                continue
+                                            }
+                                            #Skip q_origin_key properties (Fortigate internal and equal to name)
+                                            if ($properties.name -eq "q_origin_key") {
+                                                continue
+                                            }
+                                            $name = $properties.name
+                                            $value = [string]$properties.value
+                                            #Check the schema of $value
+                                            if ($BGPSchema.'neighbor-group'.children.PSObject.Properties.Name -contains $name) {
+                                                #found the default value
+                                                $default = $BGPSchema.'neighbor-group'.children.$name.default
+                                            }
+                                            $OutObj += [pscustomobject]@{
+                                                "Name"    = $name
+                                                "Value"   = $value
+                                                "Default" = $default
+                                            }
+                                        }
+
+                                        $TableParams = @{
+                                            Name         = "BGP Neighbor Group Configuration"
+                                            List         = $false
+                                            ColumnWidths = 34, 33, 33
+                                        }
+
+                                        if ($Report.ShowTableCaptions) {
+                                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                                        }
+
+                                        $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                                        $OutObj | Table @TableParams
+                                    }
+                                }
+                            }
+
+                        }
+                    }
                 }
             }
 
