@@ -34,6 +34,7 @@ function Get-AbrFgtRoute {
             $PolicyBasedRouting = Get-FGTRouterPolicy
             $BGPNeighbors = get-FGTMonitorRouterBGPNeighbors
             $BGP = Get-FGTRouterBGP
+            $BGPSchema = (Invoke-FgtRestMethod 'api/v2/cmdb/router/bgp?&action=schema').results.children
 
             if ($InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -202,22 +203,31 @@ function Get-AbrFgtRoute {
                         if ($properties.typeNameOfValue -eq "System.Object[]") {
                             continue
                         }
+                        $name = $properties.name
+                        $value = [string]$properties.value
+                        #Check the schema of $value
+                        if ($BGPSchema.PSObject.Properties.Name -contains $name) {
+                            #found the default value
+                            $default = $BGPSchema.$name.default
+                        }
                         $OutObj += [pscustomobject]@{
-                            "Name" = $properties.name
-                            "Value" = $properties.value
+                            "Name"    = $name
+                            "Value"   = $value
+                            "Default" = $default
                         }
                     }
 
                     $TableParams = @{
                         Name         = "BGP Configuration"
                         List         = $false
-                        ColumnWidths = 50, 50
+                        ColumnWidths = 34, 33, 33
                     }
 
                     if ($Report.ShowTableCaptions) {
                         $TableParams['Caption'] = "- $($TableParams.Name)"
                     }
 
+                    $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
                     $OutObj | Table @TableParams
                 }
             }
