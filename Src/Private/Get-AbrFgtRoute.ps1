@@ -327,7 +327,7 @@ function Get-AbrFgtRoute {
                                         "Name"        = $n.name
                                         "Remote AS"   = $n.'remote-as'
                                         "Description" = $n.description
-                                        "Acttivate"   = $n.activate
+                                        "Activate"   = $n.activate
                                     }
                                 }
 
