@@ -197,41 +197,42 @@ function Get-AbrFgtRoute {
             if ($BGP.'router-id' -ne "0.0.0.0" -and $InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'BGP' {
                     Section -Style Heading3 'Configuration' {
-                    $OutObj = @()
+                        $OutObj = @()
 
-                    foreach ($properties in $bgp.PSObject.properties) {
-                        #Skip System Object array (manually display after like Neighbor, network...)
-                        if ($properties.typeNameOfValue -eq "System.Object[]") {
-                            continue
+                        foreach ($properties in $bgp.PSObject.properties) {
+                            #Skip System Object array (manually display after like Neighbor, network...)
+                            if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                continue
+                            }
+                            $name = $properties.name
+                            $value = [string]$properties.value
+                            #Check the schema of $value
+                            if ($BGPSchema.PSObject.Properties.Name -contains $name) {
+                                #found the default value
+                                $default = $BGPSchema.$name.default
+                            }
+                            $OutObj += [pscustomobject]@{
+                                "Name"    = $name
+                                "Value"   = $value
+                                "Default" = $default
+                            }
                         }
-                        $name = $properties.name
-                        $value = [string]$properties.value
-                        #Check the schema of $value
-                        if ($BGPSchema.PSObject.Properties.Name -contains $name) {
-                            #found the default value
-                            $default = $BGPSchema.$name.default
+
+                        $TableParams = @{
+                            Name         = "BGP Configuration"
+                            List         = $false
+                            ColumnWidths = 34, 33, 33
                         }
-                        $OutObj += [pscustomobject]@{
-                            "Name"    = $name
-                            "Value"   = $value
-                            "Default" = $default
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
                         }
+
+                        $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                        $OutObj | Table @TableParams
                     }
 
-                    $TableParams = @{
-                        Name         = "BGP Configuration"
-                        List         = $false
-                        ColumnWidths = 34, 33, 33
-                    }
-
-                    if ($Report.ShowTableCaptions) {
-                        $TableParams['Caption'] = "- $($TableParams.Name)"
-                    }
-
-                    $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
-                    $OutObj | Table @TableParams
                 }
-            }
             }
 
         }
