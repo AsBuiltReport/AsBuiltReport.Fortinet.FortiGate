@@ -436,11 +436,11 @@ function Get-AbrFgtRoute {
                             foreach ($n in $neighbornetwork) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "id"                    = $n.id
-                                    "Prefix "               = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
-                                    "Network-import-check " = $n.'network-import-check'
-                                    "Backdoor "             = $n.backdoor
-                                    "Route-map"             = $n.'route-map'
+                                    "id"                   = $n.id
+                                    "Prefix "              = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
+                                    "Network-import-check" = $n.'network-import-check'
+                                    "Backdoor"             = $n.backdoor
+                                    "Route-map"            = $n.'route-map'
                                 }
                             }
 
