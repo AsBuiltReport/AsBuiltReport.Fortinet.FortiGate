@@ -195,7 +195,8 @@ function Get-AbrFgtRoute {
 
             #There is always BGP config, only display if router-id is configured
             if ($BGP.'router-id' -ne "0.0.0.0" -and $InfoLevel.Route -ge 1) {
-                Section -Style Heading3 'BGP Configuration' {
+                Section -Style Heading3 'BGP' {
+                    Section -Style Heading3 'Configuration' {
                     $OutObj = @()
 
                     foreach ($properties in $bgp.PSObject.properties) {
@@ -230,6 +231,7 @@ function Get-AbrFgtRoute {
                     $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
                     $OutObj | Table @TableParams
                 }
+            }
             }
 
         }
