@@ -19,7 +19,7 @@
         "_comment_": "0 = Disabled, 1 = Enabled / Summary, 2 = Adv Summary",
         "FortiCare": 1,
         "System": 2,
-        "Route": 1,
+        "Route": 2,
         "SDWAN": 1,
         "Firewall": 1,
         "User": 2,
