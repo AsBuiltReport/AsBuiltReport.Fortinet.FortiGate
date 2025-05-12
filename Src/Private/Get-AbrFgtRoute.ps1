@@ -196,6 +196,31 @@ function Get-AbrFgtRoute {
             #There is always BGP config, only display if router-id is configured
             if ($BGP.'router-id' -and $InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'BGP' {
+
+                    Section -Style Heading3 'Summary' {
+                        Paragraph "The following section provides a summary of BGP settings."
+                        BlankLine
+                        $OutObj = [pscustomobject]@{
+                            "BGP Neighbor"         = @($BGP.neighbor).count
+                            "BGP Neighbor Group"   = @($BGP.'neighbor-group').count
+                            "BGP Neighbor Range"   = @($BGP.'neighbor-range').count
+                            "BGP Network"          = @($BGP.network).count
+                            "BGP Neighbors Status" = @($BGPNeighbors).count
+                        }
+
+                        $TableParams = @{
+                            Name         = "Summary"
+                            List         = $true
+                            ColumnWidths = 50, 50
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Table @TableParams
+                    }
+
                     Section -Style Heading3 'Configuration' {
                         $OutObj = @()
 
