@@ -35,6 +35,9 @@ function Get-AbrFgtRoute {
             $BGPNeighbors = Get-FGTMonitorRouterBGPNeighbors
             $BGP = Get-FGTRouterBGP
             $BGPSchema = (Invoke-FGTRestMethod 'api/v2/cmdb/router/bgp?&action=schema').results.children
+            $OSPFNeighbors = Get-FGTMonitorRouterOSPFNeighbors
+            $OSPF = Get-FGTRouterOSPF
+            $OSPFSchema = (Invoke-FGTRestMethod 'api/v2/cmdb/router/ospf?&action=schema').results.children
 
             if ($InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -556,6 +559,369 @@ function Get-AbrFgtRoute {
                     }
 
                 }
+
+            }
+
+            #There is always OSPF config, only display if router-id not 0.0.0.0 (not configured)
+            if ($OSPF.'router-id' -ne "0.0.0.0" -and $InfoLevel.Route -ge 1) {
+                Section -Style Heading3 'OSPF' {
+
+                    Section -Style Heading3 'Summary' {
+                        Paragraph "The following section provides a summary of OSPF settings."
+                        BlankLine
+                        $OutObj = [pscustomobject]@{
+                            "OSPF Area"             = @($OSPF.area).count
+                            "OSPF Interface"        = @($OSPF.'ospf-interface').count
+                            "OSPF Network"          = @($OSPF.network).count
+                            "OSPF Summary Address"  = @($OSPF.'summary-address').count
+                            "OSPF Neighbors Status" = @($OSPFNeighbors).count
+                        }
+
+                        $TableParams = @{
+                            Name         = "Summary"
+                            List         = $true
+                            ColumnWidths = 50, 50
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Table @TableParams
+                    }
+
+                    Section -Style Heading3 'Configuration' {
+                        $OutObj = @()
+
+                        foreach ($properties in $OSPF.PSObject.properties) {
+                            #Skip System Object array (manually display after like Neighbor, network...)
+                            if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                continue
+                            }
+                            $name = $properties.name
+                            $value = [string]$properties.value
+                            #Check the schema of $value
+                            if ($OSPFSchema.PSObject.Properties.Name -contains $name) {
+                                #found the default value
+                                $default = $OSPFSchema.$name.default
+                            }
+                            $OutObj += [pscustomobject]@{
+                                "Name"    = $name
+                                "Value"   = $value
+                                "Default" = $default
+                            }
+                        }
+
+                        $TableParams = @{
+                            Name         = "OSPF Configuration"
+                            List         = $false
+                            ColumnWidths = 34, 33, 33
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                        $OutObj | Table @TableParams
+                    }
+                }
+
+                if ($OSPF.area) {
+
+                    $area = $OSPF.area
+                    Section -Style Heading3 'Area' {
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
+                            $OutObj = @()
+
+                            foreach ($a in $area) {
+
+                                $OutObj += [pscustomobject]@{
+                                    "ID"             = $a.id
+                                    "Type"           = $a.type
+                                    "Authentication" = $a.authentication
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "OSPF Area"
+                                List         = $false
+                                ColumnWidths = 34, 33, 33
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+
+                        if ($InfoLevel.Route -ge 2) {
+
+                            foreach ($a in $area) {
+
+                                Section -Style NOTOCHeading4 -ExcludeFromTOC "Area : $($a.id)" {
+
+                                    $OutObj = @()
+
+                                    foreach ($properties in $a.PSObject.properties) {
+
+                                        #Skip System Object array
+                                        if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                            continue
+                                        }
+                                        #Skip q_origin_key properties (Fortigate internal and equal to name)
+                                        if ($properties.name -eq "q_origin_key") {
+                                            continue
+                                        }
+                                        $name = $properties.name
+                                        $value = [string]$properties.value
+                                        #Check the schema of $value
+                                        if ($OSPFSchema.'area'.children.PSObject.Properties.Name -contains $name) {
+                                            #found the default value
+                                            $default = $OSPFSchema.'area'.children.$name.default
+                                        }
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"    = $name
+                                            "Value"   = $value
+                                            "Default" = $default
+                                        }
+                                    }
+
+                                    $TableParams = @{
+                                        Name         = "OSPF Area Configuration $($a.id)"
+                                        List         = $false
+                                        ColumnWidths = 34, 33, 33
+                                    }
+
+                                    if ($Report.ShowTableCaptions) {
+                                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                                    }
+
+                                    $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                                    $OutObj | Table @TableParams
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                if ($OSPF.'ospf-interface') {
+
+                    $interface = $OSPF.'ospf-interface'
+                    Section -Style Heading3 'Interface' {
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
+                            $OutObj = @()
+
+                            foreach ($i in $interface) {
+
+                                $OutObj += [pscustomobject]@{
+                                    "Name"             = $i.name
+                                    "Interface"        = $i.interface
+                                    "Cost"             = $i.cost
+                                    "Authentification" = $i.authentication
+                                    "Status"           = $i.status
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "OSPF Interface"
+                                List         = $false
+                                ColumnWidths = 20, 20, 20, 20, 20
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+
+                        if ($InfoLevel.Route -ge 2) {
+
+                            foreach ($i in $interface) {
+
+                                Section -Style NOTOCHeading4 -ExcludeFromTOC "Interface : $($i.name)" {
+
+                                    $OutObj = @()
+
+                                    foreach ($properties in $i.PSObject.properties) {
+
+                                        #Skip System Object array
+                                        if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                            continue
+                                        }
+                                        #Skip q_origin_key properties (Fortigate internal and equal to name)
+                                        if ($properties.name -eq "q_origin_key") {
+                                            continue
+                                        }
+                                        $name = $properties.name
+                                        $value = [string]$properties.value
+                                        #Check the schema of $value
+                                        if ($OSPFSchema.'ospf-interface'.children.PSObject.Properties.Name -contains $name) {
+                                            #found the default value
+                                            $default = $OSPFSchema.'ospf-interface'.children.$name.default
+                                        }
+                                        $OutObj += [pscustomobject]@{
+                                            "Name"    = $name
+                                            "Value"   = $value
+                                            "Default" = $default
+                                        }
+                                    }
+
+                                    $TableParams = @{
+                                        Name         = "OSPF Interface Configuration $($i.Name)"
+                                        List         = $false
+                                        ColumnWidths = 34, 33, 33
+                                    }
+
+                                    if ($Report.ShowTableCaptions) {
+                                        $TableParams['Caption'] = "- $($TableParams.Name)"
+                                    }
+
+                                    $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                                    $OutObj | Table @TableParams
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                if ($OSPF.network) {
+
+                    $network = $OSPF.network
+                    Section -Style Heading3 'Network' {
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
+                            $OutObj = @()
+
+                            foreach ($n in $network) {
+
+                                $OutObj += [pscustomobject]@{
+                                    "ID"       = $n.id
+                                    "Area"     = $n.area
+                                    "Prefix"   = $n.prefix
+                                    "Comments" = $n.coments
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "OSPF Network"
+                                List         = $false
+                                ColumnWidths = 10, 25, 25, 40
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+
+
+                    }
+                }
+
+                if ($OSPF.'summary-address') {
+
+                    $summary_address = $OSPF.network
+                    Section -Style Heading3 'Summmary Address' {
+                        Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
+                            $OutObj = @()
+
+                            foreach ($sa in $summary_address) {
+
+                                $OutObj += [pscustomobject]@{
+                                    "ID"        = $sa.id
+                                    "Prefix"    = $sa.prefix
+                                    "Tag"       = $sa.tag
+                                    "Advertise" = $sa.advertise
+                                }
+                            }
+
+                            $TableParams = @{
+                                Name         = "OSPF Summary Address"
+                                List         = $false
+                                ColumnWidths = 10, 30, 30, 30
+                            }
+
+                            if ($Report.ShowTableCaptions) {
+                                $TableParams['Caption'] = "- $($TableParams.Name)"
+                            }
+
+                            $OutObj | Table @TableParams
+                        }
+
+
+                    }
+                }
+
+                if ($OSPF.redistribute) {
+
+                    $redistribute = $OSPF.redistribute
+                    Section -Style Heading3 'Redistribute' {
+                        $OutObj = @()
+
+                        foreach ($r in $redistribute) {
+
+                            $OutObj += [pscustomobject]@{
+                                "Name"        = $r.name
+                                "Status"      = $r.status
+                                "Metric"      = $r.metric
+                                "Metric Type" = $r.'metric-type'
+                                "Route-map"   = $r.'route-map'
+                                "Tag"         = $r.tag
+                            }
+                        }
+
+                        $TableParams = @{
+                            Name         = "OSPF Redistribute"
+                            List         = $false
+                            ColumnWidths = 15, 15, 15, 15, 25, 15
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Where-Object { $_.status -eq "enable" } | Set-Style -Style OK
+                        $OutObj | Table @TableParams
+                    }
+
+                }
+
+                if ($OSPFNeighbors) {
+
+                    Section -Style Heading3 'OSPF Neighbor Status' {
+                        $OutObj = @()
+
+                        foreach ($n in $OSPFNeighbors) {
+
+                            $OutObj += [pscustomobject]@{
+                                "Neighbor IP" = $n.neighbor_ip
+                                "Router ID"   = $n.router_id
+                                "State"       = $n.state
+                                "Priority"    = $n.priority
+                            }
+                        }
+
+                        $TableParams = @{
+                            Name         = "OSPF Neighbor Status"
+                            List         = $false
+                            ColumnWidths = 25, 25, 25, 25
+                        }
+
+                        if ($Report.ShowTableCaptions) {
+                            $TableParams['Caption'] = "- $($TableParams.Name)"
+                        }
+
+                        $OutObj | Where-Object { $_.state -ne "Full" } | Set-Style -Style Critical
+                        $OutObj | Table @TableParams
+                    }
+
+                }
+
             }
 
         }
