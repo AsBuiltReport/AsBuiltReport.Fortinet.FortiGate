@@ -320,7 +320,7 @@ function Get-AbrFgtRoute {
                                         }
 
                                         $TableParams = @{
-                                            Name         = "BGP Neighbor Configuration"
+                                            Name         = "BGP Neighbor Configuration $($n.ip)"
                                             List         = $false
                                             ColumnWidths = 34, 33, 33
                                         }
@@ -401,7 +401,7 @@ function Get-AbrFgtRoute {
                                         }
 
                                         $TableParams = @{
-                                            Name         = "BGP Neighbor Group Configuration"
+                                            Name         = "BGP Neighbor Group Configuration $($n.name)"
                                             List         = $false
                                             ColumnWidths = 34, 33, 33
                                         }
