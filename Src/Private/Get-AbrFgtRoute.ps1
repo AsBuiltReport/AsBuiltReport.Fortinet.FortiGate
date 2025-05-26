@@ -32,9 +32,9 @@ function Get-AbrFgtRoute {
             $MonitorRouterIPv4 = Get-FGTMonitorRouterIPv4
             $Statics = Get-FGTRouterStatic
             $PolicyBasedRouting = Get-FGTRouterPolicy
-            $BGPNeighbors = get-FGTMonitorRouterBGPNeighbors
+            $BGPNeighbors = Get-FGTMonitorRouterBGPNeighbors
             $BGP = Get-FGTRouterBGP
-            $BGPSchema = (Invoke-FgtRestMethod 'api/v2/cmdb/router/bgp?&action=schema').results.children
+            $BGPSchema = (Invoke-FGTRestMethod 'api/v2/cmdb/router/bgp?&action=schema').results.children
 
             if ($InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -224,7 +224,7 @@ function Get-AbrFgtRoute {
                     Section -Style Heading3 'Configuration' {
                         $OutObj = @()
 
-                        foreach ($properties in $bgp.PSObject.properties) {
+                        foreach ($properties in $BGP.PSObject.properties) {
                             #Skip System Object array (manually display after like Neighbor, network...)
                             if ($properties.typeNameOfValue -eq "System.Object[]") {
                                 continue
@@ -257,9 +257,9 @@ function Get-AbrFgtRoute {
                         $OutObj | Table @TableParams
                     }
 
-                    if ($bgp.'neighbor') {
+                    if ($BGP.'neighbor') {
 
-                        $neighbor = $bgp.'neighbor'
+                        $neighbor = $BGP.'neighbor'
                         Section -Style Heading3 'Neighbor' {
                             Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
                                 $OutObj = @()
@@ -338,9 +338,9 @@ function Get-AbrFgtRoute {
                         }
                     }
 
-                    if ($bgp.'neighbor-group') {
+                    if ($BGP.'neighbor-group') {
 
-                        $neighborgroup = $bgp.'neighbor-group'
+                        $neighborgroup = $BGP.'neighbor-group'
                         Section -Style Heading3 'Neighbor Group' {
                             Section -Style NOTOCHeading4 -ExcludeFromTOC 'Summary' {
                                 $OutObj = @()
@@ -419,9 +419,9 @@ function Get-AbrFgtRoute {
                         }
                     }
 
-                    if ($bgp.'neighbor-range') {
+                    if ($BGP.'neighbor-range') {
 
-                        $neighborrange = $bgp.'neighbor-range'
+                        $neighborrange = $BGP.'neighbor-range'
                         Section -Style Heading3 'Neighbor Range' {
                             $OutObj = @()
 
@@ -450,9 +450,9 @@ function Get-AbrFgtRoute {
 
                     }
 
-                    if ($bgp.network) {
+                    if ($BGP.network) {
 
-                        $neighbornetwork = $bgp.network
+                        $neighbornetwork = $BGP.network
                         Section -Style Heading3 'Network' {
                             $OutObj = @()
 
@@ -482,18 +482,18 @@ function Get-AbrFgtRoute {
 
                     }
 
-                    if ($bgp.redistribute) {
+                    if ($BGP.redistribute) {
 
-                        $neighborredistribute = $bgp.redistribute
+                        $redistribute = $BGP.redistribute
                         Section -Style Heading3 'Redistribute' {
                             $OutObj = @()
 
-                            foreach ($n in $neighborredistribute) {
+                            foreach ($r in $redistribute) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "Name"      = $n.name
-                                    "Status"    = $n.status
-                                    "Route-map" = $n.'route-map'
+                                    "Name"      = $r.name
+                                    "Status"    = $r.status
+                                    "Route-map" = $r.'route-map'
                                 }
                             }
 
