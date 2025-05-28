@@ -311,6 +311,10 @@ function Get-AbrFgtRoute {
                                             if ($BGPSchema.'neighbor'.children.PSObject.Properties.Name -contains $name) {
                                                 #found the default value
                                                 $default = $BGPSchema.'neighbor'.children.$name.default
+                                                #if default is null set empty value (some field don't have defaut parameter)
+                                                if ($null -eq $default) {
+                                                    $default = ""
+                                                }
                                             }
                                             $OutObj += [pscustomobject]@{
                                                 "Name"    = $name
@@ -392,6 +396,10 @@ function Get-AbrFgtRoute {
                                             if ($BGPSchema.'neighbor-group'.children.PSObject.Properties.Name -contains $name) {
                                                 #found the default value
                                                 $default = $BGPSchema.'neighbor-group'.children.$name.default
+                                                #if default is null set empty value (some field don't have defaut parameter)
+                                                if ($null -eq $default) {
+                                                    $default = ""
+                                                }
                                             }
                                             $OutObj += [pscustomobject]@{
                                                 "Name"    = $name
