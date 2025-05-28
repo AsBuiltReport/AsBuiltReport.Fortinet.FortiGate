@@ -680,6 +680,10 @@ function Get-AbrFgtRoute {
                                         if ($OSPFSchema.'area'.children.PSObject.Properties.Name -contains $name) {
                                             #found the default value
                                             $default = $OSPFSchema.'area'.children.$name.default
+                                            #if default is null set empty value (some field don't have defaut parameter)
+                                            if ($null -eq $default) {
+                                                $default = ""
+                                            }
                                         }
                                         $OutObj += [pscustomobject]@{
                                             "Name"    = $name
@@ -762,6 +766,10 @@ function Get-AbrFgtRoute {
                                         if ($OSPFSchema.'ospf-interface'.children.PSObject.Properties.Name -contains $name) {
                                             #found the default value
                                             $default = $OSPFSchema.'ospf-interface'.children.$name.default
+                                            #if default is null set empty value (some field don't have defaut parameter)
+                                            if ($null -eq $default) {
+                                                $default = ""
+                                            }
                                         }
                                         $OutObj += [pscustomobject]@{
                                             "Name"    = $name
