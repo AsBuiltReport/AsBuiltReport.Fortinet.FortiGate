@@ -604,6 +604,9 @@ function Get-AbrFgtRoute {
                             if ($OSPFSchema.PSObject.Properties.Name -contains $name) {
                                 #found the default value
                                 $default = $OSPFSchema.$name.default
+                                                                                if ($null -eq $default) {
+                                                    $default = ""
+                                                }
                             }
                             $OutObj += [pscustomobject]@{
                                 "Name"    = $name
