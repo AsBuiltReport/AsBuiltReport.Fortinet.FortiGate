@@ -30,59 +30,59 @@ function Get-AbrFgtForticare {
         if ($LicenseStatus -and $InfoLevel.Forticare -ge 1) {
 
             $FortiGuardservicesDescriptions = @{
-                "forticare"                   = "FortiCare Support Services"
-                "forticloud"                  = "FortiCloud Management"
-                "security_rating"             = "Security Fabric Rating and Compliance Service"
-                "antivirus"                   = "Antivirus Service"
-                "mobile_malware"              = "Mobile Malware Service"
-                "ai_malware_detection"        = "AI-based Inline Malware Prevention"
-                "ips"                         = "Intrusion Prevention System (IPS)"
-                "industrial_db"               = "OT Industrial Signatures Database"
-                "appctrl"                     = "Application Control"
-                "internet_service_db"         = "Internet Service (SaaS) Database"
-                "device_os_id"                = "Device/OS Detection"
-                "botnet_ip"                   = "Botnet IP Reputation Service"
-                "botnet_domain"               = "Botnet Domain Reputation Service"
-                "psirt_security_rating"       = "Attack Surface Security Rating"
-                "outbreak_security_rating"    = "Outbreak Security Rating Service"
-                "icdb"                        = "OT Industrial Signatures Database"
-                "inline_casb"                 = "Inline SaaS Application Security (CASB)"
-                "local_in_virtual_patching"   = "OT Virtual Patching"
-                "malicious_urls"              = "Malicious URL Database"
-                "blacklisted_certificates"    = "Blacklisted Certificates Service"
-                "firmware_updates"            = "Firmware Updates"
-                "web_filtering"               = "Web Filtering Service"
-                "outbreak_prevention"         = "Outbreak Prevention"
-                "antispam"                    = "Antispam Service"
-                "iot_detection"               = "IoT Detection Service"
-                "ot_detection"                = "OT Detection Service"
-                "forticloud_sandbox"          = "FortiCloud Sandbox"
-                "forticonverter"              = "FortiConverter Service"
-                "fortiguard"                  = "FortiGuard Services"
-                "data_leak_prevention"        = "Data Leak Prevention"
-                "sdwan_network_monitor"       = "SD-WAN Network Monitor"
-                "forticloud_logging"          = "FortiCloud Logging"
-                "fortianalyzer_cloud"         = "FortiAnalyzer Cloud"
+                "forticare" = "FortiCare Support Services"
+                "forticloud" = "FortiCloud Management"
+                "security_rating" = "Security Fabric Rating and Compliance Service"
+                "antivirus" = "Antivirus Service"
+                "mobile_malware" = "Mobile Malware Service"
+                "ai_malware_detection" = "AI-based Inline Malware Prevention"
+                "ips" = "Intrusion Prevention System (IPS)"
+                "industrial_db" = "OT Industrial Signatures Database"
+                "appctrl" = "Application Control"
+                "internet_service_db" = "Internet Service (SaaS) Database"
+                "device_os_id" = "Device/OS Detection"
+                "botnet_ip" = "Botnet IP Reputation Service"
+                "botnet_domain" = "Botnet Domain Reputation Service"
+                "psirt_security_rating" = "Attack Surface Security Rating"
+                "outbreak_security_rating" = "Outbreak Security Rating Service"
+                "icdb" = "OT Industrial Signatures Database"
+                "inline_casb" = "Inline SaaS Application Security (CASB)"
+                "local_in_virtual_patching" = "OT Virtual Patching"
+                "malicious_urls" = "Malicious URL Database"
+                "blacklisted_certificates" = "Blacklisted Certificates Service"
+                "firmware_updates" = "Firmware Updates"
+                "web_filtering" = "Web Filtering Service"
+                "outbreak_prevention" = "Outbreak Prevention"
+                "antispam" = "Antispam Service"
+                "iot_detection" = "IoT Detection Service"
+                "ot_detection" = "OT Detection Service"
+                "forticloud_sandbox" = "FortiCloud Sandbox"
+                "forticonverter" = "FortiConverter Service"
+                "fortiguard" = "FortiGuard Services"
+                "data_leak_prevention" = "Data Leak Prevention"
+                "sdwan_network_monitor" = "SD-WAN Network Monitor"
+                "forticloud_logging" = "FortiCloud Logging"
+                "fortianalyzer_cloud" = "FortiAnalyzer Cloud"
                 "fortianalyzer_cloud_premium" = "FortiAnalyzer Cloud Premium"
-                "fortimanager_cloud"          = "FortiManager Cloud"
-                "fortisandbox_cloud"          = "FortiSandbox Cloud"
+                "fortimanager_cloud" = "FortiManager Cloud"
+                "fortisandbox_cloud" = "FortiSandbox Cloud"
                 "fortiguard_ai_based_sandbox" = "FortiGuard AI-based Sandbox"
-                "sdwan_overlay_aas"           = "SD-WAN Overlay-as-a-Service"
-                "fortisase_private_access"    = "FortiSASE Private Access"
-                "fortisase_lan_extension"     = "FortiSASE LAN Extension"
-                "fortiems_cloud"              = "FortiEMS Cloud"
-                "fortimanager_cloud_alci"     = "FortiManager Cloud ALCI"
-                "fortisandbox_cloud_alci"     = "FortiSandbox Cloud ALCI"
-                "vdom"                        = "Virtual Domains (platform capability)"
-                "sms"                         = "SMS Service"
+                "sdwan_overlay_aas" = "SD-WAN Overlay-as-a-Service"
+                "fortisase_private_access" = "FortiSASE Private Access"
+                "fortisase_lan_extension" = "FortiSASE LAN Extension"
+                "fortiems_cloud" = "FortiEMS Cloud"
+                "fortimanager_cloud_alci" = "FortiManager Cloud ALCI"
+                "fortisandbox_cloud_alci" = "FortiSandbox Cloud ALCI"
+                "vdom" = "Virtual Domains (platform capability)"
+                "sms" = "SMS Service"
             }
             $licenseSummary = @()
 
             $typeDescriptions = @{
-                downloaded_fds_object   = 'Update Feed'
+                downloaded_fds_object = 'Update Feed'
                 live_fortiguard_service = 'Real-time Services'
-                live_cloud_service      = 'Cloud Services'
-                functionality_enabling  = 'Feature'
+                live_cloud_service = 'Cloud Services'
+                functionality_enabling = 'Feature'
             }
 
             $excludeServices = @(
@@ -123,13 +123,13 @@ function Get-AbrFgtForticare {
                 $typeDescription = $typeDescriptions[$type]
 
                 $licenseSummaryUnordered += [PSCustomObject]@{
-                    name            = $property.Name
-                    description     = $description
-                    status          = $status
-                    expiration      = $expires
-                    type            = $type
+                    name = $property.Name
+                    description = $description
+                    status = $status
+                    expiration = $expires
+                    type = $type
                     typeDescription = $typeDescription
-                    entitlement     = $entitlement
+                    entitlement = $entitlement
                 }
             }
 
@@ -149,16 +149,16 @@ function Get-AbrFgtForticare {
                 $Serial = $DefaultFGTConnection.serial
 
                 $OutObj = [pscustomobject]@{
-                    "Model"   = $Model
-                    "Serial"  = $Serial
-                    "Status"  = $Forticare.status
+                    "Model" = $Model
+                    "Serial" = $Serial
+                    "Status" = $Forticare.status
                     "Account" = $Forticare.account
                     "Company" = $Forticare.company
                 }
 
                 $TableParams = @{
-                    Name         = "FortiCare"
-                    List         = $true
+                    Name = "FortiCare"
+                    List = $true
                     ColumnWidths = 50, 50
                 }
 
@@ -180,16 +180,16 @@ function Get-AbrFgtForticare {
                         $licenseStatus = 'Unlicensed'
                     }
                     $OutObj += [pscustomobject]@{
-                        "Name"       = $license.description
-                        "Type"       = $license.typeDescription
-                        "Status"     = $licenseStatus
+                        "Name" = $license.description
+                        "Type" = $license.typeDescription
+                        "Status" = $licenseStatus
                         "Expiration" = $license.expiration
                     }
                 }
 
                 $TableParams = @{
-                    Name         = "FortiGuard Services"
-                    List         = $false
+                    Name = "FortiGuard Services"
+                    List = $false
                     ColumnWidths = 50, 20, 15, 15
                 }
 
@@ -199,27 +199,26 @@ function Get-AbrFgtForticare {
 
                 $OutObj | Table @TableParams
 
-
                 Paragraph "The following section details support settings configured on FortiGate."
                 BlankLine
                 $ExpiresHW = $Forticare.support.hardware.expires
                 $SupportHW = [pscustomobject]@{
-                    "Type"            = "Hardware"
-                    "Level"           = $Forticare.support.hardware.support_level
-                    "Status"          = $Forticare.support.hardware.status
+                    "Type" = "Hardware"
+                    "Level" = $Forticare.support.hardware.support_level
+                    "Status" = $Forticare.support.hardware.status
                     "Expiration Date" = (Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds($ExpiresHW)) | Get-Date -Format dd/MM/yyyy
                 }
                 $ExpiresEn = $Forticare.support.enhanced.expires
                 $SupportEn = [pscustomobject]@{
-                    "Type"            = "Enhanced"
-                    "Level"           = $Forticare.support.enhanced.support_level
-                    "Status"          = $Forticare.support.enhanced.status
+                    "Type" = "Enhanced"
+                    "Level" = $Forticare.support.enhanced.support_level
+                    "Status" = $Forticare.support.enhanced.status
                     "Expiration Date" = (Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds($ExpiresEn)) | Get-Date -Format dd/MM/yyyy
                 }
 
                 $TableParams = @{
-                    Name         = "Support"
-                    List         = $false
+                    Name = "Support"
+                    List = $false
                     ColumnWidths = 25, 25, 25, 25
                 }
 
@@ -258,8 +257,8 @@ function Get-AbrFgtForticare {
                 #Same (or greater) version, No Update Available
                 if ($CurrentVersion -ge $FullUpdateVersion) {
                     $tab_upgradePath = [pscustomobject]@{
-                        "Installed"    = $($FortiOS.version)
-                        "Update"       = "No Update Available"
+                        "Installed" = $($FortiOS.version)
+                        "Update" = "No Update Available"
                         "Upgrade Path" = "N/A"
                     }
                 } else {
@@ -298,8 +297,8 @@ function Get-AbrFgtForticare {
                         $upgradePath = $upgradePath + " -> v$($major).$($minor).$($patch)"
                     }Until($major -eq $FullUpdateVersion.Major -and $minor -eq $FullUpdateVersion.Minor -and $patch -eq $FullUpdateVersion.Build)
                     $tab_upgradePath = [pscustomobject]@{
-                        "Installed"    = $($FortiOS.version)
-                        "Update"       = $($FullUpdate.version)
+                        "Installed" = $($FortiOS.version)
+                        "Update" = $($FullUpdate.version)
                         "Upgrade Path" = $upgradePath
                     }
                     #}
@@ -308,15 +307,15 @@ function Get-AbrFgtForticare {
 
                 #No $firmware.available info (no FortiCare/FortiGuard ?)
                 $tab_upgradePath = [pscustomobject]@{
-                    "Installed"    = $($FortiOS.version)
-                    "Update"       = "N/A"
+                    "Installed" = $($FortiOS.version)
+                    "Update" = "N/A"
                     "Upgrade Path" = "N/A"
                 }
             }
 
             $TableParams = @{
-                Name         = "Firmware"
-                List         = $true
+                Name = "Firmware"
+                List = $true
                 ColumnWidths = 50, 50
             }
 
