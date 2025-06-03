@@ -263,25 +263,18 @@ function Get-AbrFgtSystem {
                             foreach ($interface in $group.Group) {
 
                                 # Standardise interface properties
-                                $interface.name = $interface.name + $($interface.alias ? "`n($($interface.alias))" : "")
-                                $interface.role = $interface.role -eq 'undefined' ? "" : ($interface.role).ToUpper()
-                                $interface.member = $interface.member.count -gt 0 ? $interface.member.'interface-name' -join ', ' : ""
-                                $interface.mtu = $interface.'mtu-override' -eq 'disable' ? '' : $interface.mtu
-                                $interface.mode = $interface.mode -eq 'static' ? '' : $interface.mode
-                                $interface.ip = $interface.ip -eq '0.0.0.0 0.0.0.0' ? '' : $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $interface.ip } else { $interface.ip })
-                                $interface.'secondaryip' = if ($interface.'secondary-ip' -eq 'enable' -and $null -ne $interface.'secondaryip') {
-                                    ($interface.'secondaryip' | ForEach-Object {
-                                        $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $_.ip } else { $_.ip })
-                                    }) -join ', '
-                                } else {
-                                    ""
-                                }
-                                $interface.mode = $interface.mode -eq 'static' ? '' : $interface.mode
-                                $interface.vdom = $interface.vdom -eq 'root' ? '' : $interface.vdom
-                                $interface.vlanid = ($interface.vlanid -gt 0 ) ? $interface.vlanid : ""
-                                $interface.speed = $interface.speed -eq 'auto' ? '' : $interface.speed
-                                $interface.'remote-ip' = $interface.'remote-ip' -eq '0.0.0.0 0.0.0.0' ? '' : $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $interface.'remote-ip' } else { $interface.'remote-ip' })
-
+                                if ($interface.alias) { $interface.name = $interface.name + "`n($($interface.alias))" }
+                                $interface.role = if ($interface.role -eq 'undefined') { "" } else { ($interface.role).ToUpper() }
+                                $interface.member = if ($interface.member.count -gt 0) { $interface.member.'interface-name' -join ', ' } else { "" }
+                                $interface.mtu = if ($interface.'mtu-override' -eq 'disable') { '' } else { $interface.mtu }
+                                $interface.mode = if ($interface.mode -eq 'static') { '' } else { $interface.mode }
+                                $interface.ip = if ($interface.ip -eq '0.0.0.0 0.0.0.0') { '' } else { if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $interface.ip } else { $interface.ip } }
+                                $interface.'secondaryip' = if ($interface.'secondary-ip' -eq 'enable' -and $null -ne $interface.'secondaryip') { ($interface.'secondaryip' | ForEach-Object { if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $_.ip } else { $_.ip } }) -join ', ' } else { "" }
+                                $interface.mode = if ($interface.mode -eq 'static') { '' } else { $interface.mode }
+                                $interface.vdom = if ($interface.vdom -eq 'root') { '' } else { $interface.vdom }
+                                $interface.vlanid = if ($interface.vlanid -gt 0) { $interface.vlanid } else { "" }
+                                $interface.speed = if ($interface.speed -eq 'auto') { '' } else { $interface.speed }
+                                $interface.'remote-ip' = if ($interface.'remote-ip' -eq '0.0.0.0 0.0.0.0') { '' } else { if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $interface.'remote-ip' } else { $interface.'remote-ip' } }
 
                                 switch ($interfaceType) {
                                     "Aggregate" {
