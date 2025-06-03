@@ -235,6 +235,9 @@ function Get-AbrFgtRoute {
                             if ($BGPSchema.PSObject.Properties.Name -contains $name) {
                                 #found the default value
                                 $default = $BGPSchema.$name.default
+                                if ($null -eq $default) {
+                                    $default = ""
+                                }
                             }
                             $OutObj += [pscustomobject]@{
                                 "Name"    = $name
