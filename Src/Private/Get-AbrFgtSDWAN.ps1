@@ -40,15 +40,15 @@ function Get-AbrFgtSDWAN {
                         Paragraph "The following section provides a summary of SD-WAN settings."
                         BlankLine
                         $OutObj = [pscustomobject]@{
-                            "Zone"         = @($sdwan.zone).count
-                            "Member"       = @($sdwan.members).count
+                            "Zone" = @($sdwan.zone).count
+                            "Member" = @($sdwan.members).count
                             "Health Check" = @($sdwan.'health-check').count
-                            "Rules"        = @($sdwan.'service').count
+                            "Rules" = @($sdwan.'service').count
                         }
 
                         $TableParams = @{
-                            Name         = "Summary"
-                            List         = $true
+                            Name = "Summary"
+                            List = $true
                             ColumnWidths = 50, 50
                         }
 
@@ -63,15 +63,15 @@ function Get-AbrFgtSDWAN {
                         Paragraph "The following section provides configuration of SD-WAN settings."
                         BlankLine
                         $OutObj = [pscustomobject]@{
-                            "Status"             = $sdwan.'status'
-                            "Load Balance Mode"  = $sdwan.'load-balance-mode'
+                            "Status" = $sdwan.'status'
+                            "Load Balance Mode" = $sdwan.'load-balance-mode'
                             "Neighbor Hold Down" = $sdwan.'neighbor-hold-down'
-                            "Fail Detect"        = $sdwan.'fail-detect'
+                            "Fail Detect" = $sdwan.'fail-detect'
                         }
 
                         $TableParams = @{
-                            Name         = "Configuration"
-                            List         = $true
+                            Name = "Configuration"
+                            List = $true
                             ColumnWidths = 50, 50
                         }
 
@@ -87,14 +87,14 @@ function Get-AbrFgtSDWAN {
 
                         foreach ($zone in $sdwan.zone) {
                             $OutObj += [pscustomobject]@{
-                                "Name"        = $zone.name
+                                "Name" = $zone.name
                                 "Service SLA" = $zone.'service-sla-tie-break'
                             }
                         }
 
                         $TableParams = @{
-                            Name         = "SD-WAN Zone"
-                            List         = $false
+                            Name = "SD-WAN Zone"
+                            List = $false
                             ColumnWidths = 50, 50
                         }
 
@@ -111,18 +111,18 @@ function Get-AbrFgtSDWAN {
 
                             foreach ($member in $sdwan.members) {
                                 $OutObj += [pscustomobject]@{
-                                    "Num"       = $member.'seq-num'
+                                    "Num" = $member.'seq-num'
                                     "Interface" = $member.interface
-                                    "Zone"      = $member.zone
-                                    "Gateway"   = $member.gateway
-                                    "Status"    = $member.status
-                                    "Comment"   = $member.comment
+                                    "Zone" = $member.zone
+                                    "Gateway" = $member.gateway
+                                    "Status" = $member.status
+                                    "Comment" = $member.comment
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "SD-WAN Members"
-                                List         = $false
+                                Name = "SD-WAN Members"
+                                List = $false
                                 ColumnWidths = 10, 15, 20, 20, 10, 25
                             }
 
@@ -142,18 +142,18 @@ function Get-AbrFgtSDWAN {
 
 
                                 $OutObj += [pscustomobject]@{
-                                    "Name"                = $hc.name
-                                    "Detect Mode"         = $hc.'detect-mode'
-                                    "Protocol"            = $hc.protocol
-                                    "Server"              = $hc.server -replace ('"', '')
+                                    "Name" = $hc.name
+                                    "Detect Mode" = $hc.'detect-mode'
+                                    "Protocol" = $hc.protocol
+                                    "Server" = $hc.server -replace ('"', '')
                                     "Update Static Route" = $hc.'update-static-route'
-                                    "Members"             = $hc.members.'seq-num'
+                                    "Members" = $hc.members.'seq-num'
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "SD-WAN Health Check"
-                                List         = $false
+                                Name = "SD-WAN Health Check"
+                                List = $false
                                 ColumnWidths = 14, 20, 20, 20, 15, 11
                             }
 
@@ -172,19 +172,19 @@ function Get-AbrFgtSDWAN {
                             foreach ($service in $sdwan.service) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "Name"             = $service.name
-                                    "Source"           = $service.src.name
-                                    "Destination"      = $service.dst.name
-                                    "Mode"             = $service.mode
-                                    "Health Check"     = $service.'health-check'.name
+                                    "Name" = $service.name
+                                    "Source" = $service.src.name
+                                    "Destination" = $service.dst.name
+                                    "Mode" = $service.mode
+                                    "Health Check" = $service.'health-check'.name
                                     "Priority Members" = $service.'priority-members'.'seq-num'
-                                    "Status"           = $service.status
+                                    "Status" = $service.status
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "SD-WAN Rule"
-                                List         = $false
+                                Name = "SD-WAN Rule"
+                                List = $false
                                 ColumnWidths = 14, 20, 15, 15, 15, 11, 10
                             }
 

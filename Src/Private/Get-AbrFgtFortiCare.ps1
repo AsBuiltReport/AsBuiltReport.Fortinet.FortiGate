@@ -115,8 +115,7 @@ function Get-AbrFgtForticare {
                 $description = $FortiGuardservicesDescriptions[$property.Name]
                 if ($null -ne $feature.expires) {
                     $expires = (Get-Date '01/01/1970').AddSeconds($feature.expires) | Get-Date -Format "dd/MM/yyyy"
-                }
-                else {
+                } else {
                     $expires = $null
                 }
                 $type = $feature.type
@@ -177,8 +176,7 @@ function Get-AbrFgtForticare {
                 foreach ($license in $licenseSummary) {
                     if ($license.status -eq 'licensed') {
                         $licenseStatus = 'Licensed'
-                    }
-                    else {
+                    } else {
                         $licenseStatus = 'Unlicensed'
                     }
                     $OutObj += [pscustomobject]@{
@@ -240,8 +238,7 @@ function Get-AbrFgtForticare {
         $firmware = Get-FGTMonitorSystemFirmware
         try {
             $firmware_upgrade_paths = Get-FGTMonitorSystemFirmware -upgrade_paths
-        }
-        catch {
+        } catch {
             $firmware_upgrade_paths = $null
         }
 
@@ -265,8 +262,7 @@ function Get-AbrFgtForticare {
                         "Update"       = "No Update Available"
                         "Upgrade Path" = "N/A"
                     }
-                }
-                else {
+                } else {
                     <# Search only last firmware on the same Branch
                 $BranchUpdate = $firmware.available | Where-Object { $_.major -eq $CurrentVersion.Major -and $_.minor -eq $CurrentVersion.Minor } | Select-Object version -First 1
                 if ($CurrentVersion -lt $BranchUpdateVersion) {
@@ -308,8 +304,7 @@ function Get-AbrFgtForticare {
                     }
                     #}
                 }
-            }
-            else {
+            } else {
 
                 #No $firmware.available info (no FortiCare/FortiGuard ?)
                 $tab_upgradePath = [pscustomobject]@{

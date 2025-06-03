@@ -44,7 +44,7 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
 
             #Get firewall hostname(s) and serials (HA or standalone configurations supported)
             $haConfig = Get-FGTSystemHA
-            if( $haConfig.mode -ne 'standalone' ) {
+            if ( $haConfig.mode -ne 'standalone' ) {
                 $haPeers = Get-FGTMonitorSystemHAPeer
                 #Get hostnames from HA config
                 $hostnames = ($haPeers | ForEach-Object { $_.hostname }) -join ', '
@@ -89,8 +89,7 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
                     Get-AbrFgtVPNSSL
                 }
             }
-        }
-        catch {
+        } catch {
             Write-PScriboMessage -IsWarning $_.Exception.Message
         }
 
