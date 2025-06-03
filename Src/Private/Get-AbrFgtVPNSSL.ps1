@@ -39,13 +39,13 @@ function Get-AbrFgtVPNSSL {
                     Paragraph "The following section provides a summary of VPN SSL settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "Portal"           = @($settings).count
+                        "Portal" = @($settings).count
                         "User (connected)" = @($users).Count
                     }
 
                     $TableParams = @{
-                        Name         = "Summary"
-                        List         = $true
+                        Name = "Summary"
+                        List = $true
                         ColumnWidths = 50, 50
                     }
 
@@ -62,26 +62,26 @@ function Get-AbrFgtVPNSSL {
                     $OutObj = @()
 
                     $OutObj += [pscustomobject]@{
-                        "Status"                = $settings.status
-                        "Port"                  = $settings.port
-                        "Source Interface"      = $settings.'source-interface'.name
-                        "Source Address"        = $settings.'source-address'.name
-                        "Default Portal"        = $settings.'default-portal'
-                        "Certificate Server"    = $settings.servercert
-                        "Algorithm"             = $settings.algorithm
-                        "Idle Timeout"          = $settings.'idle-timeout'
-                        "Auth Timeout"          = $settings.'auth-timeout'
+                        "Status" = $settings.status
+                        "Port" = $settings.port
+                        "Source Interface" = $settings.'source-interface'.name
+                        "Source Address" = $settings.'source-address'.name
+                        "Default Portal" = $settings.'default-portal'
+                        "Certificate Server" = $settings.servercert
+                        "Algorithm" = $settings.algorithm
+                        "Idle Timeout" = $settings.'idle-timeout'
+                        "Auth Timeout" = $settings.'auth-timeout'
                         "Force Two factor Auth" = $settings.'force-two-factor-auth'
-                        "Tunnel IP Pool"        = $settings.'tunnel-ip-pools'.name
-                        "DNS Suffix"            = $settings.'dns-suffix'
-                        "DNS Server1"           = $settings.'dns-server1'
-                        "DNS Server2"           = $settings.'dns-server2'
+                        "Tunnel IP Pool" = $settings.'tunnel-ip-pools'.name
+                        "DNS Suffix" = $settings.'dns-suffix'
+                        "DNS Server1" = $settings.'dns-server1'
+                        "DNS Server2" = $settings.'dns-server2'
                     }
 
 
                     $TableParams = @{
-                        Name         = "VPN SSL Settings"
-                        List         = $true
+                        Name = "VPN SSL Settings"
+                        List = $true
                         ColumnWidths = 30, 70
                     }
 
@@ -99,18 +99,18 @@ function Get-AbrFgtVPNSSL {
                             foreach ($ar in $settings.'authentication-rule') {
 
                                 $OutObj += [pscustomobject]@{
-                                    "id"     = $ar.id
-                                    "users"  = $ar.users
+                                    "id" = $ar.id
+                                    "users" = $ar.users
                                     "groups" = $ar.groups.name
                                     "portal" = $ar.portal
-                                    "realm"  = $ar.realm
-                                    "auth"   = $ar.auth
+                                    "realm" = $ar.realm
+                                    "auth" = $ar.auth
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "VPN SSL Settings: Authentication Rule"
-                                List         = $false
+                                Name = "VPN SSL Settings: Authentication Rule"
+                                List = $false
                                 ColumnWidths = 10, 20, 20, 20, 15, 15
                             }
 
@@ -133,16 +133,16 @@ function Get-AbrFgtVPNSSL {
                         foreach ($portal in $portals) {
 
                             $OutObj += [pscustomobject]@{
-                                "Name"        = $portal.name
+                                "Name" = $portal.name
                                 "Tunnel Mode" = $portal.'tunnel-mode'
-                                "Web Mode"    = $portal.'web-mode'
-                                "IP Pools"    = $portal.'ip-pools'.name
+                                "Web Mode" = $portal.'web-mode'
+                                "IP Pools" = $portal.'ip-pools'.name
                             }
                         }
 
                         $TableParams = @{
-                            Name         = "VPN SSL Portal Summary"
-                            List         = $false
+                            Name = "VPN SSL Portal Summary"
+                            List = $false
                             ColumnWidths = 30, 20, 20, 30
                         }
 
@@ -161,38 +161,38 @@ function Get-AbrFgtVPNSSL {
                                 $OutObj = @()
 
                                 $OutObj += [pscustomobject]@{
-                                    "Name"                            = $portal.name
-                                    "Tunnel Mode"                     = $portal.'tunnel-mode'
-                                    "Auto Connect"                    = $portal.'auto-connect'
-                                    "Keep Alive"                      = $portal.'keep-alive'
-                                    "Save Password "                  = $portal.'save-password'
-                                    "IP Pools"                        = $portal.'ip-pools'.name
-                                    "Split Tunneling"                 = $portal.'split-tunneling'
+                                    "Name" = $portal.name
+                                    "Tunnel Mode" = $portal.'tunnel-mode'
+                                    "Auto Connect" = $portal.'auto-connect'
+                                    "Keep Alive" = $portal.'keep-alive'
+                                    "Save Password " = $portal.'save-password'
+                                    "IP Pools" = $portal.'ip-pools'.name
+                                    "Split Tunneling" = $portal.'split-tunneling'
                                     "Split Tunneling Routing Address" = $portal.'split-tunneling-routing-address'.name
-                                    "DNS Server1"                     = $portal.'dns-server1'
-                                    "DNS Server2"                     = $portal.'dns-server2'
-                                    "DNS Suffix"                      = $portal.'dns-suffix'
-                                    "Web Mode"                        = $portal.'web-mode'
-                                    "Display Bookmark"                = $portal.'display-bookmark'
-                                    "User Bookmark"                   = $portal.'user-bookmark'
-                                    "User Group Bookmark"             = $portal.'user-group-bookmark'
-                                    "Allow User Access"               = $portal.'allow-user-access'
-                                    "Heading"                         = $portal.heading
-                                    "Theme"                           = $portal.theme
-                                    "Custom Language"                 = $portal.'custom-lang'
-                                    "Use SDWAN"                       = $portal.'use-sdwan'
-                                    "Clipboard"                       = $portal.clipboard
-                                    "Limit User Logins"               = $portal.'limit-user-logins'
-                                    "Host Check"                      = $portal.'host-check'
-                                    "MAC Address Check"               = $portal.'mac-addr-check'
-                                    "OS Check"                        = $portal.'os-check'
+                                    "DNS Server1" = $portal.'dns-server1'
+                                    "DNS Server2" = $portal.'dns-server2'
+                                    "DNS Suffix" = $portal.'dns-suffix'
+                                    "Web Mode" = $portal.'web-mode'
+                                    "Display Bookmark" = $portal.'display-bookmark'
+                                    "User Bookmark" = $portal.'user-bookmark'
+                                    "User Group Bookmark" = $portal.'user-group-bookmark'
+                                    "Allow User Access" = $portal.'allow-user-access'
+                                    "Heading" = $portal.heading
+                                    "Theme" = $portal.theme
+                                    "Custom Language" = $portal.'custom-lang'
+                                    "Use SDWAN" = $portal.'use-sdwan'
+                                    "Clipboard" = $portal.clipboard
+                                    "Limit User Logins" = $portal.'limit-user-logins'
+                                    "Host Check" = $portal.'host-check'
+                                    "MAC Address Check" = $portal.'mac-addr-check'
+                                    "OS Check" = $portal.'os-check'
                                     #>
                                 }
 
 
                                 $TableParams = @{
-                                    Name         = "VPN SSL Portal: $($portal.name)"
-                                    List         = $true
+                                    Name = "VPN SSL Portal: $($portal.name)"
+                                    List = $true
                                     ColumnWidths = 50, 50
                                 }
 
@@ -215,16 +215,16 @@ function Get-AbrFgtVPNSSL {
                     foreach ($user in $users) {
 
                         $OutObj += [pscustomobject]@{
-                            "User Name"       = $user.user_name
-                            "Remote Host"     = $user.remote_host
-                            "Client IP "      = $user.subsessions.aip
+                            "User Name" = $user.user_name
+                            "Remote Host" = $user.remote_host
+                            "Client IP " = $user.subsessions.aip
                             "Last Login Time" = $user.last_login_time
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "VPN SSL Users Connected"
-                        List         = $false
+                        Name = "VPN SSL Users Connected"
+                        List = $false
                         ColumnWidths = 30, 20, 20, 30
                     }
 

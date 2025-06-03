@@ -38,14 +38,14 @@ function Get-AbrFgtRoute {
                     Paragraph "The following section provides a summary of route settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "Monitor Route"      = @($MonitorRouterIPv4).count
-                        "Static Route"       = @($Statics).count
+                        "Monitor Route" = @($MonitorRouterIPv4).count
+                        "Static Route" = @($Statics).count
                         "Policy Based Route" = @($PolicyBasedRouting).count
                     }
 
                     $TableParams = @{
-                        Name         = "Summary"
-                        List         = $true
+                        Name = "Summary"
+                        List = $true
                         ColumnWidths = 50, 50
                     }
 
@@ -66,23 +66,22 @@ function Get-AbrFgtRoute {
                         #when there is blackhole, interface is set to Null
                         if ("Null" -eq $route.interface) {
                             $interface = "Blackhole"
-                        }
-                        else {
+                        } else {
                             $interface = $route.interface
                         }
 
                         $OutObj += [pscustomobject]@{
-                            "Type"                     = $route.type
-                            "IP/Mask"                  = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $route.ip_mask } else { $route.ip_mask })
-                            "Gateway"                  = $route.gateway
-                            "Interface"                = $interface
+                            "Type" = $route.type
+                            "IP/Mask" = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $route.ip_mask } else { $route.ip_mask })
+                            "Gateway" = $route.gateway
+                            "Interface" = $interface
                             "Distance/Metric/Priority" = "$($route.distance) / $($route.metric) / $($route.priority)"
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "Route Monitor"
-                        List         = $false
+                        Name = "Route Monitor"
+                        List = $false
                         ColumnWidths = 15, 25, 20, 20, 20
                     }
 
@@ -123,17 +122,17 @@ function Get-AbrFgtRoute {
                         }
 
                         $OutObj += [pscustomobject]@{
-                            "Status"                   = $static.status
-                            "Destination"              = $dst
-                            "Gateway"                  = $static.gateway
-                            "Interface"                = $interface
+                            "Status" = $static.status
+                            "Destination" = $dst
+                            "Gateway" = $static.gateway
+                            "Interface" = $interface
                             "Distance/Weight/Priority" = "$($static.distance) / $($static.weight) / $($static.priority)"
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "Static Route"
-                        List         = $false
+                        Name = "Static Route"
+                        List = $false
                         ColumnWidths = 15, 25, 20, 20, 20
                     }
 
@@ -153,32 +152,30 @@ function Get-AbrFgtRoute {
 
                         if ($pbr.src) {
                             $src = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $pbr.src.subnet } else { $pbr.src.subnet })
-                        }
-                        else {
+                        } else {
                             $src = $pbr.srcaddr.name
                         }
                         if ($pbr.dst) {
                             $dst = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $pbr.dst.subnet } else { $pbr.dst.subnet })
-                        }
-                        else {
+                        } else {
                             $dst = $pbr.dstaddr.name
                         }
 
                         $OutObj += [pscustomobject]@{
-                            "Status"      = $pbr.status
-                            "Protocol"    = $pbr.protocol
-                            "From"        = $pbr.'input-device'.name
-                            "To"          = $pbr.'ouput-device'
-                            "Source"      = $src
+                            "Status" = $pbr.status
+                            "Protocol" = $pbr.protocol
+                            "From" = $pbr.'input-device'.name
+                            "To" = $pbr.'ouput-device'
+                            "Source" = $src
                             "Destination" = $dst
-                            "Gateway"     = $pbr.gateway
-                            "Action"      = $pbr.action
+                            "Gateway" = $pbr.gateway
+                            "Action" = $pbr.action
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "Policy Based Route"
-                        List         = $false
+                        Name = "Policy Based Route"
+                        List = $false
                         ColumnWidths = 10, 12, 13, 13, 13, 13, 13, 13
                     }
 

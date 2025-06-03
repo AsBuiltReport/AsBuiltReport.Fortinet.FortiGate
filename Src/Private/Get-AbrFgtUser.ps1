@@ -43,16 +43,16 @@ function Get-AbrFgtUser {
                     Paragraph "The following section provides a summary of user settings."
                     BlankLine
                     $OutObj = [pscustomobject]@{
-                        "User"   = @($Users).count
-                        "Group"  = @($Groups).count
-                        "LDAP"   = @($LDAPS).count
+                        "User" = @($Users).count
+                        "Group" = @($Groups).count
+                        "LDAP" = @($LDAPS).count
                         "RADIUS" = @($RADIUS).count
-                        "SAML"   = @($SAML).count
+                        "SAML" = @($SAML).count
                     }
 
                     $TableParams = @{
-                        Name         = "Summary"
-                        List         = $true
+                        Name = "Summary"
+                        List = $true
                         ColumnWidths = 50, 50
                     }
 
@@ -71,16 +71,16 @@ function Get-AbrFgtUser {
                     foreach ($user in $Users) {
 
                         $OutObj += [pscustomobject]@{
-                            "Name"          = $user.name
-                            "Type"          = $user.type
-                            "Status"        = $user.status
+                            "Name" = $user.name
+                            "Type" = $user.type
+                            "Status" = $user.status
                             "Password Time" = $user.'passwd-time'
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "User"
-                        List         = $false
+                        Name = "User"
+                        List = $false
                         ColumnWidths = 25, 25, 25, 25
                     }
 
@@ -99,16 +99,16 @@ function Get-AbrFgtUser {
                     foreach ($grp in $Groups) {
 
                         $OutObj += [pscustomobject]@{
-                            "Name"   = $grp.name
-                            "Type"   = $grp.'group-type'
+                            "Name" = $grp.name
+                            "Type" = $grp.'group-type'
                             "Member" = $grp.member.name -join ", "
-                            "Match"  = $grp.match.'group-name' -join ", "
+                            "Match" = $grp.match.'group-name' -join ", "
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "User Group"
-                        List         = $false
+                        Name = "User Group"
+                        List = $false
                         ColumnWidths = 25, 25, 25, 25
                     }
 
@@ -134,19 +134,19 @@ function Get-AbrFgtUser {
                         }
 
                         $OutObj += [pscustomobject]@{
-                            "Name"      = $ldap.name
+                            "Name" = $ldap.name
                             "Server(s)" = $server
-                            "Port"      = $ldap.port
-                            "CN"        = $ldap.cnid
-                            "DN"        = $ldap.dn
-                            "Type"      = $ldap.type
-                            "User"      = $ldap.username
+                            "Port" = $ldap.port
+                            "CN" = $ldap.cnid
+                            "DN" = $ldap.dn
+                            "Type" = $ldap.type
+                            "User" = $ldap.username
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "LDAP"
-                        List         = $false
+                        Name = "LDAP"
+                        List = $false
                         ColumnWidths = 14, 26, 12, 12, 12, 12, 12
                     }
 
@@ -161,26 +161,26 @@ function Get-AbrFgtUser {
                             Section -Style NOTOCHeading4 -ExcludeFromTOC "LDAP: $($ldap.name)" {
                                 BlankLine
                                 $OutObj = [pscustomobject]@{
-                                    "Name"                = $ldap.name
-                                    "Server"              = $ldap.server
-                                    "Secondary Server"    = $ldap.'secondary-server'
-                                    "Tertiary Server"     = $ldap.'tertiary-server'
-                                    "Port"                = $ldap.port
-                                    "Secure"              = $ldap.secure
-                                    "Source IP"           = $ldap.'source-ip'
-                                    "Interface"           = $ldap.interface
-                                    "Cnid"                = $ldap.cnid
-                                    "DN"                  = $ldap.dn
-                                    "Type"                = $ldap.type
-                                    "Username"            = $ldap.username
-                                    "Group Member Check"  = $ldap.'group-member-check'
-                                    "Group Search Base"   = $ldap.'group-search-base'
+                                    "Name" = $ldap.name
+                                    "Server" = $ldap.server
+                                    "Secondary Server" = $ldap.'secondary-server'
+                                    "Tertiary Server" = $ldap.'tertiary-server'
+                                    "Port" = $ldap.port
+                                    "Secure" = $ldap.secure
+                                    "Source IP" = $ldap.'source-ip'
+                                    "Interface" = $ldap.interface
+                                    "Cnid" = $ldap.cnid
+                                    "DN" = $ldap.dn
+                                    "Type" = $ldap.type
+                                    "Username" = $ldap.username
+                                    "Group Member Check" = $ldap.'group-member-check'
+                                    "Group Search Base" = $ldap.'group-search-base'
                                     "Group Object Filter" = $ldap.'group-object-filter'
                                 }
 
                                 $TableParams = @{
-                                    Name         = "LDAP $($ldap.name)"
-                                    List         = $true
+                                    Name = "LDAP $($ldap.name)"
+                                    List = $true
                                     ColumnWidths = 25, 75
                                 }
 
@@ -208,16 +208,16 @@ function Get-AbrFgtUser {
                             $server += "/" + $rad.'tertiary-server'
                         }
                         $OutObj += [pscustomobject]@{
-                            "Name"      = $rad.name
+                            "Name" = $rad.name
                             "Server(s)" = $server
                             "Auth Type" = $rad.'auth-type'
-                            "NAS-IP"    = $rad.'nas-ip'
+                            "NAS-IP" = $rad.'nas-ip'
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "RADIUS"
-                        List         = $false
+                        Name = "RADIUS"
+                        List = $false
                         ColumnWidths = 20, 40, 20, 20
                     }
 
@@ -233,37 +233,37 @@ function Get-AbrFgtUser {
                                 BlankLine
                                 $OutObj = [pscustomobject]@{
 
-                                    "Name"                    = $rad.name
-                                    "Server"                  = $rad.server
-                                    "Secondary Server"        = $rad.'secondary-server'
-                                    "Tertiary Server"         = $rad.'tertiary-server'
-                                    "Port"                    = $rad.'radius-port'
-                                    "Timeout"                 = $rad.timeout
-                                    "Source IP"               = $rad.'source-ip'
-                                    "Interface"               = $rad.interface
+                                    "Name" = $rad.name
+                                    "Server" = $rad.server
+                                    "Secondary Server" = $rad.'secondary-server'
+                                    "Tertiary Server" = $rad.'tertiary-server'
+                                    "Port" = $rad.'radius-port'
+                                    "Timeout" = $rad.timeout
+                                    "Source IP" = $rad.'source-ip'
+                                    "Interface" = $rad.interface
                                     "Interface Select Method" = $rad.'interface-select-method'
-                                    "Use Management VDOM"     = $rad.'use-management-vdom'
-                                    "All Usergroup"           = $rad.'all-usergroup'
-                                    "NAS IP"                  = $rad.'nas-ip'
-                                    "NAS ID Type"             = $rad.'nas-id-type'
-                                    "NAS ID"                  = $rad.'nas-id'
-                                    "Acct Interim Interval"   = $rad.'acct-interim-interval'
-                                    "RADIUS CoA"              = $rad.'radius-coa'
-                                    "Auth Type"               = $rad.'auth-type'
+                                    "Use Management VDOM" = $rad.'use-management-vdom'
+                                    "All Usergroup" = $rad.'all-usergroup'
+                                    "NAS IP" = $rad.'nas-ip'
+                                    "NAS ID Type" = $rad.'nas-id-type'
+                                    "NAS ID" = $rad.'nas-id'
+                                    "Acct Interim Interval" = $rad.'acct-interim-interval'
+                                    "RADIUS CoA" = $rad.'radius-coa'
+                                    "Auth Type" = $rad.'auth-type'
                                     "Username Case Sensitive" = $rad.'username-case-sensitive'
-                                    "Accounting Server"       = $rad.'accounting-server'
-                                    "RSSO"                    = $rad.rsso
-                                    "Class"                   = $rad.class
-                                    "Password Renewal"        = $rad.'password-renewal'
-                                    "MAC Username Delimiter"  = $rad.'mac-username-delimiter'
-                                    "MAC Password Delimiter"  = $rad.'mac-password-delimiter"'
-                                    "MAC Case"                = $rad.'mac-case'
-                                    "Delimiter"               = $rad.delimiter
+                                    "Accounting Server" = $rad.'accounting-server'
+                                    "RSSO" = $rad.rsso
+                                    "Class" = $rad.class
+                                    "Password Renewal" = $rad.'password-renewal'
+                                    "MAC Username Delimiter" = $rad.'mac-username-delimiter'
+                                    "MAC Password Delimiter" = $rad.'mac-password-delimiter"'
+                                    "MAC Case" = $rad.'mac-case'
+                                    "Delimiter" = $rad.delimiter
                                 }
 
                                 $TableParams = @{
-                                    Name         = "RADIUS $($rad.name)"
-                                    List         = $true
+                                    Name = "RADIUS $($rad.name)"
+                                    List = $true
                                     ColumnWidths = 25, 75
                                 }
 
@@ -285,17 +285,17 @@ function Get-AbrFgtUser {
                     foreach ($sml in $SAML) {
 
                         $OutObj += [pscustomobject]@{
-                            "Name"           = $sml.name
-                            "Certificate"    = $sml.cert
-                            "IdP Entity-ID"  = $sml.'idp-entity-id'
+                            "Name" = $sml.name
+                            "Certificate" = $sml.cert
+                            "IdP Entity-ID" = $sml.'idp-entity-id'
                             "IdP Certificat" = $sml.'idp-cert'
                         }
 
                     }
 
                     $TableParams = @{
-                        Name         = "SAML"
-                        List         = $false
+                        Name = "SAML"
+                        List = $false
                         ColumnWidths = 20, 20, 40, 20
                     }
 
@@ -310,21 +310,21 @@ function Get-AbrFgtUser {
                             Section -Style NOTOCHeading4 -ExcludeFromTOC "SAML: $($sml.name)" {
                                 BlankLine
                                 $OutObj = [pscustomobject]@{
-                                    "Name"                   = $sml.name
-                                    "Certificate"            = $sml.cert
-                                    "Entity Id"              = $sml.'entity-id'
-                                    "Single Sign On URL"     = $sml.'single-sign-on-url'
-                                    "Single Logout URL"      = $sml.'single-logout-url'
+                                    "Name" = $sml.name
+                                    "Certificate" = $sml.cert
+                                    "Entity Id" = $sml.'entity-id'
+                                    "Single Sign On URL" = $sml.'single-sign-on-url'
+                                    "Single Logout URL" = $sml.'single-logout-url'
                                     "IdP Single Sign On URM" = $sml.'idp-single-sign-on-url'
-                                    "IdP Single Logout URL"  = $sml.'idp-single-logout-url'
-                                    "IdP Certificate"        = $sml.'idp-cert'
-                                    "User Name"              = $sml.'user-name'
-                                    "Group Name"             = $sml.'group-name'
+                                    "IdP Single Logout URL" = $sml.'idp-single-logout-url'
+                                    "IdP Certificate" = $sml.'idp-cert'
+                                    "User Name" = $sml.'user-name'
+                                    "Group Name" = $sml.'group-name'
                                 }
 
                                 $TableParams = @{
-                                    Name         = "SAML $($sml.name)"
-                                    List         = $true
+                                    Name = "SAML $($sml.name)"
+                                    List = $true
                                     ColumnWidths = 25, 75
                                 }
 
