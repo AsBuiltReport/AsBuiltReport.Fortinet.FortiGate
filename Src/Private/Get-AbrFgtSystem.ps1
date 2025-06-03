@@ -37,24 +37,23 @@ function Get-AbrFgtSystem {
 
                     if ($info.'daily-restart' -eq "enable") {
                         $reboot = "Everyday at $($info.'restart-time')"
-                    }
-                    else {
+                    } else {
                         $reboot = "disable"
                     }
 
                     $OutObj = [pscustomobject]@{
-                        "Nom"              = $info.'hostname'
-                        "Alias"            = $info.'alias'
+                        "Nom" = $info.'hostname'
+                        "Alias" = $info.'alias'
                         "Recurring Reboot" = $reboot
-                        "Port SSH"         = $info.'admin-ssh-port'
-                        "Port HTTP"        = $info.'admin-port'
-                        "Port HTTPS"       = $info.'admin-sport'
-                        "HTTPS Redirect"   = $info.'admin-https-redirect'
+                        "Port SSH" = $info.'admin-ssh-port'
+                        "Port HTTP" = $info.'admin-port'
+                        "Port HTTPS" = $info.'admin-sport'
+                        "HTTPS Redirect" = $info.'admin-https-redirect'
                     }
 
                     $TableParams = @{
-                        Name         = "Global"
-                        List         = $true
+                        Name = "Global"
+                        List = $true
                         ColumnWidths = 50, 50
                     }
 
@@ -73,16 +72,16 @@ function Get-AbrFgtSystem {
                     $OutObj = @()
 
                     $OutObj = [pscustomobject]@{
-                        "OP Mode"           = $settings.opmode
-                        "Central NAT"       = $settings.'central-nat'
-                        "LLDP Reception"    = $settings.'lldp-reception'
+                        "OP Mode" = $settings.opmode
+                        "Central NAT" = $settings.'central-nat'
+                        "LLDP Reception" = $settings.'lldp-reception'
                         "LLDP Transmission" = $settings.'lldp-transmission'
-                        "Comments"          = $settings.comments
+                        "Comments" = $settings.comments
                     }
 
                     $TableParams = @{
-                        Name         = "Settings"
-                        List         = $true
+                        Name = "Settings"
+                        List = $true
                         ColumnWidths = 50, 50
                     }
 
@@ -99,35 +98,35 @@ function Get-AbrFgtSystem {
                     $OutObj = @()
 
                     $OutObj = [pscustomobject]@{
-                        "Language"                   = $info.language
-                        "Theme"                      = $info.'gui-theme'
-                        "IPv6"                       = $info.'gui-ipv6'
-                        "Wireless Open Security"     = $info.'gui-wireless-opensecurity'
-                        "Implicit Policy"            = $settings.'gui-implicit-policy'
-                        "Dns Database"               = $settings.'gui-dns-database'
-                        "Load Balance"               = $settings.'gui-load-balance'
-                        "Explicit Proxy"             = $settings.'gui-explicit-proxy'
-                        "Dynamic Routing"            = $settings.'gui-dynamic-routing'
-                        "Application Control"        = $settings.'gui-application-control'
-                        "IPS"                        = $settings.'gui-ips'
-                        "VPN"                        = $settings.'gui-vpn'
-                        "Wireless Controller"        = $settings.'gui-wireless-controller'
-                        "Switch Controller"          = $settings.'gui-switch-controller'
+                        "Language" = $info.language
+                        "Theme" = $info.'gui-theme'
+                        "IPv6" = $info.'gui-ipv6'
+                        "Wireless Open Security" = $info.'gui-wireless-opensecurity'
+                        "Implicit Policy" = $settings.'gui-implicit-policy'
+                        "Dns Database" = $settings.'gui-dns-database'
+                        "Load Balance" = $settings.'gui-load-balance'
+                        "Explicit Proxy" = $settings.'gui-explicit-proxy'
+                        "Dynamic Routing" = $settings.'gui-dynamic-routing'
+                        "Application Control" = $settings.'gui-application-control'
+                        "IPS" = $settings.'gui-ips'
+                        "VPN" = $settings.'gui-vpn'
+                        "Wireless Controller" = $settings.'gui-wireless-controller'
+                        "Switch Controller" = $settings.'gui-switch-controller'
                         "WAN Load Balancing (SDWAN)" = $settings.'gui-wan-load-balancing'
-                        "Antivirus"                  = $settings.'gui-antivirus'
-                        "Web Filter"                 = $settings.'gui-webfilter'
-                        "Video Filter"               = $settings.'gui-videofilter'
-                        "DNS Filter"                 = $settings.'gui-dnsfilter'
-                        "WAF Profile"                = $settings.'gui-waf-profile'
-                        "Allow Unnamed Policy"       = $settings.'gui-allow-unnamed-policy'
-                        "Multiple Interface Policy"  = $settings.'gui-multiple-interface-policy'
-                        "ZTNA"                       = $settings.'gui-ztna'
-                        "OT"                         = $settings.'gui-ot'
+                        "Antivirus" = $settings.'gui-antivirus'
+                        "Web Filter" = $settings.'gui-webfilter'
+                        "Video Filter" = $settings.'gui-videofilter'
+                        "DNS Filter" = $settings.'gui-dnsfilter'
+                        "WAF Profile" = $settings.'gui-waf-profile'
+                        "Allow Unnamed Policy" = $settings.'gui-allow-unnamed-policy'
+                        "Multiple Interface Policy" = $settings.'gui-multiple-interface-policy'
+                        "ZTNA" = $settings.'gui-ztna'
+                        "OT" = $settings.'gui-ot'
                     }
 
                     $TableParams = @{
-                        Name         = "Feature GUI visibility"
-                        List         = $true
+                        Name = "Feature GUI visibility"
+                        List = $true
                         ColumnWidths = 50, 50
                     }
 
@@ -146,15 +145,15 @@ function Get-AbrFgtSystem {
                     $OutObj = @()
 
                     $OutObj = [pscustomobject]@{
-                        "Primary"   = $dns.primary
+                        "Primary" = $dns.primary
                         "Secondary" = $dns.secondary
-                        "Domain"    = $dns.domain.domain
-                        "Protocol"  = $dns.protocol
+                        "Domain" = $dns.domain.domain
+                        "Protocol" = $dns.protocol
                     }
 
                     $TableParams = @{
-                        Name         = "DNS"
-                        List         = $true
+                        Name = "DNS"
+                        List = $true
                         ColumnWidths = 50, 50
                     }
 
@@ -174,16 +173,16 @@ function Get-AbrFgtSystem {
 
                     foreach ($DNSServer in $DNSServers) {
                         $OutObj += [pscustomobject]@{
-                            "Name"               = $DNSServer.name
-                            "Mode"               = $DNSServer.mode
+                            "Name" = $DNSServer.name
+                            "Mode" = $DNSServer.mode
                             "DNS Filter Profile" = $DNSServer.'dnsfilter-profile'
-                            "DOH"                = $DNSServer.doh
+                            "DOH" = $DNSServer.doh
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "DNS Server"
-                        List         = $false
+                        Name = "DNS Server"
+                        List = $false
                         ColumnWidths = 25, 25, 25, 25
                     }
 
@@ -219,16 +218,16 @@ function Get-AbrFgtSystem {
                             $trustedHosts -join "`n"
                         }
                         $OutObj += [pscustomobject]@{
-                            "Name"          = $admin.name
-                            "Profile"       = $admin.accprofile
+                            "Name" = $admin.name
+                            "Profile" = $admin.accprofile
                             "Trusted Hosts" = $trustedHosts
-                            "MFA"           = $admin.'two-factor'
+                            "MFA" = $admin.'two-factor'
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "Administrator"
-                        List         = $false
+                        Name = "Administrator"
+                        List = $false
                         ColumnWidths = 25, 25, 35, 15
                     }
 
@@ -287,108 +286,108 @@ function Get-AbrFgtSystem {
                                 switch ($interfaceType) {
                                     "Aggregate" {
                                         $OutObj += [pscustomobject]@{
-                                            "Name"                = $interface.name
-                                            "VDOM"                = $interface.vdom
-                                            "Role"                = $interface.role
-                                            "Members"             = $interface.member
-                                            "LACP Mode"           = $interface.'lacp-mode'
+                                            "Name" = $interface.name
+                                            "VDOM" = $interface.vdom
+                                            "Role" = $interface.role
+                                            "Members" = $interface.member
+                                            "LACP Mode" = $interface.'lacp-mode'
                                             #"MTU"                 = $interface.mtu   # Will be enabled next release when the TableWrite function is added
-                                            "Addressing mode"     = $interface.mode
-                                            "IP Address"          = $interface.ip
+                                            "Addressing mode" = $interface.mode
+                                            "IP Address" = $interface.ip
                                             #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
-                                            "Allow Access"        = $interface.allowaccess
-                                            "Status"              = $interface.status
+                                            "Allow Access" = $interface.allowaccess
+                                            "Status" = $interface.status
                                             #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
                                         }
                                     }
                                     "Hard-Switch" {
                                         $OutObj += [pscustomobject]@{
-                                            "Name"                = $interface.name
-                                            "VDOM"                = $interface.vdom
-                                            "Role"                = $interface.role
-                                            "Members"             = $interface.member
-                                            "MTU"                 = $interface.mtu
-                                            "Addressing mode"     = $interface.mode
-                                            "IP Address"          = $interface.ip
+                                            "Name" = $interface.name
+                                            "VDOM" = $interface.vdom
+                                            "Role" = $interface.role
+                                            "Members" = $interface.member
+                                            "MTU" = $interface.mtu
+                                            "Addressing mode" = $interface.mode
+                                            "IP Address" = $interface.ip
                                             #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
-                                            "Allow Access"        = $interface.allowaccess
-                                            "Status"              = $interface.status
+                                            "Allow Access" = $interface.allowaccess
+                                            "Status" = $interface.status
                                             #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
                                         }
                                     }
                                     "Loopback" {
                                         $OutObj += [pscustomobject]@{
-                                            "Name"                = $interface.name
-                                            "VDOM"                = $interface.vdom
-                                            "Role"                = $interface.role
-                                            "MTU"                 = $interface.mtu
-                                            "IP Address"          = $interface.ip
-                                            "Secondary IP"        = $interface.'secondaryip'
-                                            "Allow Access"        = $interface.allowaccess
-                                            "Status"              = $interface.status
-                                            "Comments"            = $interface.description
+                                            "Name" = $interface.name
+                                            "VDOM" = $interface.vdom
+                                            "Role" = $interface.role
+                                            "MTU" = $interface.mtu
+                                            "IP Address" = $interface.ip
+                                            "Secondary IP" = $interface.'secondaryip'
+                                            "Allow Access" = $interface.allowaccess
+                                            "Status" = $interface.status
+                                            "Comments" = $interface.description
                                         }
 
                                     }
-                                    "Physical"{
+                                    "Physical" {
                                         $OutObj += [pscustomobject]@{
-                                            "Name"                = $interface.name
-                                            "VDOM"                = $interface.vdom
-                                            "Role"                = $interface.role
-                                            "MTU"                 = $interface.mtu
-                                            "Speed"               = $interface.speed
-                                            "Addressing mode"     = $interface.mode
-                                            "IP Address"          = $interface.ip
+                                            "Name" = $interface.name
+                                            "VDOM" = $interface.vdom
+                                            "Role" = $interface.role
+                                            "MTU" = $interface.mtu
+                                            "Speed" = $interface.speed
+                                            "Addressing mode" = $interface.mode
+                                            "IP Address" = $interface.ip
                                             #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
-                                            "Allow Access"        = $interface.allowaccess
-                                            "Status"              = $interface.status
+                                            "Allow Access" = $interface.allowaccess
+                                            "Status" = $interface.status
                                             #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
                                         }
 
                                     }
                                     "Tunnel" {
                                         $OutObj += [pscustomobject]@{
-                                            "Name"                = $interface.name
-                                            "Parent Interface"    = $interface.interface
-                                            "VDOM"                = $interface.vdom
-                                            "Role"                = $interface.role
-                                            "MTU"                 = $interface.mtu
-                                            "IP Address"          = $interface.ip
+                                            "Name" = $interface.name
+                                            "Parent Interface" = $interface.interface
+                                            "VDOM" = $interface.vdom
+                                            "Role" = $interface.role
+                                            "MTU" = $interface.mtu
+                                            "IP Address" = $interface.ip
                                             #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
-                                            "Remote IP"           = $interface.'remote-ip'
-                                            "Allow Access"        = $interface.allowaccess
-                                            "Status"              = $interface.status
+                                            "Remote IP" = $interface.'remote-ip'
+                                            "Allow Access" = $interface.allowaccess
+                                            "Status" = $interface.status
                                             #"Comments"            = $interface.description   # Will be enabled next release when the TableWrite function is added
                                         }
                                     }
                                     "Vlan" {
                                         $OutObj += [pscustomobject]@{
-                                            "Name"                = $interface.name
-                                            "Parent Interface"    = $interface.interface
-                                            "VLAN ID"             = $interface.vlanid
-                                            "VDOM"                = $interface.vdom
-                                            "Role"                = $interface.role
+                                            "Name" = $interface.name
+                                            "Parent Interface" = $interface.interface
+                                            "VLAN ID" = $interface.vlanid
+                                            "VDOM" = $interface.vdom
+                                            "Role" = $interface.role
                                             #"MTU"                 = $interface.mtu   # Will be enabled next release when the TableWrite function is added
-                                            "Mode"                = $interface.mode
-                                            "IP Address"          = $interface.ip
+                                            "Mode" = $interface.mode
+                                            "IP Address" = $interface.ip
                                             #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
-                                            "Allow Access"        = $interface.allowaccess
-                                            "Status"              = $interface.status
+                                            "Allow Access" = $interface.allowaccess
+                                            "Status" = $interface.status
                                         }
                                     }
                                     # vap-switch falls under default
                                     Default {
                                         $OutObj += [pscustomobject]@{
-                                            "Name"                = $interface.name
-                                            "VDOM"                = $interface.vdom
-                                            "Role"                = $interface.role
-                                            "MTU"                 = $interface.mtu
-                                            "VLAN ID"             = $interface.vlanid
-                                            "Mode"                = $interface.mode
-                                            "IP Address"          = $interface.ip
+                                            "Name" = $interface.name
+                                            "VDOM" = $interface.vdom
+                                            "Role" = $interface.role
+                                            "MTU" = $interface.mtu
+                                            "VLAN ID" = $interface.vlanid
+                                            "Mode" = $interface.mode
+                                            "IP Address" = $interface.ip
                                             #"Secondary IP"        = $interface.'secondaryip'   # Will be enabled next release when the TableWrite function is added
-                                            "Allow Access"        = $interface.allowaccess
-                                            "Status"              = $interface.status
+                                            "Allow Access" = $interface.allowaccess
+                                            "Status" = $interface.status
                                         }
                                     }
                                 }
@@ -438,8 +437,8 @@ function Get-AbrFgtSystem {
 
                             if ($upInterfaces.Count -gt 0) {
                                 $TableParams = @{
-                                    Name         = "$([char]::ToUpper($interfaceType[0]) + $interfaceType.Substring(1)) Interfaces"
-                                    List         = $false
+                                    Name = "$([char]::ToUpper($interfaceType[0]) + $interfaceType.Substring(1)) Interfaces"
+                                    List = $false
                                     ColumnWidths = 12, 20, 7, 11, 6, 8, 20, 8, 8
                                 }
 
@@ -473,16 +472,16 @@ function Get-AbrFgtSystem {
 
                     foreach ($zone in $zones) {
                         $OutObj += [pscustomobject]@{
-                            "Name"        = $zone.name
-                            "Intrazone"   = $zone.intrazone
-                            "Interface"   = $zone.interface.'interface-name'
+                            "Name" = $zone.name
+                            "Intrazone" = $zone.intrazone
+                            "Interface" = $zone.interface.'interface-name'
                             "Description" = $zone.description
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "Zone"
-                        List         = $false
+                        Name = "Zone"
+                        List = $false
                         ColumnWidths = 25, 25, 25, 25
                     }
 
@@ -503,18 +502,18 @@ function Get-AbrFgtSystem {
 
                     foreach ($dhcp_server in $dhcp_servers) {
                         $OutObj += [pscustomobject]@{
-                            "id"        = $dhcp_server.id
-                            "Status"    = $dhcp_server.status
+                            "id" = $dhcp_server.id
+                            "Status" = $dhcp_server.status
                             "Interface" = $dhcp_server.interface
-                            "Range"     = "$($dhcp_server.'ip-range'.'start-ip')-$($dhcp_server.'ip-range'.'end-ip')"
-                            "Netmask"   = $dhcp_server.netmask
-                            "Gateway"   = $dhcp_server.'default-gateway'
+                            "Range" = "$($dhcp_server.'ip-range'.'start-ip')-$($dhcp_server.'ip-range'.'end-ip')"
+                            "Netmask" = $dhcp_server.netmask
+                            "Gateway" = $dhcp_server.'default-gateway'
                         }
                     }
 
                     $TableParams = @{
-                        Name         = "DHCP Server"
-                        List         = $false
+                        Name = "DHCP Server"
+                        List = $false
                         ColumnWidths = 5, 11, 15, 35, 17, 17
                     }
 
@@ -534,22 +533,22 @@ function Get-AbrFgtSystem {
                             $dns = ($dhcp_server.'dns-server1' -replace "0.0.0.0", "") + ($dhcp_server.'dns-server2' -replace "0.0.0.0", "") + ($dhcp_server.'dns-server3' -replace "0.0.0.0", "") + ($dhcp_server.'dns-server4' -replace "0.0.0.0", "")
                             $ntp = ($dhcp_server.'ntp-server1' -replace "0.0.0.0", "") + ($dhcp_server.'ntp-server2' -replace "0.0.0.0", "") + ($dhcp_server.'ntp-server3' -replace "0.0.0.0", "") + ($dhcp_server.'ntp-server4' -replace "0.0.0.0", "")
                             $OutObj = [pscustomobject]@{
-                                "id"         = $dhcp_server.id
-                                "Status"     = $dhcp_server.status
+                                "id" = $dhcp_server.id
+                                "Status" = $dhcp_server.status
                                 "Lease Time" = $dhcp_server.'lease-time'
-                                "Interface"  = $dhcp_server.interface
-                                "Start IP"   = $dhcp_server.'ip-range'.'start-ip'
-                                "End IP"     = $dhcp_server.'ip-range'.'end-ip'
-                                "Netmask"    = $dhcp_server.netmask
-                                "Gateway"    = $dhcp_server.'default-gateway'
-                                "DNS"        = $dns
-                                "Domain"     = $dhcp_server.domain
-                                "NTP"        = $ntp
+                                "Interface" = $dhcp_server.interface
+                                "Start IP" = $dhcp_server.'ip-range'.'start-ip'
+                                "End IP" = $dhcp_server.'ip-range'.'end-ip'
+                                "Netmask" = $dhcp_server.netmask
+                                "Gateway" = $dhcp_server.'default-gateway'
+                                "DNS" = $dns
+                                "Domain" = $dhcp_server.domain
+                                "NTP" = $ntp
                             }
 
                             $TableParams = @{
-                                Name         = "DHCP $($dhcp_server.id) - $($dhcp_server.interface)"
-                                List         = $true
+                                Name = "DHCP $($dhcp_server.id) - $($dhcp_server.interface)"
+                                List = $true
                                 ColumnWidths = 25, 75
                             }
 
@@ -567,16 +566,16 @@ function Get-AbrFgtSystem {
                             $OutObj = @()
                             foreach ($reserved_address in ($dhcp_servers.'reserved-address')) {
                                 $OutObj += [pscustomobject]@{
-                                    "id"     = $reserved_address.id
-                                    "IP"     = $reserved_address.ip
-                                    "MAC"    = $reserved_address.mac
+                                    "id" = $reserved_address.id
+                                    "IP" = $reserved_address.ip
+                                    "MAC" = $reserved_address.mac
                                     "Action" = $reserved_address.action
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "DHCP Server Reserved Address"
-                                List         = $false
+                                Name = "DHCP Server Reserved Address"
+                                List = $false
                                 ColumnWidths = 5, 35, 35, 25
                             }
 
@@ -596,25 +595,27 @@ function Get-AbrFgtSystem {
                         Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP Leases" {
                             $OutObj = @()
                             foreach ($dhcp_lease in $dhcp_leases) {
-                                if ($PSVersionTable.PSEdition -eq "Core") { #PS 6 and after
+                                if ($PSVersionTable.PSEdition -eq "Core") {
+                                    #PS 6 and after
                                     $expire_time = Get-Date -UnixTimeSeconds $dhcp_lease.expire_time
-                                } else { #PS 5 and before
+                                } else {
+                                    #PS 5 and before
 
                                     $expire_time = [datetime]::UnixEpoch.AddSeconds($dhcp_lease.expire_time)
                                 }
                                 $OutObj += [pscustomobject]@{
-                                    "IP"          = $dhcp_lease.ip
-                                    "MAC"         = $dhcp_lease.mac
-                                    "Hostname"    = $dhcp_lease.hostname
-                                    "Status"      = $dhcp_lease.status
-                                    "Reserved"    = $dhcp_lease.reserved
+                                    "IP" = $dhcp_lease.ip
+                                    "MAC" = $dhcp_lease.mac
+                                    "Hostname" = $dhcp_lease.hostname
+                                    "Status" = $dhcp_lease.status
+                                    "Reserved" = $dhcp_lease.reserved
                                     "Expire Time" = $expire_time
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "DHCP Server Reserved Address"
-                                List         = $false
+                                Name = "DHCP Server Reserved Address"
+                                List = $false
                                 ColumnWidths = 19, 19, 25, 8, 11, 18
                             }
 
@@ -652,26 +653,26 @@ function Get-AbrFgtSystem {
                         $monitor = (($haConfig.monitor.trim() -replace '  ', ' ' -replace '"', '').Split(" ") | Sort-Object -Unique) -Join ", "
 
                         $OutObj = [pscustomobject]@{
-                            "Group Name"               = $haConfig.'group-name'
-                            "Group ID"                 = $haConfig.'group-id'
-                            "Mode"                     = $mode
-                            "HB Device"                = $haConfig.'hbdev'
-                            "Monitor"                  = $monitor
-                            "HA Override"              = $haConfig.'override'
-                            "Route TTL"                = $haConfig.'route-ttl'
-                            "Route Wait"               = $haConfig.'route-wait'
-                            "Route Hold"               = $haConfig.'route-hold'
-                            "Session sync (TCP)"       = $haConfig.'session-pickup'
-                            "Session sync (UDP)"       = $haConfig.'session-pickup-connectionless'
-                            "Session sync (Pinholes)"  = $haConfig.'session-pickup-expectation'
-                            "Uninterruptible Upgrade"  = $haConfig.'uninterrup-upgrade'
-                            "HA Management Status"     = $haConfig.'ha-mgmt-status'
+                            "Group Name" = $haConfig.'group-name'
+                            "Group ID" = $haConfig.'group-id'
+                            "Mode" = $mode
+                            "HB Device" = $haConfig.'hbdev'
+                            "Monitor" = $monitor
+                            "HA Override" = $haConfig.'override'
+                            "Route TTL" = $haConfig.'route-ttl'
+                            "Route Wait" = $haConfig.'route-wait'
+                            "Route Hold" = $haConfig.'route-hold'
+                            "Session sync (TCP)" = $haConfig.'session-pickup'
+                            "Session sync (UDP)" = $haConfig.'session-pickup-connectionless'
+                            "Session sync (Pinholes)" = $haConfig.'session-pickup-expectation'
+                            "Uninterruptible Upgrade" = $haConfig.'uninterrup-upgrade'
+                            "HA Management Status" = $haConfig.'ha-mgmt-status'
                             "HA Management Interfaces" = $haConfig.'ha-mgmt-interfaces'
                         }
 
                         $TableParams = @{
-                            Name         = "HA Configuration"
-                            List         = $true
+                            Name = "HA Configuration"
+                            List = $true
                             ColumnWidths = 50, 50
                         }
 
@@ -694,17 +695,17 @@ function Get-AbrFgtSystem {
 
                             # Correctly reference properties from $haPeer
                             $OutObj += [pscustomobject]@{
-                                "Hostname"      = $haPeer.hostname
-                                "Serial"        = $haPeer.serial_no
-                                "Priority"      = $haPeer.priority
+                                "Hostname" = $haPeer.hostname
+                                "Serial" = $haPeer.serial_no
+                                "Priority" = $haPeer.priority
                                 "Manage Master" = $manageMaster
-                                "Root Master"   = $rootMaster
+                                "Root Master" = $rootMaster
                             }
                         }
 
                         $TableParams = @{
-                            Name         = "HA Members"
-                            List         = $false
+                            Name = "HA Members"
+                            List = $false
                             ColumnWidths = 35, 35, 10, 10, 10
                         }
 

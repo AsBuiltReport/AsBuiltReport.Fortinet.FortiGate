@@ -268,8 +268,7 @@ function Get-AbrFgtFirewall {
 
                         if ($f.addrs.count -eq 0) {
                             $addr = "Unresolved"
-                        }
-                        else {
+                        } else {
                             $addr = $f.addrs -join ", "
                         }
                         $OutObj += [pscustomobject]@{
@@ -456,8 +455,7 @@ function Get-AbrFgtFirewall {
                                 if ($rule.'internet-service' -eq "enable") {
 
                                     $dst = $rule.'internet-service-name'.name -join ", "
-                                }
-                                else {
+                                } else {
                                     $dst = $rule.dstaddr.name -join ", "
                                 }
 
@@ -465,8 +463,7 @@ function Get-AbrFgtFirewall {
                                 if ($rule.'internet-service-src ' -eq "enable") {
 
                                     $src = $rule.'internet-service-src-name'.name -join ", "
-                                }
-                                else {
+                                } else {
                                     $src = $rule.srcaddr.name -join ", "
                                 }
 
@@ -512,8 +509,7 @@ function Get-AbrFgtFirewall {
                                 #Using ISDB for Destination ?
                                 if ($rule.'internet-service' -eq "enable") {
                                     $dst = $rule.'internet-service-name'.name -join ", "
-                                }
-                                else {
+                                } else {
                                     $dst = $rule.dstaddr.name -join ", "
                                 }
 
@@ -521,8 +517,7 @@ function Get-AbrFgtFirewall {
                                 if ($rule.'internet-service-src ' -eq "enable") {
 
                                     $src = $rule.'internet-service-src-name'.name -join ", "
-                                }
-                                else {
+                                } else {
                                     $src = $rule.srcaddr.name -join ", "
                                 }
 
@@ -571,8 +566,7 @@ function Get-AbrFgtFirewall {
                                             #Using ISDB for Destination ?
                                             if ($rule.'internet-service' -eq "enable") {
                                                 $dst = $rule.'internet-service-name'.name -join ", "
-                                            }
-                                            else {
+                                            } else {
                                                 $dst = $rule.dstaddr.name -join ", "
                                             }
 
@@ -580,8 +574,7 @@ function Get-AbrFgtFirewall {
                                             if ($rule.'internet-service-src ' -eq "enable") {
 
                                                 $src = $rule.'internet-service-src-name'.name -join ", "
-                                            }
-                                            else {
+                                            } else {
                                                 $src = $rule.srcaddr.name -join ", "
                                             }
 
@@ -659,8 +652,7 @@ function Get-AbrFgtFirewall {
                     if ($rule.'internet-service' -eq "enable") {
 
                         $dst = $rule.'internet-service-name'.name -join ", "
-                    }
-                    else {
+                    } else {
                         $dst = $rule.dstaddr.name -join ", "
                     }
 
@@ -670,8 +662,7 @@ function Get-AbrFgtFirewall {
                     if ($rule.'internet-service-src ' -eq "enable") {
 
                         $src = $rule.'internet-service-src-name'.name -join ", "
-                    }
-                    else {
+                    } else {
                         $src = $rule.srcaddr.name -join ", "
                     }
                     $src += " (From $($rule.srcintf.name -join ', '))"

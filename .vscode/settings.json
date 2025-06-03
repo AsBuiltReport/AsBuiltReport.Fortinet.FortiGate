@@ -8,10 +8,10 @@
     "powershell.codeFormatting.whitespaceAfterSeparator": true,
     "powershell.codeFormatting.addWhitespaceAroundPipe": true,
     "powershell.codeFormatting.ignoreOneLineBlock": true,
-    "powershell.codeFormatting.newLineAfterCloseBrace": true,
+    "powershell.codeFormatting.newLineAfterCloseBrace": false,
     "powershell.codeFormatting.newLineAfterOpenBrace": true,
     "powershell.codeFormatting.openBraceOnSameLine": true,
-    "powershell.codeFormatting.alignPropertyValuePairs": true,
+    "powershell.codeFormatting.alignPropertyValuePairs": false,
     "powershell.codeFolding.enable": true,
     "powershell.scriptAnalysis.enable": true,
     "powershell.scriptAnalysis.settingsPath": ".github/workflows/PSScriptAnalyzerSettings.psd1",
@@ -21,5 +21,5 @@
     "editor.rulers": [
         115
     ],
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
 }

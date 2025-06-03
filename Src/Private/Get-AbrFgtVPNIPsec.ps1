@@ -42,8 +42,8 @@ function Get-AbrFgtVPNIPsec {
                     }
 
                     $TableParams = @{
-                        Name         = "Summary"
-                        List         = $true
+                        Name = "Summary"
+                        List = $true
                         ColumnWidths = 50, 50
                     }
 
@@ -63,18 +63,18 @@ function Get-AbrFgtVPNIPsec {
                         foreach ($v1 in $vpn_ph1) {
 
                             $OutObj += [pscustomobject]@{
-                                "Name"           = $v1.name
-                                "Type"           = $v1.type
-                                "Interface"      = $v1.interface
+                                "Name" = $v1.name
+                                "Type" = $v1.type
+                                "Interface" = $v1.interface
                                 "Remote Gateway" = $v1.'remote-gw'
-                                "Mode"           = $v1.mode
-                                "Auth method"    = $v1.authmethod
+                                "Mode" = $v1.mode
+                                "Auth method" = $v1.authmethod
                             }
                         }
 
                         $TableParams = @{
-                            Name         = "VPN IPsec Phase 1 Summary"
-                            List         = $false
+                            Name = "VPN IPsec Phase 1 Summary"
+                            List = $false
                             ColumnWidths = 20, 16, 16, 16, 16, 16
                         }
 
@@ -94,31 +94,31 @@ function Get-AbrFgtVPNIPsec {
                                 $OutObj = @()
 
                                 $OutObj += [pscustomobject]@{
-                                    "Name"           = $v1.name
-                                    "Type"           = $v1.type
-                                    "Interface"      = $v1.interface
-                                    "IP Version"     = $v1.'ip-version'
-                                    "IKE Version"    = $v1.'ike-version'
-                                    "Local Gateway"  = $v1.'local-gw'
+                                    "Name" = $v1.name
+                                    "Type" = $v1.type
+                                    "Interface" = $v1.interface
+                                    "IP Version" = $v1.'ip-version'
+                                    "IKE Version" = $v1.'ike-version'
+                                    "Local Gateway" = $v1.'local-gw'
                                     "Remote Gateway" = $v1.'remote-gw'
-                                    "Mode"           = $v1.mode
-                                    "Auth method"    = $v1.authmethod
-                                    "Peer Type"      = $v1.peertype
-                                    "Comments"       = $v1.comments
-                                    "Mode CFG"       = $v1.'mode-cfg'
-                                    "Proposal"       = $v1.proposal -replace " ", ", "
-                                    "DH Group"       = $v1.dhgrp -replace " ", ", "
-                                    "Local ID"       = $v1.localid
-                                    "DPD"            = $v1.dpd
-                                    "xAuth Type"     = $v1.xauthtype
-                                    "NAT Traversal"  = $v1.nattraversal
-                                    "Rekey"          = $v1.rekey
+                                    "Mode" = $v1.mode
+                                    "Auth method" = $v1.authmethod
+                                    "Peer Type" = $v1.peertype
+                                    "Comments" = $v1.comments
+                                    "Mode CFG" = $v1.'mode-cfg'
+                                    "Proposal" = $v1.proposal -replace " ", ", "
+                                    "DH Group" = $v1.dhgrp -replace " ", ", "
+                                    "Local ID" = $v1.localid
+                                    "DPD" = $v1.dpd
+                                    "xAuth Type" = $v1.xauthtype
+                                    "NAT Traversal" = $v1.nattraversal
+                                    "Rekey" = $v1.rekey
                                 }
 
 
                                 $TableParams = @{
-                                    Name         = "VPN IPsec Phase 1: $($v1.name)"
-                                    List         = $true
+                                    Name = "VPN IPsec Phase 1: $($v1.name)"
+                                    List = $true
                                     ColumnWidths = 50, 50
                                 }
 
@@ -159,18 +159,18 @@ function Get-AbrFgtVPNIPsec {
                                 Default {}
                             }
                             $OutObj += [pscustomobject]@{
-                                "Name"                     = $v2.name
-                                "Phase 1 Name"             = $v2.phase1name
-                                "Source Address Type"      = $v2.'src-addr-type'
-                                "Source Address"           = $src
+                                "Name" = $v2.name
+                                "Phase 1 Name" = $v2.phase1name
+                                "Source Address Type" = $v2.'src-addr-type'
+                                "Source Address" = $src
                                 "Destination Address Type" = $v2.'dst-addr-type'
-                                "Destination Address"      = $dst
+                                "Destination Address" = $dst
                             }
                         }
 
                         $TableParams = @{
-                            Name         = "VPN IPsec Phase 1 Summary"
-                            List         = $false
+                            Name = "VPN IPsec Phase 1 Summary"
+                            List = $false
                             ColumnWidths = 20, 16, 16, 16, 16, 16
                         }
 
@@ -189,28 +189,28 @@ function Get-AbrFgtVPNIPsec {
                                 $OutObj = @()
 
                                 $OutObj += [pscustomobject]@{
-                                    "Name"                       = $v2.name
-                                    "Phase 1 Name"               = $v2.phase1name
-                                    "Commnets"                   = $v2.comments
-                                    "Proposal"                   = $v2.proposal -replace " ", ", "
-                                    "DH Group"                   = $v2.dhgrp -replace " ", ", "
-                                    "Replay"                     = $v2.replay
-                                    "KeepAlive"                  = $v2.keepalive
-                                    "Keylife Type"               = $v2.'keylife-type'
-                                    "Keylife Seconds"            = $v2.keylifeseconds
-                                    "Keylife Kbs"                = $v2.keylifekbs
-                                    'Source Address Type'        = $v2.'src-addr-type'
-                                    'Source Address Name'        = $v2.'src-name'
-                                    'Source Address Subnet'      = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'src-subnet' } else { $v2.'src-subnet' })
-                                    'Destination Address Type'   = $v2.'dst-addr-type'
-                                    'Destination Address Name'   = $v2.'dst-name'
+                                    "Name" = $v2.name
+                                    "Phase 1 Name" = $v2.phase1name
+                                    "Commnets" = $v2.comments
+                                    "Proposal" = $v2.proposal -replace " ", ", "
+                                    "DH Group" = $v2.dhgrp -replace " ", ", "
+                                    "Replay" = $v2.replay
+                                    "KeepAlive" = $v2.keepalive
+                                    "Keylife Type" = $v2.'keylife-type'
+                                    "Keylife Seconds" = $v2.keylifeseconds
+                                    "Keylife Kbs" = $v2.keylifekbs
+                                    'Source Address Type' = $v2.'src-addr-type'
+                                    'Source Address Name' = $v2.'src-name'
+                                    'Source Address Subnet' = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'src-subnet' } else { $v2.'src-subnet' })
+                                    'Destination Address Type' = $v2.'dst-addr-type'
+                                    'Destination Address Name' = $v2.'dst-name'
                                     'Destination Address Subnet' = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'dst-subnet' } else { $v2.'dst-subnet' })
                                 }
 
 
                                 $TableParams = @{
-                                    Name         = "VPN IPsec Phase 2: $($v2.name)"
-                                    List         = $true
+                                    Name = "VPN IPsec Phase 2: $($v2.name)"
+                                    List = $true
                                     ColumnWidths = 50, 50
                                 }
 
