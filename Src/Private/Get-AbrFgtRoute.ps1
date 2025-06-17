@@ -110,20 +110,17 @@ function Get-AbrFgtRoute {
                         elseif ($static.'internet-service') {
                             #TODO: add Lookup, only display the id...
                             $dst = $static.'internet-service'
-                        }
-                        else {
+                        } else {
                             $dst = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $static.dst } else { $static.dst })
                         }
 
                         #when Blackhole is enable, display blackhole for interface
                         if ($static.blackhole -eq "enable") {
                             $interface = "Blackhole"
-                        }
-                        elseif ($static.device -eq "") {
+                        } elseif ($static.device -eq "") {
                             #No device => SD-Wan (Zone)
                             $interface = $static.'sdwan-zone'.name
-                        }
-                        else {
+                        } else {
                             $interface = $static.device
                         }
 
@@ -201,16 +198,16 @@ function Get-AbrFgtRoute {
                         Paragraph "The following section provides a summary of BGP settings."
                         BlankLine
                         $OutObj = [pscustomobject]@{
-                            "BGP Neighbor"         = @($BGP.neighbor).count
-                            "BGP Neighbor Group"   = @($BGP.'neighbor-group').count
-                            "BGP Neighbor Range"   = @($BGP.'neighbor-range').count
-                            "BGP Network"          = @($BGP.network).count
+                            "BGP Neighbor" = @($BGP.neighbor).count
+                            "BGP Neighbor Group" = @($BGP.'neighbor-group').count
+                            "BGP Neighbor Range" = @($BGP.'neighbor-range').count
+                            "BGP Network" = @($BGP.network).count
                             "BGP Neighbors Status" = @($BGPNeighbors).count
                         }
 
                         $TableParams = @{
-                            Name         = "Summary"
-                            List         = $true
+                            Name = "Summary"
+                            List = $true
                             ColumnWidths = 50, 50
                         }
 
@@ -240,15 +237,15 @@ function Get-AbrFgtRoute {
                                 }
                             }
                             $OutObj += [pscustomobject]@{
-                                "Name"    = $name
-                                "Value"   = $value
+                                "Name" = $name
+                                "Value" = $value
                                 "Default" = $default
                             }
                         }
 
                         $TableParams = @{
-                            Name         = "BGP Configuration"
-                            List         = $false
+                            Name = "BGP Configuration"
+                            List = $false
                             ColumnWidths = 34, 33, 33
                         }
 
@@ -270,16 +267,16 @@ function Get-AbrFgtRoute {
                                 foreach ($n in $neighbor) {
 
                                     $OutObj += [pscustomobject]@{
-                                        "IP"          = $n.ip
-                                        "Remote AS"   = $n.'remote-as'
+                                        "IP" = $n.ip
+                                        "Remote AS" = $n.'remote-as'
                                         "Description" = $n.description
-                                        "Activate"    = $n.activate
+                                        "Activate" = $n.activate
                                     }
                                 }
 
                                 $TableParams = @{
-                                    Name         = "BGP Neighbor"
-                                    List         = $false
+                                    Name = "BGP Neighbor"
+                                    List = $false
                                     ColumnWidths = 25, 25, 25, 25
                                 }
 
@@ -320,15 +317,15 @@ function Get-AbrFgtRoute {
                                                 }
                                             }
                                             $OutObj += [pscustomobject]@{
-                                                "Name"    = $name
-                                                "Value"   = $value
+                                                "Name" = $name
+                                                "Value" = $value
                                                 "Default" = $default
                                             }
                                         }
 
                                         $TableParams = @{
-                                            Name         = "BGP Neighbor Configuration $($n.ip)"
-                                            List         = $false
+                                            Name = "BGP Neighbor Configuration $($n.ip)"
+                                            List = $false
                                             ColumnWidths = 34, 33, 33
                                         }
 
@@ -355,16 +352,16 @@ function Get-AbrFgtRoute {
                                 foreach ($n in $neighborgroup) {
 
                                     $OutObj += [pscustomobject]@{
-                                        "Name"        = $n.name
-                                        "Remote AS"   = $n.'remote-as'
+                                        "Name" = $n.name
+                                        "Remote AS" = $n.'remote-as'
                                         "Description" = $n.description
-                                        "Activate"    = $n.activate
+                                        "Activate" = $n.activate
                                     }
                                 }
 
                                 $TableParams = @{
-                                    Name         = "BGP Neighbor Group"
-                                    List         = $false
+                                    Name = "BGP Neighbor Group"
+                                    List = $false
                                     ColumnWidths = 25, 25, 25, 25
                                 }
 
@@ -405,15 +402,15 @@ function Get-AbrFgtRoute {
                                                 }
                                             }
                                             $OutObj += [pscustomobject]@{
-                                                "Name"    = $name
-                                                "Value"   = $value
+                                                "Name" = $name
+                                                "Value" = $value
                                                 "Default" = $default
                                             }
                                         }
 
                                         $TableParams = @{
-                                            Name         = "BGP Neighbor Group Configuration $($n.name)"
-                                            List         = $false
+                                            Name = "BGP Neighbor Group Configuration $($n.name)"
+                                            List = $false
                                             ColumnWidths = 34, 33, 33
                                         }
 
@@ -421,7 +418,7 @@ function Get-AbrFgtRoute {
                                             $TableParams['Caption'] = "- $($TableParams.Name)"
                                         }
 
-                                        $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                                        $OutObj | Where-Object { $_.value -NE $_.default } | Set-Style -Style Critical
                                         $OutObj | Table @TableParams
                                     }
                                 }
@@ -439,16 +436,16 @@ function Get-AbrFgtRoute {
                             foreach ($n in $neighborrange) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "id"                 = $n.id
-                                    "Prefix"             = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
-                                    "Neighbor Group"     = $n.'neighbor-group'
+                                    "id" = $n.id
+                                    "Prefix" = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
+                                    "Neighbor Group" = $n.'neighbor-group'
                                     "Max Neighbor Num  " = $n.'max-neighbor-num'
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "BGP Neighbor Range"
-                                List         = $false
+                                Name = "BGP Neighbor Range"
+                                List = $false
                                 ColumnWidths = 10, 35, 30, 25
                             }
 
@@ -470,17 +467,17 @@ function Get-AbrFgtRoute {
                             foreach ($n in $neighbornetwork) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "id"                   = $n.id
-                                    "Prefix "              = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
+                                    "id" = $n.id
+                                    "Prefix " = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $n.prefix } else { $n.prefix })
                                     "Network-import-check" = $n.'network-import-check'
-                                    "Backdoor"             = $n.backdoor
-                                    "Route-map"            = $n.'route-map'
+                                    "Backdoor" = $n.backdoor
+                                    "Route-map" = $n.'route-map'
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "BGP Network"
-                                List         = $false
+                                Name = "BGP Network"
+                                List = $false
                                 ColumnWidths = 10, 35, 24, 11, 20
                             }
 
@@ -502,15 +499,15 @@ function Get-AbrFgtRoute {
                             foreach ($r in $redistribute) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "Name"      = $r.name
-                                    "Status"    = $r.status
+                                    "Name" = $r.name
+                                    "Status" = $r.status
                                     "Route-map" = $r.'route-map'
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "BGP Redistribute"
-                                List         = $false
+                                Name = "BGP Redistribute"
+                                List = $false
                                 ColumnWidths = 40, 30, 30
                             }
 
@@ -532,18 +529,18 @@ function Get-AbrFgtRoute {
                             foreach ($n in $BGPNeighbors) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "Neighbor IP"  = $n.neighbor_ip
-                                    "Local IP"     = $n.local_ip
-                                    "Remote AS"    = $n.remote_as
+                                    "Neighbor IP" = $n.neighbor_ip
+                                    "Local IP" = $n.local_ip
+                                    "Remote AS" = $n.remote_as
                                     "Admin status" = $n.admin_status
-                                    "State"        = $n.state
-                                    "type"         = $n.type
+                                    "State" = $n.state
+                                    "type" = $n.type
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "BGP Neighbor Status"
-                                List         = $false
+                                Name = "BGP Neighbor Status"
+                                List = $false
                                 ColumnWidths = 15, 15, 15, 25, 15, 15
                             }
 
