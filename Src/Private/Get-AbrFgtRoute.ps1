@@ -570,16 +570,16 @@ function Get-AbrFgtRoute {
                         Paragraph "The following section provides a summary of OSPF settings."
                         BlankLine
                         $OutObj = [pscustomobject]@{
-                            "OSPF Area"             = @($OSPF.area).count
-                            "OSPF Interface"        = @($OSPF.'ospf-interface').count
-                            "OSPF Network"          = @($OSPF.network).count
-                            "OSPF Summary Address"  = @($OSPF.'summary-address').count
+                            "OSPF Area" = @($OSPF.area).count
+                            "OSPF Interface" = @($OSPF.'ospf-interface').count
+                            "OSPF Network" = @($OSPF.network).count
+                            "OSPF Summary Address" = @($OSPF.'summary-address').count
                             "OSPF Neighbors Status" = @($OSPFNeighbors).count
                         }
 
                         $TableParams = @{
-                            Name         = "Summary"
-                            List         = $true
+                            Name = "Summary"
+                            List = $true
                             ColumnWidths = 50, 50
                         }
 
@@ -604,20 +604,20 @@ function Get-AbrFgtRoute {
                             if ($OSPFSchema.PSObject.Properties.Name -contains $name) {
                                 #found the default value
                                 $default = $OSPFSchema.$name.default
-                                                                                if ($null -eq $default) {
-                                                    $default = ""
-                                                }
+                                if ($null -eq $default) {
+                                    $default = ""
+                                }
                             }
                             $OutObj += [pscustomobject]@{
-                                "Name"    = $name
-                                "Value"   = $value
+                                "Name" = $name
+                                "Value" = $value
                                 "Default" = $default
                             }
                         }
 
                         $TableParams = @{
-                            Name         = "OSPF Configuration"
-                            List         = $false
+                            Name = "OSPF Configuration"
+                            List = $false
                             ColumnWidths = 34, 33, 33
                         }
 
@@ -640,15 +640,15 @@ function Get-AbrFgtRoute {
                             foreach ($a in $area) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "ID"             = $a.id
-                                    "Type"           = $a.type
+                                    "ID" = $a.id
+                                    "Type" = $a.type
                                     "Authentication" = $a.authentication
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "OSPF Area"
-                                List         = $false
+                                Name = "OSPF Area"
+                                List = $false
                                 ColumnWidths = 34, 33, 33
                             }
 
@@ -689,15 +689,15 @@ function Get-AbrFgtRoute {
                                             }
                                         }
                                         $OutObj += [pscustomobject]@{
-                                            "Name"    = $name
-                                            "Value"   = $value
+                                            "Name" = $name
+                                            "Value" = $value
                                             "Default" = $default
                                         }
                                     }
 
                                     $TableParams = @{
-                                        Name         = "OSPF Area Configuration $($a.id)"
-                                        List         = $false
+                                        Name = "OSPF Area Configuration $($a.id)"
+                                        List = $false
                                         ColumnWidths = 34, 33, 33
                                     }
 
@@ -724,17 +724,17 @@ function Get-AbrFgtRoute {
                             foreach ($i in $interface) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "Name"             = $i.name
-                                    "Interface"        = $i.interface
-                                    "Cost"             = $i.cost
+                                    "Name" = $i.name
+                                    "Interface" = $i.interface
+                                    "Cost" = $i.cost
                                     "Authentification" = $i.authentication
-                                    "Status"           = $i.status
+                                    "Status" = $i.status
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "OSPF Interface"
-                                List         = $false
+                                Name = "OSPF Interface"
+                                List = $false
                                 ColumnWidths = 20, 20, 20, 20, 20
                             }
 
@@ -775,15 +775,15 @@ function Get-AbrFgtRoute {
                                             }
                                         }
                                         $OutObj += [pscustomobject]@{
-                                            "Name"    = $name
-                                            "Value"   = $value
+                                            "Name" = $name
+                                            "Value" = $value
                                             "Default" = $default
                                         }
                                     }
 
                                     $TableParams = @{
-                                        Name         = "OSPF Interface Configuration $($i.Name)"
-                                        List         = $false
+                                        Name = "OSPF Interface Configuration $($i.Name)"
+                                        List = $false
                                         ColumnWidths = 34, 33, 33
                                     }
 
@@ -810,16 +810,16 @@ function Get-AbrFgtRoute {
                             foreach ($n in $network) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "ID"       = $n.id
-                                    "Area"     = $n.area
-                                    "Prefix"   = $n.prefix
+                                    "ID" = $n.id
+                                    "Area" = $n.area
+                                    "Prefix" = $n.prefix
                                     "Comments" = $n.coments
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "OSPF Network"
-                                List         = $false
+                                Name = "OSPF Network"
+                                List = $false
                                 ColumnWidths = 10, 25, 25, 40
                             }
 
@@ -844,16 +844,16 @@ function Get-AbrFgtRoute {
                             foreach ($sa in $summary_address) {
 
                                 $OutObj += [pscustomobject]@{
-                                    "ID"        = $sa.id
-                                    "Prefix"    = $sa.prefix
-                                    "Tag"       = $sa.tag
+                                    "ID" = $sa.id
+                                    "Prefix" = $sa.prefix
+                                    "Tag" = $sa.tag
                                     "Advertise" = $sa.advertise
                                 }
                             }
 
                             $TableParams = @{
-                                Name         = "OSPF Summary Address"
-                                List         = $false
+                                Name = "OSPF Summary Address"
+                                List = $false
                                 ColumnWidths = 10, 30, 30, 30
                             }
 
@@ -877,18 +877,18 @@ function Get-AbrFgtRoute {
                         foreach ($r in $redistribute) {
 
                             $OutObj += [pscustomobject]@{
-                                "Name"        = $r.name
-                                "Status"      = $r.status
-                                "Metric"      = $r.metric
+                                "Name" = $r.name
+                                "Status" = $r.status
+                                "Metric" = $r.metric
                                 "Metric Type" = $r.'metric-type'
-                                "Route-map"   = $r.'route-map'
-                                "Tag"         = $r.tag
+                                "Route-map" = $r.'route-map'
+                                "Tag" = $r.tag
                             }
                         }
 
                         $TableParams = @{
-                            Name         = "OSPF Redistribute"
-                            List         = $false
+                            Name = "OSPF Redistribute"
+                            List = $false
                             ColumnWidths = 15, 15, 15, 15, 25, 15
                         }
 
@@ -911,15 +911,15 @@ function Get-AbrFgtRoute {
 
                             $OutObj += [pscustomobject]@{
                                 "Neighbor IP" = $n.neighbor_ip
-                                "Router ID"   = $n.router_id
-                                "State"       = $n.state
-                                "Priority"    = $n.priority
+                                "Router ID" = $n.router_id
+                                "State" = $n.state
+                                "Priority" = $n.priority
                             }
                         }
 
                         $TableParams = @{
-                            Name         = "OSPF Neighbor Status"
-                            List         = $false
+                            Name = "OSPF Neighbor Status"
+                            List = $false
                             ColumnWidths = 25, 25, 25, 25
                         }
 
