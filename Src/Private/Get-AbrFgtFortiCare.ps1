@@ -89,7 +89,8 @@ function Get-AbrFgtForticare {
                 'fortiguard', 'forticare', 'forticloud', 'sms', 'vdom',
                 'forticloud_logging', 'fortianalyzer_cloud', 'fortianalyzer_cloud_premium',
                 'fortimanager_cloud', 'fortisandbox_cloud', 'fortiguard_ai_based_sandbox',
-                'forticonverter', 'fortiems_cloud', 'fortimanager_cloud_alci', 'fortisandbox_cloud_alci'
+                'forticonverter', 'fortiems_cloud', 'fortimanager_cloud_alci', 'fortisandbox_cloud_alci',
+                'ot_detection'
             )
 
             $FortiGuardSvcOrder = @(
