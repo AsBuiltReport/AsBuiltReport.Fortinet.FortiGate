@@ -593,8 +593,8 @@ function Get-AbrFgtSystem {
                                     $expire_time = Get-Date -UnixTimeSeconds $dhcp_lease.expire_time
                                 } else {
                                     #PS 5 and before
-
-                                    $expire_time = [datetime]::UnixEpoch.AddSeconds($dhcp_lease.expire_time)
+                                    $epoch = [datetime]"1970-01-01 00:00:00Z"
+                                    $expire_time = $epoch.AddSeconds($dhcp_lease.expire_time)
                                 }
                                 $OutObj += [pscustomobject]@{
                                     "IP" = $dhcp_lease.ip
