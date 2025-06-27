@@ -1,5 +1,11 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+
+## [0.5.1] - 2025-06-27
+
+### Fixed
+- Update PowerFGT (0.9.1) and AsBuiltReport (1.4.3) Release [119](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/119)
+
 ## [0.5.0] - 2025-06-27
 
 ### Added
