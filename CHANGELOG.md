@@ -1,5 +1,29 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+## [0.5.0] - 2025-06-27
+
+### Added
+- Firewall: Add FQDN information [90](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/90)
+- Firewall: Add Policy Usage [95](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/95)
+- Enhance firewall address (unknown & mac) [94](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/94)
+- Policy summary: Fix typo and add VPN SSL (from and to) [99](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/99)
+- Refactor interfaces for better readability[101](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/101)
+- Feature/ip cidr conversion [103](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/103)
+- Add new firewall Address Type (Dynamic & Interface-subnet) [108](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/108)
+- Add BGP (router) Chapiter(s) [109](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/109)
+- Add Router OSPF Chapiter [114](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/114)
+
+### Fixed
+- System(DHCP Reservation): Fix when no DHCP reservation (with PS 5.0) [93](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/93)
+- System(DHCP): Fix display of Expire Time when use PS5 [100](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/100)
+- FortiCare: don't need to ToLower() FortiCare Account [106](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/106)
+- Fix(Forticare): Avoid warning when don't Support by [107](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/107)
+- vscode: align settings with Template/Core [111](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/111)
+- vscode(Forticare): align settings with Template/Core by [112](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/112)
+- Fix support ps5 (system) [113](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/113)
+- FortiCare: excluse ot_detection Service by [115](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/115)
+- System: dhcp lease with PS5 [116](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/116)
+
 ## [0.4.1] - 2024-07-17
 
 ### Fixed
