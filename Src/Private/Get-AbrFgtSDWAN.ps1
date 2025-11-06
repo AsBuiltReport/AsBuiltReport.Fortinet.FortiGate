@@ -26,8 +26,12 @@ function Get-AbrFgtSDWAN {
 
     process {
 
-        $sdwan = Get-fgtSystemSDWAN
-
+        try {
+            $sdwan = Get-fgtSystemSDWAN
+        }
+        catch {
+            Write-Warning "SD-WAN is not available before FortiOS 6.4.x"
+        }
         if ($sdwan) {
             Section -Style Heading2 'SD-WAN' {
                 Paragraph "The following section details SD-WAN settings configured on FortiGate."
