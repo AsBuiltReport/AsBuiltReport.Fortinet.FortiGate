@@ -627,8 +627,12 @@ function Get-AbrFgtSystem {
 
             # Fetch HA Configuration
             $haConfig = Get-FGTSystemHA
-            $haPeers = Get-FGTMonitorSystemHAPeer
-            $haChecksums = Get-FGTMonitorSystemHAChecksum
+            try {
+                $haPeers = Get-FGTMonitorSystemHAPeer
+                $haChecksums = Get-FGTMonitorSystemHAChecksum
+            } catch {
+                Write-Warning "HA Peer/Checksum are not available before FortiOS 6.2.x"
+            }
 
             if ( $haConfig.mode -ne 'standalone' -and $infoLevel.System -ge 1) {
                 Section -Style Heading3 'High Availability' {
