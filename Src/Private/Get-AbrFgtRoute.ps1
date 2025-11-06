@@ -32,10 +32,15 @@ function Get-AbrFgtRoute {
             $MonitorRouterIPv4 = Get-FGTMonitorRouterIPv4
             $Statics = Get-FGTRouterStatic
             $PolicyBasedRouting = Get-FGTRouterPolicy
-            $BGPNeighbors = Get-FGTMonitorRouterBGPNeighbors
+            #
+            try {
+                $BGPNeighbors = Get-FGTMonitorRouterBGPNeighbors
+                $OSPFNeighbors = Get-FGTMonitorRouterOSPFNeighbors
+            } catch {
+                Write-Warning "BGP/OSPF Neighbor are not available"
+            }
             $BGP = Get-FGTRouterBGP
             $BGPSchema = (Invoke-FGTRestMethod 'api/v2/cmdb/router/bgp?&action=schema').results.children
-            $OSPFNeighbors = Get-FGTMonitorRouterOSPFNeighbors
             $OSPF = Get-FGTRouterOSPF
             $OSPFSchema = (Invoke-FGTRestMethod 'api/v2/cmdb/router/ospf?&action=schema').results.children
 
