@@ -26,8 +26,9 @@ function Get-AbrFgtSDWAN {
 
     process {
 
+        #Old release of FortiOS don't support System SDWAN (Before 6.4.x)
         try {
-            $sdwan = Get-fgtSystemSDWAN
+            $sdwan = Get-FGTSystemSDWAN
         }
         catch {
             Write-Warning "SD-WAN is not available before FortiOS 6.4.x"

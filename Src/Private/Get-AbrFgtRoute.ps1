@@ -32,7 +32,7 @@ function Get-AbrFgtRoute {
             $MonitorRouterIPv4 = Get-FGTMonitorRouterIPv4
             $Statics = Get-FGTRouterStatic
             $PolicyBasedRouting = Get-FGTRouterPolicy
-            #
+            #old release (before 7.x) and some new hardware (50G, 90G ?) get error about BGP neighbors
             try {
                 $BGPNeighbors = Get-FGTMonitorRouterBGPNeighbors
                 $OSPFNeighbors = Get-FGTMonitorRouterOSPFNeighbors
