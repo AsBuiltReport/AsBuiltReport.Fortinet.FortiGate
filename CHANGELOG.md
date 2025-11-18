@@ -1,5 +1,13 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+## [0.5.2] - 2025-11-19
+
+### Added
+- Add Alias description of interface on Route (Monitor & Static) [126](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/126)
+
+### Fixed
+- Fix Report when use Old FortiGate Release (Before 7.0.x) [125](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/125)
+
 
 ## [0.5.1] - 2025-06-27
 
