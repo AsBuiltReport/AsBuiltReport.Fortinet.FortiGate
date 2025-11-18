@@ -627,6 +627,7 @@ function Get-AbrFgtSystem {
 
             # Fetch HA Configuration
             $haConfig = Get-FGTSystemHA
+            #Old release of FortiOS (Before 6.2.x) don't support SystemHAPeer and HAChecksum
             try {
                 $haPeers = Get-FGTMonitorSystemHAPeer
                 $haChecksums = Get-FGTMonitorSystemHAChecksum
