@@ -131,6 +131,11 @@ function Get-AbrFgtRoute {
                             $interface = $static.'sdwan-zone'.name
                         } else {
                             $interface = $static.device
+                            #Search interface on system interface (for get alias)
+                            $int = $interfaces | Where-Object { $_.name -eq $interface }
+                            if ($int.alias ) {
+                                $interface += " ($($int.alias))"
+                            }
                         }
 
                         $OutObj += [pscustomobject]@{
