@@ -43,6 +43,7 @@ function Get-AbrFgtRoute {
             $BGPSchema = (Invoke-FGTRestMethod 'api/v2/cmdb/router/bgp?&action=schema').results.children
             $OSPF = Get-FGTRouterOSPF
             $OSPFSchema = (Invoke-FGTRestMethod 'api/v2/cmdb/router/ospf?&action=schema').results.children
+            $interfaces = Get-FGTSystemInterface -skip
 
             if ($InfoLevel.Route -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -79,6 +80,11 @@ function Get-AbrFgtRoute {
                             $interface = "Blackhole"
                         } else {
                             $interface = $route.interface
+                            #Search interface on system interface (for get alias)
+                            $int = $interfaces | Where-Object { $_.name -eq $interface }
+                            if ($int.alias ) {
+                                $interface += " ($($int.alias))"
+                            }
                         }
 
                         $OutObj += [pscustomobject]@{
@@ -426,7 +432,7 @@ function Get-AbrFgtRoute {
                                             $TableParams['Caption'] = "- $($TableParams.Name)"
                                         }
 
-                                        $OutObj | Where-Object { $_.value -NE $_.default } | Set-Style -Style Critical
+                                        $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
                                         $OutObj | Table @TableParams
                                     }
                                 }
