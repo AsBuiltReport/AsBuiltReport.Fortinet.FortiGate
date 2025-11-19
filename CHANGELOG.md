@@ -10,6 +10,7 @@
 ### Changed
 - Update to AsBuiltReport (1.5.1) Release
 - Update Github Actions workflow (Release.yml, PSScriptAnalyzer.yml)
+- Update module to v0.5.3
 
 ## [0.5.2] - 2025-11-19
 
