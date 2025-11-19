@@ -3,7 +3,7 @@
 ## [0.5.3] - Unreleased
 
 ### Added
-- Add depedabot configuration
+- Add dependabot configuration
 - Add bluesky-post-action to Release workflow
 - Add dependency module version validation (Write-ReportModuleInfo)
 
