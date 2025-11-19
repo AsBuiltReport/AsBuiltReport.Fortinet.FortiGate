@@ -1,5 +1,16 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+## [0.5.3] - Unreleased
+
+### Added
+- Add depedabot configuration
+- Add bluesky-post-action to Release workflow
+- Add dependency module version validation (Write-ReportModuleInfo)
+
+### Changed
+- Update to AsBuiltReport (1.5.1) Release
+- Update Github Actions workflow (Release.yml, PSScriptAnalyzer.yml)
+
 ## [0.5.2] - 2025-11-19
 
 ### Added
@@ -7,7 +18,6 @@
 
 ### Fixed
 - Fix Report when use Old FortiGate Release (Before 7.0.x) [125](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/125)
-
 
 ## [0.5.1] - 2025-06-27
 
