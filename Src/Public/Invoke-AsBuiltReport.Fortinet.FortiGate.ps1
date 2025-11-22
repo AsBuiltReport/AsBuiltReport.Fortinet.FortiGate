@@ -5,7 +5,7 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
     .DESCRIPTION
         Documents the configuration of Fortinet FortiGate in Word/HTML/Text formats using PScribo.
     .NOTES
-        Version:        0.1.0
+        Version:        0.5.3
         Author:         Alexis La Goutte
         Twitter:        @alagoutte
         Github:         alagoutte
@@ -20,6 +20,10 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
         [String[]] $Target,
         [PSCredential] $Credential
     )
+
+    # Check the version of the dependency modules
+    Write-ReportModuleInfo -ModuleName 'Fortinet.FortiGate'
+
 
     # Import Report Configuration
     $Report = $ReportConfig.Report
@@ -36,7 +40,7 @@ function Invoke-AsBuiltReport.Fortinet.FortiGate {
 
         try {
             #Connection to FortiGate (TODO: Add Parameter for Certificate Check and Port)
-            Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck -Port $Options.Port -vdom $Options.vdom | Out-Null
+            Connect-FGT -Server $System -Credential $Credential -SkipCertificateCheck -port $Options.Port -vdom $Options.vdom | Out-Null
 
             #Get Model
             $Model = (Get-FGTMonitorSystemFirmware).current.'platform-id'
