@@ -27,7 +27,7 @@
     # CompanyName = 'Unknown'
 
     # Copyright statement for this module
-    Copyright = '(c) 2025 Alexis La Goutte. All rights reserved.'
+    Copyright = '(c) 2022 Alexis La Goutte. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description = 'A PowerShell module to generate an as built report on the configuration of Fortinet FortiGate.'
