@@ -30,7 +30,9 @@ function Get-AbrFgtVPNIPsec {
             BlankLine
 
             $vpn_ph1 = Get-FGTVpnIpsecPhase1Interface
+            $vpn_ph1_schema = (Invoke-FGTRestMethod 'api/v2/cmdb/vpn.ipsec/phase1-interface?&action=schema').results.children
             $vpn_ph2 = Get-FGTVpnIpsecPhase2Interface
+            $vpn_ph2_schema = (Invoke-FGTRestMethod 'api/v2/cmdb/vpn.ipsec/phase2-interface?&action=schema').results.children
 
             if ($InfoLevel.VPNIPsec -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -89,6 +91,45 @@ function Get-AbrFgtVPNIPsec {
 
 
                         foreach ($v1 in $vpn_ph1) {
+                            Section -Style Heading3 "Phase 1: $($v1.name) v0" {
+                                $OutObj = @()
+
+                                foreach ($properties in $v1.PSObject.properties) {
+                                    #Skip System Object array (manually display after like Neighbor, network...)
+                                    if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                        continue
+                                    }
+                                    $name = $properties.name
+                                    $value = [string]$properties.value
+                                    #Check the schema of $value
+                                    if ($vpn_ph1_schema.PSObject.Properties.Name -contains $name) {
+                                        #found the default value
+                                        $default = $vpn_ph1_schema.$name.default
+                                        if ($null -eq $default) {
+                                            $default = ""
+                                        }
+                                    }
+                                    $OutObj += [pscustomobject]@{
+                                        "Name" = $name
+                                        "Value" = $value
+                                        "Default" = $default
+                                    }
+                                }
+
+                                $TableParams = @{
+                                    Name = "VPN IPsec Phase 1: $($v1.name)"
+                                    List = $false
+                                    ColumnWidths = 34, 33, 33
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                                $OutObj | Table @TableParams
+                            }
+
                             Section -Style Heading3 "Phase 1: $($v1.name)" {
                                 BlankLine
                                 $OutObj = @()
