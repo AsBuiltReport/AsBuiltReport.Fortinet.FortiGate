@@ -103,7 +103,6 @@ function Get-AbrFgtVPNIPsec {
 
                                     #Check the schema of $value
                                     if ($vpn_ph1_schema.PSObject.Properties.Name -contains $name) {
-                                        write-verbose "ALG"
                                         if ($properties.typeNameOfValue -eq "System.Object[]") {
                                             $children = $vpn_ph1_schema.$name.children.PSObject.properties.name
                                             #Check if there is a value
@@ -117,6 +116,13 @@ function Get-AbrFgtVPNIPsec {
                                             $default = ""
                                         }
                                     }
+
+                                    #Format value (add comma) and default for specific parameters (dhgrp, proposal, signature-hash-alg)
+                                    if($name -eq "dhgrp" -or $name -eq "proposal" -or $name -eq "signature-hash-alg") {
+                                        $value = $value -replace " ", ", "
+                                        $default = $default -replace " ", ", "
+                                    }
+
                                     $OutObj += [pscustomobject]@{
                                         "Name" = $name
                                         "Value" = $value
@@ -128,12 +134,6 @@ function Get-AbrFgtVPNIPsec {
                                     Name = "VPN IPsec Phase 1: $($v1.name)"
                                     List = $false
                                     ColumnWidths = 34, 33, 33
-                                }
-
-                                #Format value (add comma) and default for specific parameters (dhgrp, proposal, signature-hash-alg)
-                                if($name -eq "dhgrp" -or $name -eq "proposal" -or $name -eq "signature-hash-alg") {
-                                    $value = $value -replace " ", ", "
-                                    $default = $default -replace " ", ", "
                                 }
 
                                 if ($Report.ShowTableCaptions) {
