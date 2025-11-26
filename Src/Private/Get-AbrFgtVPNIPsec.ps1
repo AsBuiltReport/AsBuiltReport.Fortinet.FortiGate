@@ -256,44 +256,6 @@ function Get-AbrFgtVPNIPsec {
 
                         }
 
-                        foreach ($v2 in $vpn_ph2) {
-                            Section -Style Heading3 "Phase 2: $($v2.name) ($($v2.phase1name))" {
-                                BlankLine
-                                $OutObj = @()
-
-                                $OutObj += [pscustomobject]@{
-                                    "Name" = $v2.name
-                                    "Phase 1 Name" = $v2.phase1name
-                                    "Commnets" = $v2.comments
-                                    "Proposal" = $v2.proposal -replace " ", ", "
-                                    "DH Group" = $v2.dhgrp -replace " ", ", "
-                                    "Replay" = $v2.replay
-                                    "KeepAlive" = $v2.keepalive
-                                    "Keylife Type" = $v2.'keylife-type'
-                                    "Keylife Seconds" = $v2.keylifeseconds
-                                    "Keylife Kbs" = $v2.keylifekbs
-                                    'Source Address Type' = $v2.'src-addr-type'
-                                    'Source Address Name' = $v2.'src-name'
-                                    'Source Address Subnet' = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'src-subnet' } else { $v2.'src-subnet' })
-                                    'Destination Address Type' = $v2.'dst-addr-type'
-                                    'Destination Address Name' = $v2.'dst-name'
-                                    'Destination Address Subnet' = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'dst-subnet' } else { $v2.'dst-subnet' })
-                                }
-
-
-                                $TableParams = @{
-                                    Name = "VPN IPsec Phase 2: $($v2.name)"
-                                    List = $true
-                                    ColumnWidths = 50, 50
-                                }
-
-                                if ($Report.ShowTableCaptions) {
-                                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                                }
-
-                                $OutObj | Table @TableParams
-                            }
-                        }
                     }
                 }
 
