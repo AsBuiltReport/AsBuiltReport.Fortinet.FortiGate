@@ -95,14 +95,23 @@ function Get-AbrFgtVPNIPsec {
                                 $OutObj = @()
 
                                 foreach ($properties in $v1.PSObject.properties) {
-                                    #Skip System Object array (manually display after like Neighbor, network...)
-                                    if ($properties.typeNameOfValue -eq "System.Object[]") {
-                                        continue
-                                    }
+                                    $value = ""
                                     $name = $properties.name
-                                    $value = [string]$properties.value
+                                    #Skip System Object array (display after with children)
+                                    if ($properties.typeNameOfValue -ne "System.Object[]") {
+                                        $value = [string]$properties.value
+                                    }
+
                                     #Check the schema of $value
                                     if ($vpn_ph1_schema.PSObject.Properties.Name -contains $name) {
+                                        write-verbose "ALG"
+                                        if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                            $children = $vpn_ph1_schema.$name.children.PSObject.properties.name
+                                            #Check if there is a value
+                                            if($v1.$name) {
+                                                 $value = $v1.$name.$children -join ", "
+                                            }
+                                        }
                                         #found the default value
                                         $default = $vpn_ph1_schema.$name.default
                                         if ($null -eq $default) {
