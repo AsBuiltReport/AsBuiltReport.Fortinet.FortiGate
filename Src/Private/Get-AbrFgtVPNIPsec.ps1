@@ -201,6 +201,63 @@ function Get-AbrFgtVPNIPsec {
 
                         foreach ($v2 in $vpn_ph2) {
                             Section -Style Heading3 "Phase 2: $($v2.name) ($($v2.phase1name))" {
+                                $OutObj = @()
+
+                                foreach ($properties in $v2.PSObject.properties) {
+                                    $value = ""
+                                    $name = $properties.name
+                                    #Skip System Object array (display after with children)
+                                    if ($properties.typeNameOfValue -ne "System.Object[]") {
+                                        $value = [string]$properties.value
+                                    }
+
+                                    #Check the schema of $value
+                                    if ($vpn_ph2_schema.PSObject.Properties.Name -contains $name) {
+                                        if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                            $children = $vpn_ph2_schema.$name.children.PSObject.properties.name
+                                            #Check if there is a value
+                                            if($v2.$name) {
+                                                 $value = $v2.$name.$children -join ", "
+                                            }
+                                        }
+                                        #found the default value
+                                        $default = $vpn_ph2_schema.$name.default
+                                        if ($null -eq $default) {
+                                            $default = ""
+                                        }
+                                    }
+
+                                    #Format value (add comma) and default for specific parameters (dhgrp, proposal))
+                                    if($name -eq "dhgrp" -or $name -eq "proposal") {
+                                        $value = $value -replace " ", ", "
+                                        $default = $default -replace " ", ", "
+                                    }
+
+                                    $OutObj += [pscustomobject]@{
+                                        "Name" = $name
+                                        "Value" = $value
+                                        "Default" = $default
+                                    }
+                                }
+
+                                $TableParams = @{
+                                    Name = "VPN IPsec Phase 2: $($v2.name)"
+                                    List = $false
+                                    ColumnWidths = 34, 33, 33
+                                }
+
+                                if ($Report.ShowTableCaptions) {
+                                    $TableParams['Caption'] = "- $($TableParams.Name)"
+                                }
+
+                                $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
+                                $OutObj | Table @TableParams
+                            }
+
+                        }
+
+                        foreach ($v2 in $vpn_ph2) {
+                            Section -Style Heading3 "Phase 2: $($v2.name) ($($v2.phase1name))" {
                                 BlankLine
                                 $OutObj = @()
 
