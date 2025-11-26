@@ -131,6 +131,12 @@ function Get-AbrFgtVPNIPsec {
                                     ColumnWidths = 34, 33, 33
                                 }
 
+                                #Format value (add comma) and default for specific parameters (dhgrp, proposal, signature-hash-alg)
+                                if($name -eq "dhgrp" -or $name -eq "proposal" -or $name -eq "signature-hash-alg") {
+                                    $value = $value -replace " ", ", "
+                                    $default = $default -replace " ", ", "
+                                }
+
                                 if ($Report.ShowTableCaptions) {
                                     $TableParams['Caption'] = "- $($TableParams.Name)"
                                 }
