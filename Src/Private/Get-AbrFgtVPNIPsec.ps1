@@ -89,9 +89,8 @@ function Get-AbrFgtVPNIPsec {
 
                     if ($vpn_ph1 -and $InfoLevel.VPNIPsec -ge 2) {
 
-
                         foreach ($v1 in $vpn_ph1) {
-                            Section -Style Heading3 "Phase 1: $($v1.name) v0" {
+                            Section -Style Heading3 "Phase 1: $($v1.name)" {
                                 $OutObj = @()
 
                                 foreach ($properties in $v1.PSObject.properties) {
@@ -145,45 +144,6 @@ function Get-AbrFgtVPNIPsec {
                                 $OutObj | Table @TableParams
                             }
 
-                            Section -Style Heading3 "Phase 1: $($v1.name)" {
-                                BlankLine
-                                $OutObj = @()
-
-                                $OutObj += [pscustomobject]@{
-                                    "Name" = $v1.name
-                                    "Type" = $v1.type
-                                    "Interface" = $v1.interface
-                                    "IP Version" = $v1.'ip-version'
-                                    "IKE Version" = $v1.'ike-version'
-                                    "Local Gateway" = $v1.'local-gw'
-                                    "Remote Gateway" = $v1.'remote-gw'
-                                    "Mode" = $v1.mode
-                                    "Auth method" = $v1.authmethod
-                                    "Peer Type" = $v1.peertype
-                                    "Comments" = $v1.comments
-                                    "Mode CFG" = $v1.'mode-cfg'
-                                    "Proposal" = $v1.proposal -replace " ", ", "
-                                    "DH Group" = $v1.dhgrp -replace " ", ", "
-                                    "Local ID" = $v1.localid
-                                    "DPD" = $v1.dpd
-                                    "xAuth Type" = $v1.xauthtype
-                                    "NAT Traversal" = $v1.nattraversal
-                                    "Rekey" = $v1.rekey
-                                }
-
-
-                                $TableParams = @{
-                                    Name = "VPN IPsec Phase 1: $($v1.name)"
-                                    List = $true
-                                    ColumnWidths = 50, 50
-                                }
-
-                                if ($Report.ShowTableCaptions) {
-                                    $TableParams['Caption'] = "- $($TableParams.Name)"
-                                }
-
-                                $OutObj | Table @TableParams
-                            }
                         }
                     }
                 }
