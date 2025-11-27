@@ -106,8 +106,8 @@ function Get-AbrFgtVPNIPsec {
                                         if ($properties.typeNameOfValue -eq "System.Object[]") {
                                             $children = $vpn_ph1_schema.$name.children.PSObject.properties.name
                                             #Check if there is a value
-                                            if($v1.$name) {
-                                                 $value = $v1.$name.$children -join ", "
+                                            if ($v1.$name) {
+                                                $value = $v1.$name.$children -join ", "
                                             }
                                         }
                                         #found the default value
@@ -118,7 +118,7 @@ function Get-AbrFgtVPNIPsec {
                                     }
 
                                     #Format value (add comma) and default for specific parameters (dhgrp, proposal, signature-hash-alg)
-                                    if($name -eq "dhgrp" -or $name -eq "proposal" -or $name -eq "signature-hash-alg") {
+                                    if ($name -eq "dhgrp" -or $name -eq "proposal" -or $name -eq "signature-hash-alg") {
                                         $value = $value -replace " ", ", "
                                         $default = $default -replace " ", ", "
                                     }
@@ -163,7 +163,7 @@ function Get-AbrFgtVPNIPsec {
                                 "subnet" {
                                     $src = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'src-subnet' } else { $v2.'src-subnet' -replace " ", "/" })
                                 }
-                                Default {}
+                                default {}
                             }
                             switch ($v2.'dst-addr-type') {
                                 "name" {
@@ -172,7 +172,7 @@ function Get-AbrFgtVPNIPsec {
                                 "subnet" {
                                     $dst = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'dst-subnet' } else { $v2.'dst-subnet' -replace " ", "/" })
                                 }
-                                Default {}
+                                default {}
                             }
                             $OutObj += [pscustomobject]@{
                                 "Name" = $v2.name
@@ -216,8 +216,8 @@ function Get-AbrFgtVPNIPsec {
                                         if ($properties.typeNameOfValue -eq "System.Object[]") {
                                             $children = $vpn_ph2_schema.$name.children.PSObject.properties.name
                                             #Check if there is a value
-                                            if($v2.$name) {
-                                                 $value = $v2.$name.$children -join ", "
+                                            if ($v2.$name) {
+                                                $value = $v2.$name.$children -join ", "
                                             }
                                         }
                                         #found the default value
@@ -228,7 +228,7 @@ function Get-AbrFgtVPNIPsec {
                                     }
 
                                     #Format value (add comma) and default for specific parameters (dhgrp, proposal))
-                                    if($name -eq "dhgrp" -or $name -eq "proposal") {
+                                    if ($name -eq "dhgrp" -or $name -eq "proposal") {
                                         $value = $value -replace " ", ", "
                                         $default = $default -replace " ", ", "
                                     }
