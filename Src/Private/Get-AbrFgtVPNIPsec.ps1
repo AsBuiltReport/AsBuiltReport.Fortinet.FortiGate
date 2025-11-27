@@ -91,11 +91,16 @@ function Get-AbrFgtVPNIPsec {
 
                         foreach ($v1 in $vpn_ph1) {
                             Section -Style Heading3 "Phase 1: $($v1.name)" {
+                                BlankLine
                                 $OutObj = @()
 
                                 foreach ($properties in $v1.PSObject.properties) {
                                     $value = ""
                                     $name = $properties.name
+                                    #Remove q_origin_key (the same of name and it is an internal parameter)
+                                    if ($name -eq "q_origin_key") {
+                                        continue
+                                    }
                                     #Skip System Object array (display after with children)
                                     if ($properties.typeNameOfValue -ne "System.Object[]") {
                                         $value = [string]$properties.value
@@ -201,11 +206,16 @@ function Get-AbrFgtVPNIPsec {
 
                         foreach ($v2 in $vpn_ph2) {
                             Section -Style Heading3 "Phase 2: $($v2.name) ($($v2.phase1name))" {
+                                BlankLine
                                 $OutObj = @()
 
                                 foreach ($properties in $v2.PSObject.properties) {
                                     $value = ""
                                     $name = $properties.name
+                                    #Remove q_origin_key (the same of name and it is an internal parameter)
+                                    if ($name -eq "q_origin_key") {
+                                        continue
+                                    }
                                     #Skip System Object array (display after with children)
                                     if ($properties.typeNameOfValue -ne "System.Object[]") {
                                         $value = [string]$properties.value
