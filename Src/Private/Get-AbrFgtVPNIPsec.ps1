@@ -30,7 +30,9 @@ function Get-AbrFgtVPNIPsec {
             BlankLine
 
             $vpn_ph1 = Get-FGTVpnIpsecPhase1Interface
+            $vpn_ph1_schema = (Invoke-FGTRestMethod 'api/v2/cmdb/vpn.ipsec/phase1-interface?&action=schema').results.children
             $vpn_ph2 = Get-FGTVpnIpsecPhase2Interface
+            $vpn_ph2_schema = (Invoke-FGTRestMethod 'api/v2/cmdb/vpn.ipsec/phase2-interface?&action=schema').results.children
 
             if ($InfoLevel.VPNIPsec -ge 1) {
                 Section -Style Heading3 'Summary' {
@@ -87,47 +89,66 @@ function Get-AbrFgtVPNIPsec {
 
                     if ($vpn_ph1 -and $InfoLevel.VPNIPsec -ge 2) {
 
-
                         foreach ($v1 in $vpn_ph1) {
                             Section -Style Heading3 "Phase 1: $($v1.name)" {
                                 BlankLine
                                 $OutObj = @()
 
-                                $OutObj += [pscustomobject]@{
-                                    "Name" = $v1.name
-                                    "Type" = $v1.type
-                                    "Interface" = $v1.interface
-                                    "IP Version" = $v1.'ip-version'
-                                    "IKE Version" = $v1.'ike-version'
-                                    "Local Gateway" = $v1.'local-gw'
-                                    "Remote Gateway" = $v1.'remote-gw'
-                                    "Mode" = $v1.mode
-                                    "Auth method" = $v1.authmethod
-                                    "Peer Type" = $v1.peertype
-                                    "Comments" = $v1.comments
-                                    "Mode CFG" = $v1.'mode-cfg'
-                                    "Proposal" = $v1.proposal -replace " ", ", "
-                                    "DH Group" = $v1.dhgrp -replace " ", ", "
-                                    "Local ID" = $v1.localid
-                                    "DPD" = $v1.dpd
-                                    "xAuth Type" = $v1.xauthtype
-                                    "NAT Traversal" = $v1.nattraversal
-                                    "Rekey" = $v1.rekey
-                                }
+                                foreach ($properties in $v1.PSObject.properties) {
+                                    $value = ""
+                                    $name = $properties.name
+                                    #Remove q_origin_key (the same of name and it is an internal parameter)
+                                    if ($name -eq "q_origin_key") {
+                                        continue
+                                    }
+                                    #Skip System Object array (display after with children)
+                                    if ($properties.typeNameOfValue -ne "System.Object[]") {
+                                        $value = [string]$properties.value
+                                    }
 
+                                    #Check the schema of $value
+                                    if ($vpn_ph1_schema.PSObject.Properties.Name -contains $name) {
+                                        if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                            $children = $vpn_ph1_schema.$name.children.PSObject.properties.name
+                                            #Check if there is a value
+                                            if ($v1.$name) {
+                                                $value = $v1.$name.$children -join ", "
+                                            }
+                                        }
+                                        #found the default value
+                                        $default = $vpn_ph1_schema.$name.default
+                                        if ($null -eq $default) {
+                                            $default = ""
+                                        }
+                                    }
+
+                                    #Format value (add comma) and default for specific parameters (dhgrp, proposal, signature-hash-alg)
+                                    if ($name -eq "dhgrp" -or $name -eq "proposal" -or $name -eq "signature-hash-alg") {
+                                        $value = $value -replace " ", ", "
+                                        $default = $default -replace " ", ", "
+                                    }
+
+                                    $OutObj += [pscustomobject]@{
+                                        "Name" = $name
+                                        "Value" = $value
+                                        "Default" = $default
+                                    }
+                                }
 
                                 $TableParams = @{
                                     Name = "VPN IPsec Phase 1: $($v1.name)"
-                                    List = $true
-                                    ColumnWidths = 50, 50
+                                    List = $false
+                                    ColumnWidths = 34, 33, 33
                                 }
 
                                 if ($Report.ShowTableCaptions) {
                                     $TableParams['Caption'] = "- $($TableParams.Name)"
                                 }
 
+                                $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
                                 $OutObj | Table @TableParams
                             }
+
                         }
                     }
                 }
@@ -147,7 +168,7 @@ function Get-AbrFgtVPNIPsec {
                                 "subnet" {
                                     $src = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'src-subnet' } else { $v2.'src-subnet' -replace " ", "/" })
                                 }
-                                Default {}
+                                default {}
                             }
                             switch ($v2.'dst-addr-type') {
                                 "name" {
@@ -156,7 +177,7 @@ function Get-AbrFgtVPNIPsec {
                                 "subnet" {
                                     $dst = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'dst-subnet' } else { $v2.'dst-subnet' -replace " ", "/" })
                                 }
-                                Default {}
+                                default {}
                             }
                             $OutObj += [pscustomobject]@{
                                 "Name" = $v2.name
@@ -188,39 +209,63 @@ function Get-AbrFgtVPNIPsec {
                                 BlankLine
                                 $OutObj = @()
 
-                                $OutObj += [pscustomobject]@{
-                                    "Name" = $v2.name
-                                    "Phase 1 Name" = $v2.phase1name
-                                    "Commnets" = $v2.comments
-                                    "Proposal" = $v2.proposal -replace " ", ", "
-                                    "DH Group" = $v2.dhgrp -replace " ", ", "
-                                    "Replay" = $v2.replay
-                                    "KeepAlive" = $v2.keepalive
-                                    "Keylife Type" = $v2.'keylife-type'
-                                    "Keylife Seconds" = $v2.keylifeseconds
-                                    "Keylife Kbs" = $v2.keylifekbs
-                                    'Source Address Type' = $v2.'src-addr-type'
-                                    'Source Address Name' = $v2.'src-name'
-                                    'Source Address Subnet' = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'src-subnet' } else { $v2.'src-subnet' })
-                                    'Destination Address Type' = $v2.'dst-addr-type'
-                                    'Destination Address Name' = $v2.'dst-name'
-                                    'Destination Address Subnet' = $(if ($Options.UseCIDRNotation) { Convert-AbrFgtSubnetToCIDR -Input $v2.'dst-subnet' } else { $v2.'dst-subnet' })
-                                }
+                                foreach ($properties in $v2.PSObject.properties) {
+                                    $value = ""
+                                    $name = $properties.name
+                                    #Remove q_origin_key (the same of name and it is an internal parameter)
+                                    if ($name -eq "q_origin_key") {
+                                        continue
+                                    }
+                                    #Skip System Object array (display after with children)
+                                    if ($properties.typeNameOfValue -ne "System.Object[]") {
+                                        $value = [string]$properties.value
+                                    }
 
+                                    #Check the schema of $value
+                                    if ($vpn_ph2_schema.PSObject.Properties.Name -contains $name) {
+                                        if ($properties.typeNameOfValue -eq "System.Object[]") {
+                                            $children = $vpn_ph2_schema.$name.children.PSObject.properties.name
+                                            #Check if there is a value
+                                            if ($v2.$name) {
+                                                $value = $v2.$name.$children -join ", "
+                                            }
+                                        }
+                                        #found the default value
+                                        $default = $vpn_ph2_schema.$name.default
+                                        if ($null -eq $default) {
+                                            $default = ""
+                                        }
+                                    }
+
+                                    #Format value (add comma) and default for specific parameters (dhgrp, proposal))
+                                    if ($name -eq "dhgrp" -or $name -eq "proposal") {
+                                        $value = $value -replace " ", ", "
+                                        $default = $default -replace " ", ", "
+                                    }
+
+                                    $OutObj += [pscustomobject]@{
+                                        "Name" = $name
+                                        "Value" = $value
+                                        "Default" = $default
+                                    }
+                                }
 
                                 $TableParams = @{
                                     Name = "VPN IPsec Phase 2: $($v2.name)"
-                                    List = $true
-                                    ColumnWidths = 50, 50
+                                    List = $false
+                                    ColumnWidths = 34, 33, 33
                                 }
 
                                 if ($Report.ShowTableCaptions) {
                                     $TableParams['Caption'] = "- $($TableParams.Name)"
                                 }
 
+                                $OutObj | Where-Object { $_.value -ne $_.default } | Set-Style -Style Critical
                                 $OutObj | Table @TableParams
                             }
+
                         }
+
                     }
                 }
 

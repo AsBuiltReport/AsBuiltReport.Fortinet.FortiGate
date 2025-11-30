@@ -1,5 +1,18 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+
+## [0.5.3] - 2025-11-30
+
+### Added
+- Add dependabot configuration [129](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/129)
+- Add bluesky-post-action to Release workflow [129](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/129)
+- Add dependency module version validation (Write-ReportModuleInfo) [129](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/129)
+- Add VPNIPsec Phase1/Phase2 all parameter [131](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/131)
+
+### Changed
+- Update to AsBuiltReport (1.5.1) Release [129](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/129)
+- Update Github Actions workflow (Release.yml, PSScriptAnalyzer.yml) [130](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/130)
+
 ## [0.5.2] - 2025-11-19
 
 ### Added
@@ -7,7 +20,6 @@
 
 ### Fixed
 - Fix Report when use Old FortiGate Release (Before 7.0.x) [125](https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/pull/125)
-
 
 ## [0.5.1] - 2025-06-27
 
