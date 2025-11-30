@@ -1,5 +1,6 @@
 # :arrows_clockwise: Fortinet FortiGate As Built Report Changelog
 
+
 ## [0.5.3] - 2025-11-30
 
 ### Added
