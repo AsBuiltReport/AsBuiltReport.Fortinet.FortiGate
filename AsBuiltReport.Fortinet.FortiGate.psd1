@@ -58,7 +58,7 @@
         },
         @{
             ModuleName = 'PowerFGT';
-            ModuleVersion = '0.9.1'
+            ModuleVersion = '0.10.1'
         }
 
     )
