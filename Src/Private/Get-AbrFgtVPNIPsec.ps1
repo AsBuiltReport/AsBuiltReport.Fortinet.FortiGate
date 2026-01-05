@@ -30,9 +30,9 @@ function Get-AbrFgtVPNIPsec {
             BlankLine
 
             $vpn_ph1 = Get-FGTVpnIpsecPhase1Interface
-            $vpn_ph1_schema = (Invoke-FGTRestMethod 'api/v2/cmdb/vpn.ipsec/phase1-interface?&action=schema').results.children
+            $vpn_ph1_schema = (Get-FGTVpnIpsecPhase1Interface -schema).children
             $vpn_ph2 = Get-FGTVpnIpsecPhase2Interface
-            $vpn_ph2_schema = (Invoke-FGTRestMethod 'api/v2/cmdb/vpn.ipsec/phase2-interface?&action=schema').results.children
+            $vpn_ph2_schema = (Get-FGTVpnIpsecPhase2Interface -schema).children
 
             if ($InfoLevel.VPNIPsec -ge 1) {
                 Section -Style Heading3 'Summary' {
