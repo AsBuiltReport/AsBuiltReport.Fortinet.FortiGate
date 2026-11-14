@@ -1,15 +1,15 @@
 <!-- ********** DO NOT EDIT THESE LINKS ********** -->
 <p align="center">
-    <a href="https://www.asbuiltreport.com/" alt="AsBuiltReport"></a>
-            <img src='https://github.com/AsBuiltReport.png' width="8%" height="8%" /></a>
+    <a href="https://www.asbuiltreport.com/">
+        <img src="https://raw.githubusercontent.com/AsBuiltReport/.github/main/assets/repo-banners/AsBuiltReport.Fortinet.FortiGate.png" alt="AsBuiltReport.Fortinet.FortiGate" width="880"></a>
 </p>
 <p align="center">
     <a href="https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/" alt="PowerShell Gallery Version">
-        <img src="https://img.shields.io/powershellgallery/v/AsBuiltReport.Fortinet.FortiGate.svg" /></a>
+        <img src="https://img.shields.io/powershellgallery/v/AsBuiltReport.Fortinet.FortiGate.svg?color=1F5FD0" /></a>
     <a href="https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/" alt="PS Gallery Downloads">
-        <img src="https://img.shields.io/powershellgallery/dt/AsBuiltReport.Fortinet.FortiGate.svg" /></a>
+        <img src="https://img.shields.io/powershellgallery/dt/AsBuiltReport.Fortinet.FortiGate.svg?color=012456" /></a>
     <a href="https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/" alt="PS Platform">
-        <img src="https://img.shields.io/powershellgallery/p/AsBuiltReport.Fortinet.FortiGate.svg" /></a>
+        <img src="https://img.shields.io/powershellgallery/p/AsBuiltReport.Fortinet.FortiGate.svg?color=FFD02B" /></a>
 </p>
 <p align="center">
     <a href="https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/graphs/commit-activity" alt="GitHub Last Commit">
@@ -17,15 +17,9 @@
     <a href="https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/master/LICENSE" alt="GitHub License">
         <img src="https://img.shields.io/github/license/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate.svg" /></a>
     <a href="https://github.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/graphs/contributors" alt="GitHub Contributors">
-        <img src="https://img.shields.io/github/contributors/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate.svg"/></a>
-</p>
-<p align="center">
-    <a href="https://twitter.com/AsBuiltReport" alt="Twitter">
-            <img src="https://img.shields.io/twitter/follow/AsBuiltReport.svg?style=social"/></a>
+        <img src="https://img.shields.io/github/contributors/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate.svg?color=012456"/></a>
 </p>
 <!-- ********** DO NOT EDIT THESE LINKS ********** -->
-
-# Fortinet FortiGate As Built Report
 
 Fortinet FortiGate As Built Report is a PowerShell module which works in conjunction with [AsBuiltReport.Core](https://github.com/AsBuiltReport/AsBuiltReport.Core).
 
@@ -33,7 +27,7 @@ Fortinet FortiGate As Built Report is a PowerShell module which works in conjunc
 
 Please refer to the AsBuiltReport [website](https://www.asbuiltreport.com) for more detailed information about this project.
 
-# :books: Sample Reports
+# <img src="https://raw.githubusercontent.com/AsBuiltReport/.github/main/assets/section-icons/sample-reports.svg" alt="" width="28" height="28" align="top"> Sample Reports
 
 ## Sample Report
 
@@ -41,10 +35,10 @@ Sample FortiGate Fortinet As Built report HTML file: [Sample Fortinet FortiGate 
 
 Sample FortiGate Fortinet As Built report Word file: [Sample Fortinet FortiGate As-Built Report.docx](https://raw.githubusercontent.com/AsBuiltReport/AsBuiltReport.Fortinet.FortiGate/dev/Samples/Fortinet%20FortiGate%20As%20Built%20Report.docx)
 
-# :beginner: Getting Started
+# <img src="https://raw.githubusercontent.com/AsBuiltReport/.github/main/assets/section-icons/getting-started.svg" alt="" width="28" height="28" align="top"> Getting Started
 Below are the instructions on how to install, configure and generate a Fortinet FortiGate As Built report.
 
-## :floppy_disk: Supported Versions
+## <img src="https://raw.githubusercontent.com/AsBuiltReport/.github/main/assets/section-icons/supported-versions.svg" alt="" width="24" height="24" align="top"> Supported Versions
 <!-- ********** Update supported FortiGate versions ********** -->
 The Fortinet FortiGate As Built Report supports the following FortiGate versions;
 
@@ -55,19 +49,19 @@ This report is compatible with the following PowerShell versions;
 | Windows PowerShell 5.1 |     PowerShell 7    |
 |:----------------------:|:--------------------:|
 |   :white_check_mark:   | :white_check_mark: |
-## :wrench: System Requirements
+## <img src="https://raw.githubusercontent.com/AsBuiltReport/.github/main/assets/section-icons/system-requirements.svg" alt="" width="24" height="24" align="top"> System Requirements
 <!-- ********** Update system requirements ********** -->
 PowerShell 5.1 or PowerShell 7, and the following PowerShell modules are required for generating a Fortinet FortiGate As Built Report.
 
 - [AsBuiltReport.Fortinet.FortiGate Module](https://www.powershellgallery.com/packages/AsBuiltReport.Fortinet.FortiGate/)
 - [PowerFGT Module](https://www.powershellgallery.com/packages/PowerFGT/)
 
-### :closed_lock_with_key: Required Privileges
+### <img src="https://raw.githubusercontent.com/AsBuiltReport/.github/main/assets/section-icons/required-privileges.svg" alt="" width="20" height="20" align="top"> Required Privileges
 You need to have an account (user/password) with only Read Only on the FortiGate
 
 The use of an API Token in not currently supported.
 
-## :package: Module Installation
+## <img src="https://raw.githubusercontent.com/AsBuiltReport/.github/main/assets/section-icons/module-installation.svg" alt="" width="24" height="24" align="top"> Module Installation
 
 ### PowerShell
 ```powershell
@@ -89,7 +83,7 @@ If you are unable to use the PowerShell Gallery, you can still install the modul
 
 _Note: You are not limited to installing the module to those example paths, you can add a new entry to the environment variable PSModulePath if you want to use another path._
 
-## :pencil2: Configuration
+## <img src="https://raw.githubusercontent.com/AsBuiltReport/.github/main/assets/section-icons/configuration.svg" alt="" width="24" height="24" align="top"> Configuration
 
 The Fortinet FortiGate As Built Report utilises a JSON file to allow configuration of report information, options, detail and healthchecks.
 
@@ -157,7 +151,7 @@ The **Healthcheck** schema is used to toggle health checks on or off.
 
 Health checks are yet to be developed.
 
-## :computer: Examples
+## <img src="https://raw.githubusercontent.com/AsBuiltReport/.github/main/assets/section-icons/examples.svg" alt="" width="24" height="24" align="top"> Examples
 There are a few examples listed below on running the AsBuiltReport script against a FortiGate. Refer to the README.md file in the main AsBuiltReport project repository for more examples.
 
 ```powershell
