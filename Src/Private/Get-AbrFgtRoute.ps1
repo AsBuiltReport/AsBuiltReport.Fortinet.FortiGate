@@ -40,9 +40,9 @@ function Get-AbrFgtRoute {
                 Write-Warning "BGP/OSPF Neighbor are not available"
             }
             $BGP = Get-FGTRouterBGP
-            $BGPSchema = (Invoke-FGTRestMethod 'api/v2/cmdb/router/bgp?&action=schema').results.children
+            $BGPSchema = (Get-FGTRouterBGP -shema).children
             $OSPF = Get-FGTRouterOSPF
-            $OSPFSchema = (Invoke-FGTRestMethod 'api/v2/cmdb/router/ospf?&action=schema').results.children
+            $OSPFSchema = (Get-FGTRouterOSPF -schema).children
             $interfaces = Get-FGTSystemInterface -skip
 
             if ($InfoLevel.Route -ge 1) {

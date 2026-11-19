@@ -582,8 +582,8 @@ function Get-AbrFgtSystem {
                         }
                     }
 
-                    #DHCP Leases (from Monitoring) => no yet Get-FGTMonitorDHCP cmdlet on PowerFGT...
-                    $dhcp_leases = (Invoke-FGTRestMethod -uri api/v2/monitor/system/dhcp).results
+                    #DHCP Leases (from Monitoring)
+                    $dhcp_leases = Get-FGTMonitorSystemDHCP
 
                     if ($dhcp_leases) {
                         Section -Style NOTOCHeading4 -ExcludeFromTOC "DHCP Leases" {
